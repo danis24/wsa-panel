@@ -1,17 +1,17 @@
 <template>
 <div class="card card-default">
-    <div class="card-header">Login/Create Account</div>
+    <div class="card-header">Withdraw</div>
 
     <div class="card-body">
         <form action="https://httpbin.org/post" method="post">
             <div class="form-group">
-                <label class="form-label">Username</label>
+                <label class="form-label">Address</label>
                 <input type="text" class="form-control" name="username" placeholder="Username.." aria-autocomplete="list">
             </div>
 
             <div class="form-group">
-                <label class="form-label">Password</label>
-                <input type="password" class="form-control" name="password" placeholder="Password.." aria-autocomplete="list">
+                <label class="form-label">Amount</label>
+                <input type="number" class="form-control" name="username" placeholder="Username.." aria-autocomplete="list">
             </div>
 
             <div class="form-group">
@@ -19,11 +19,8 @@
                 <input type="text" class="form-control" name="2fa" placeholder="2FA.." aria-autocomplete="list">
             </div>
 
-            <div class="row">
-                <div class="col">
-                    <button class="btn btn-pill btn-success" type="button"><i class="fe fe-lock"></i> Login</button>
-                    <button class="btn btn-pill btn-warning" type="button"><i class="fe fe-user"></i> Register</button>
-                </div>
+            <div class="form-group">
+                <button class="btn btn-pill btn-warning" type="button"><i class="fe fe-dollar-sign"></i> Withdraw</button>
             </div>
         </form>
     </div>
@@ -33,13 +30,7 @@
 <script>
 export default {
     mounted() {
-        console.log('Component Mounted')
-    },
-    data() {
-
-    },
-    method() {
-
+        console.log('Component Mounted');
     }
 }
 </script>
