@@ -18,7 +18,6 @@
 </head>
 <body>
     <div id="app">
-
         <div class="header py-4">
                 <div class="container">
                     <div class="d-flex">
@@ -76,21 +75,15 @@
                         <div class="col-lg order-lg-first">
                             <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
                                 <li class="nav-item">
-                                    <a href="{{ route('home')}}" class="nav-link {{ request()->is('home') ? 'active' : ''}}">
-                                        <i class="fe fe-home"></i> Trade
-                                    </a>
+                                    <router-link to="/home" class="nav-link"><i class="fe fe-home"></i> Trade</router-link>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="{{ route('home')}}" class="nav-link {{ request()->is('setting') ? 'active' : ''}}">
-                                        <i class="fe fe-settings"></i> Setting
-                                    </a>
+                                    <router-link to="/settings" class="nav-link"><i class="fe fe-settings"></i> Setting</router-link>
                                 </li>
 
                                 <li class="nav-item">
-                                    <a href="{{ route('home')}}" class="nav-link {{ request()->is('account') ? 'active' : ''}}">
-                                        <i class="fe fe-user"></i> Account
-                                    </a>
+                                    <router-link to="/accounts" class="nav-link"><i class="fe fe-user"></i> account</router-link>
                                 </li>
                             </ul>
                         </div>
@@ -100,7 +93,7 @@
         @endauth
 
         <main class="py-4">
-            @yield('content')
+            <router-view></router-view>
         </main>
     </div>
 </body>
