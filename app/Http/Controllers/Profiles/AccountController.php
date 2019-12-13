@@ -21,8 +21,9 @@ class AccountController extends Controller
                 "Password" => $request->password
             ]
         ];
-        $response = json_decode($this->postData($data));
-        return response()->json($response)->withCookie(cookie("user-cookies", $response->SessionCookie, 45000));
+        $response = json_decode($this->postData($data)->getBody());
+        // return response()->json($response)->withCookie(cookie("user-cookies", $response->SessionCookie, 45000));
+        return response()->json($response);
     }
 
     public function balances()
@@ -48,7 +49,7 @@ class AccountController extends Controller
                 "s" => Cookie::get('user-cookies'),
             ]
         ];
-        $response = json_decode($this->postData($data));
+        $response = json_decode($this->postData($data)->getBody());
         return response()->json($response);
     }
 
@@ -61,19 +62,19 @@ class AccountController extends Controller
                 "Currency" => "doge",
             ]
         ];
-        $response = json_decode($this->postData($data));
+        $response = json_decode($this->postData($data)->getBody());
         return response()->json($response);
     }
 
-    public function getDepositHistories()
+    public function getDepositHistories(Request $request)
     {
         $data = [
             'form_params' => [
                 "a" => "GetDeposits",
-                "s" => Cookie::get('user-cookies'),
+                "s" => $request->get("session"),
             ]
         ];
-        $response = json_decode($this->postData($data));
+        $response = json_decode($this->postData($data)->getBody());
         return response()->json($response);
     }
 
@@ -89,7 +90,7 @@ class AccountController extends Controller
                 "Currency" => "doge"
             ]
         ];
-        $response = json_decode($this->postData($data));
+        $response = json_decode($this->postData($data)->getBody());
         return response()->json($response);
     }
 
@@ -101,7 +102,7 @@ class AccountController extends Controller
                 "s" => Cookie::get('user-cookies'),
             ]
         ];
-        $response = json_decode($this->postData($data));
+        $response = json_decode($this->postData($data)->getBody());
         return response()->json($response);
     }
 
@@ -113,7 +114,7 @@ class AccountController extends Controller
                 "s" => Cookie::get('user-cookies'),
             ]
         ];
-        $response = json_decode($this->postData($data));
+        $response = json_decode($this->postData($data)->getBody());
         return response()->json($response);
     }
 }

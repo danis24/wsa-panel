@@ -10,11 +10,19 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
-Vue.use(VueRouter);
-
 import VueAxios from 'vue-axios';
 import axios from 'axios';
+import VueCookies from 'vue-cookies';
+import VueLoading from 'vue-loading-overlay';
+import Toasted from 'vue-toasted';
+
+import 'vue-loading-overlay/dist/vue-loading.css';
+
+Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
+Vue.use(VueCookies);
+Vue.use(VueLoading);
+Vue.use(Toasted);
 
 import TradeComponent from './components/TradeComponent.vue';
 import SettingComponent from './components/SettingComponent.vue';
