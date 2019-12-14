@@ -53,12 +53,12 @@ class AccountController extends Controller
         return response()->json($response);
     }
 
-    public function getDepositAddress()
+    public function getDepositAddress(Request $request)
     {
         $data = [
             'form_params' => [
                 "a" => "GetDepositAddress",
-                "s" => Cookie::get('user-cookies'),
+                "s" => $request->get("session"),
                 "Currency" => "doge",
             ]
         ];

@@ -42,6 +42,7 @@ export default {
   },
 
   methods: {
+
     actionLogin: function () {
       let basUrl = 'http://localhost:8000/api/v1/login';
 

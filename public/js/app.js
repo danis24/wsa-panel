@@ -64597,6 +64597,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   methods: {
+
     actionLogin: function actionLogin() {
       var _this = this;
 
@@ -65086,6 +65087,11 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_loading_overlay__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_loading_overlay___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_loading_overlay__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_loading_overlay_dist_vue_loading_css__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_loading_overlay_dist_vue_loading_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_loading_overlay_dist_vue_loading_css__);
+//
 //
 //
 //
@@ -65097,7 +65103,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      depositAddress: '',
+      isLoading: false,
+      fullPage: false
+    };
+  },
+
+  components: {
+    Loading: __WEBPACK_IMPORTED_MODULE_0_vue_loading_overlay___default.a
+  },
+  methods: {
+    getAddress: function getAddress() {
+      var _this = this;
+
+      this.isLoading = true;
+      var uri = "http://localhost:8000/api/v1/deposit?session=" + $cookies.get('SessionCookies');
+      this.axios.get(uri).then(function (response) {
+        _this.depositAddress = response.data.Address;
+        _this.isLoading = false;
+      });
+    }
+  }
+});
 
 /***/ }),
 /* 69 */
@@ -65107,14 +65140,19 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card card-default" }, [
+  return _c(
+    "div",
+    { staticClass: "card card-default" },
+    [
+      _c("loading", {
+        attrs: { active: _vm.isLoading, "is-full-page": _vm.fullPage },
+        on: {
+          "update:active": function($event) {
+            _vm.isLoading = $event
+          }
+        }
+      }),
+      _vm._v(" "),
       _c("div", { staticClass: "card-header" }, [_vm._v("Deposit")]),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
@@ -65122,14 +65160,22 @@ var staticRenderFns = [
           "button",
           {
             staticClass: "btn btn-pill btn-warning",
-            attrs: { type: "button" }
+            attrs: { type: "button" },
+            on: {
+              click: function($event) {
+                $event.preventDefault()
+                return _vm.getAddress()
+              }
+            }
           },
           [_c("i", { staticClass: "fe fe-layers" }), _vm._v(" Get Address")]
         )
       ])
-    ])
-  }
-]
+    ],
+    1
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -65419,6 +65465,19 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_loading_overlay__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_loading_overlay___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_loading_overlay__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_loading_overlay_dist_vue_loading_css__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_loading_overlay_dist_vue_loading_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_loading_overlay_dist_vue_loading_css__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -65447,7 +65506,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+
+// Import stylesheet
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      deposits: [],
+      isLoading: true,
+      fullPage: false
+    };
+  },
+  created: function created() {
+    this.loadData();
+  },
+
+  components: {
+    Loading: __WEBPACK_IMPORTED_MODULE_0_vue_loading_overlay___default.a
+  },
+  methods: {
+    loadData: function loadData() {
+      var _this = this;
+
+      var SessionId = $cookies.get('SessionCookies');
+      var uri = 'http://localhost:8000/api/v1/deposit-histories?session=' + SessionId;
+      this.axios.get(uri).then(function (response) {
+        _this.isLoading = false;
+        _this.deposits = response.data.Deposits;
+      });
+    },
+    refresh: function refresh() {
+      this.isLoading = true;
+      this.loadData();
+    }
+  }
+});
 
 /***/ }),
 /* 83 */
@@ -65457,53 +65550,92 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card card-default" }, [
-      _c("div", { staticClass: "card-header" }, [_vm._v("Deposit Histories")]),
+  return _c(
+    "div",
+    { staticClass: "card card-default" },
+    [
+      _c("loading", {
+        attrs: { active: _vm.isLoading, "is-full-page": _vm.fullPage },
+        on: {
+          "update:active": function($event) {
+            _vm.isLoading = $event
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-header" }, [
+        _c("div", { staticClass: "text-left col-sm-6" }, [
+          _vm._v("\n      Deposit Histories\n    ")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-sm-6 text-right" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-pill btn-success",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.refresh()
+                }
+              }
+            },
+            [_c("i", { staticClass: "fe fe-refresh-cw" })]
+          )
+        ])
+      ]),
       _vm._v(" "),
       _c(
         "div",
         { staticClass: "card-body o-auto", staticStyle: { height: "11rem" } },
         [
           _c("table", { staticClass: "table" }, [
-            _c(
-              "thead",
-              { staticClass: "card-alert alert alert-primary mb-0" },
-              [
-                _c("tr", [
-                  _c("th", { attrs: { scope: "col" } }, [_vm._v("Address")]),
-                  _vm._v(" "),
-                  _c("th", { attrs: { scope: "col" } }, [_vm._v("value")]),
-                  _vm._v(" "),
-                  _c("th", { attrs: { scope: "col" } }, [_vm._v("date")]),
-                  _vm._v(" "),
-                  _c("th", { attrs: { scope: "col" } }, [
-                    _vm._v("transaction hash")
-                  ])
-                ])
-              ]
-            ),
+            _vm._m(0),
             _vm._v(" "),
-            _c("tbody", [
-              _c("tr", { staticClass: "alert alert-success mb-0" }, [
-                _c("th", { attrs: { scope: "row" } }, [_vm._v("H")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("20")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("2000")]),
-                _vm._v(" "),
-                _c("td", [_vm._v("1880")])
-              ])
-            ])
+            _c(
+              "tbody",
+              _vm._l(_vm.deposits, function(deposit) {
+                return _c("tr", { staticClass: "alert alert-success mb-0" }, [
+                  _c("td", { attrs: { scope: "row", width: "1%" } }, [
+                    _vm._v(_vm._s(deposit.Address))
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      _vm._s(deposit.Value) + " " + _vm._s(deposit.Currency)
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(deposit.Date))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(deposit.TransactionHash))])
+                ])
+              }),
+              0
+            )
           ])
         ]
       )
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", { staticClass: "card-alert alert alert-primary mb-0" }, [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Address")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("value")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("date")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("transaction hash")])
+      ])
     ])
   }
 ]
