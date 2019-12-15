@@ -33,14 +33,16 @@
 export default {
   data() {
     return {
-      login: {},
+      login: {}
     }
   },
 
   components: {
     Loading: this.VueLoading
   },
-
+  mounted() {
+    this.login = JSON.parse(this.$localStorage.get('auth'));
+  },
   methods: {
 
     actionLogin: function () {
@@ -69,11 +71,12 @@ export default {
             duration: 5000
           });
         }
-				console.log(response.data.SessionCookie);
         if (response.data.SessionCookie != undefined) {
           $cookies.set('SessionCookies', response.data.SessionCookie);
-					$cookies.set('AccountId', response.data.AccountId);
+          $cookies.set('AccountId', response.data.AccountId);
+          this.$localStorage.set('auth', JSON.stringify(this.login));
           loader.hide();
+          
           let toast = this.$toasted.show("Login Success :)", {
             theme: "toasted-primary",
             position: "top-left",
