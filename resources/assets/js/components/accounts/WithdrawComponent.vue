@@ -6,12 +6,12 @@
         <form action="https://httpbin.org/post" method="post">
             <div class="form-group">
                 <label class="form-label">Address</label>
-                <input type="text" class="form-control" name="username" placeholder="Username.." aria-autocomplete="list">
+                <input type="text" class="form-control" name="address" placeholder="Address.." aria-autocomplete="list">
             </div>
 
             <div class="form-group">
                 <label class="form-label">Amount</label>
-                <input type="number" class="form-control" name="username" placeholder="Username.." aria-autocomplete="list">
+                <input type="number" class="form-control" name="amount" placeholder="Amount.." aria-autocomplete="list">
             </div>
 
             <div class="form-group">
