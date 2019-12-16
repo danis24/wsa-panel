@@ -22,31 +22,55 @@ class AccountController extends Controller
             ]
         ];
         $response = json_decode($this->postData($data)->getBody());
-        // return response()->json($response)->withCookie(cookie("user-cookies", $response->SessionCookie, 45000));
         return response()->json($response);
     }
 
-    public function balances()
+    public function createAccount()
+    {
+        $data = [
+            'form_params' => [
+                "a" => "CreateAccount",
+                "Key" => env("DICE_APIKEY")
+            ]
+        ];
+        return json_decode($this->postData($data)->getBody());
+    }
+
+    public function diceRegister(Request $request)
+    {
+        $data = [
+            'form_params' => [
+                "a" => "CreateUser",
+                "s" => $this->createAccount()->SessionCookie,
+                "Username" => $request->username,
+                "Password" => $request->password
+            ]
+        ];
+        $response = json_decode($this->postData($data)->getBody());
+        return response()->json($response);
+    }
+
+    public function balances(Request $request)
     {
         $data = [
             'form_params' => [
                 "a" => "GetBalance",
-                "s" => Cookie::get('user-cookies'),
+                "s" => $request->get("session"),
                 "Currency" => "doge",
                 "Referrals" => 0,
                 "Stats" => 0,
             ]
         ];
-        $response = json_decode($this->postData($data));
+        $response = json_decode($this->postData($data)->getBody());
         return response()->json($response);
     }
 
-    public function getCurrentBalance()
+    public function getCurrentBalance(Request $request)
     {
         $data = [
             'form_params' => [
                 "a" => "GetBalances",
-                "s" => Cookie::get('user-cookies'),
+                "s" => $request->get("session")
             ]
         ];
         $response = json_decode($this->postData($data)->getBody());
@@ -59,7 +83,7 @@ class AccountController extends Controller
             'form_params' => [
                 "a" => "GetDepositAddress",
                 "s" => $request->get("session"),
-                "Currency" => "doge",
+                "Currency" => "doge"
             ]
         ];
         $response = json_decode($this->postData($data)->getBody());
@@ -71,7 +95,7 @@ class AccountController extends Controller
         $data = [
             'form_params' => [
                 "a" => "GetDeposits",
-                "s" => $request->get("session"),
+                "s" => $request->get("session")
             ]
         ];
         $response = json_decode($this->postData($data)->getBody());
@@ -83,7 +107,7 @@ class AccountController extends Controller
         $data = [
             'form_params' => [
                 "a" => "Withdraw",
-                "s" => Cookie::get('user-cookies'),
+                "s" => $request->get("session"),
                 "Amount" => $request->amount,
                 "Address" => $request->address,
                 "Totp" => $request->otp,
@@ -94,12 +118,12 @@ class AccountController extends Controller
         return response()->json($response);
     }
 
-    public function getWithdrawl()
+    public function getWithdrawl(Request $request)
     {
         $data = [
             'form_params' => [
                 "a" => "GetWithdrawals",
-                "s" => Cookie::get('user-cookies'),
+                "s" => $request->get("session")
             ]
         ];
         $response = json_decode($this->postData($data)->getBody());
@@ -111,7 +135,7 @@ class AccountController extends Controller
         $data = [
             'form_params' => [
                 "a" => "GetServerSeedHash",
-                "s" => Cookie::get('user-cookies'),
+                "s" => $request->get("session")
             ]
         ];
         $response = json_decode($this->postData($data)->getBody());
