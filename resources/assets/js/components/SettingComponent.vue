@@ -44,16 +44,16 @@
                                 <label class="form-label">Trade Logic</label>
                                 <div class="row">
                                     <div class="col-sm-11">
-                                        <select class="form-control">
+                                        <select class="form-control" v-model="tradeLogicSelected" @change="tradeLogicSelectedEvent">
                                             <option value="1">HIGH/LOW</option>
                                             <option value="2">HIGH</option>
                                             <option value="3">LOW</option>
-                                            <option value="4">RANDOMW</option>
+                                            <option value="4">RANDOM</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" v-if="tradeLogicSelected == 1">
                                 <div class="row">
                                     <div class="col-sm-5">
                                         <label class="form-label">Win HI/LO</label>
@@ -703,14 +703,17 @@
 </div>
 </template>
 
-<style>
-.custom-switch {
-    padding-left: 0.25rem;
-}
-</style>
-
 <script>
 export default {
-
+  data() {
+    return {
+      tradeLogicSelected: 1
+    }
+  },
+  methods: {
+    tradeLogicSelectedEvent() {
+      console.log(this.tradeLogicSelected);
+    }
+  }
 }
 </script>
