@@ -24,7 +24,7 @@
       <tbody>
         <tr class="alert alert-success mb-0" v-for="deposit in deposits">
           <td scope="row" width="1%">{{ deposit.Address }}</td>
-          <td>{{ deposit.Value }} {{ deposit.Currency }}</td>
+          <td>{{ deposit.Value*0.00000001 }} {{ deposit.Currency }}</td>
           <td>{{ deposit.Date }}</td>
           <td>{{ deposit.TransactionHash }}</td>
         </tr>
