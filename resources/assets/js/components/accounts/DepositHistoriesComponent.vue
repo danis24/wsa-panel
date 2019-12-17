@@ -55,7 +55,7 @@ export default {
   methods: {
     loadData() {
       let SessionId = $cookies.get('SessionCookies');
-      let uri = 'http://localhost:8000/api/v1/deposit-histories?session=' + SessionId;
+      let uri = 'http://192.168.1.21/api/v1/deposit-histories?session=' + SessionId;
       this.axios.get(uri).then(response => {
         this.isLoading = false;
         this.deposits = response.data.Deposits;

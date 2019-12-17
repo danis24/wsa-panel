@@ -21,7 +21,7 @@
       <div class="row">
         <div class="col">
           <button class="btn btn-pill btn-success" type="submit"><i class="fe fe-lock"></i> Login</button>
-          <button class="btn btn-pill btn-warning" type="button"><i class="fe fe-user"></i> Register</button>
+          <button class="btn btn-pill btn-warning" type="button" @click.prevent="actionRegister"><i class="fe fe-user"></i> Register</button>
         </div>
       </div>
     </form>
@@ -33,18 +33,50 @@
 export default {
   data() {
     return {
-      login: {},
+      login: {}
     }
   },
 
   components: {
     Loading: this.VueLoading
   },
-
+  mounted() {
+		if(JSON.parse(this.$localStorage.get('auth')) != null){
+			this.login = JSON.parse(this.$localStorage.get('auth'));
+		}
+  },
   methods: {
+		actionRegister: function() {
+				let basUrl = 'http://192.168.1.21/api/v1/register';
+
+      let loader = this.$loading.show({
+        loader: 'dots',
+        color: '#5EABED',
+        backgroundColor: '#000000',
+      });
+
+			this.axios.post(basUrl, this.login).then((response) => {
+					if(response.data.success != undefined) {
+						loader.hide();
+						let toast = this.$toasted.show("Register Successed :) Please Login Now !", {
+							theme: "toasted-primary",
+							position: "top-left",
+							duration: 5000
+						});
+					}
+					if(response.data.UsernameTaken != undefined){
+						loader.hide();
+						let toast = this.$toasted.show("Username Already Taken !", {
+							theme: "toasted-primary",
+							position: "top-left",
+							duration: 5000
+						});
+					}
+			});
+		},
 
     actionLogin: function () {
-      let basUrl = 'http://localhost:8000/api/v1/login';
+      let basUrl = 'http://192.168.1.21/api/v1/login';
 
       let loader = this.$loading.show({
         loader: 'dots',
@@ -69,11 +101,12 @@ export default {
             duration: 5000
           });
         }
-				console.log(response.data.SessionCookie);
         if (response.data.SessionCookie != undefined) {
           $cookies.set('SessionCookies', response.data.SessionCookie);
-					$cookies.set('AccountId', response.data.AccountId);
+          $cookies.set('AccountId', response.data.AccountId);
+          this.$localStorage.set('auth', JSON.stringify(this.login));
           loader.hide();
+
           let toast = this.$toasted.show("Login Success :)", {
             theme: "toasted-primary",
             position: "top-left",

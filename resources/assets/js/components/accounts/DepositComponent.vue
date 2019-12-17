@@ -4,15 +4,15 @@
     <div class="card-header">Deposit</div>
 
     <div class="card-body">
-      <div class="row">
-        <div class="col-sm-5">
-            <button class="btn btn-pill btn-warning" type="button" @click.prevent="getAddress()"><i class="fe fe-layers"></i> Get Address</button>
+        <div class="row">
+            <div class="col-sm-4">
+                <button class="btn btn-pill btn-warning" type="button" @click.prevent="getAddress()"><i class="fe fe-layers"></i> Get Address</button>
+            </div>
+            <div class="col-sm-8" v-if="depositAddress !== ''">
+                Deposit Address : {{ this.depositAddress }} <hr style="margin-top: 0.4rem; margin-bottom: 0.6rem;">
+                <qrcode-vue :value="depositAddress" :size="100" level="M"></qrcode-vue>
+            </div>
         </div>
-        <div class="col-sm-7">
-asasas
-        </div>
-      </div>
-        
     </div>
 </div>
 </template>
@@ -20,6 +20,7 @@ asasas
 <script>
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+import QrcodeVue from 'qrcode.vue'
 
 export default {
     data() {
@@ -30,12 +31,13 @@ export default {
         }
     },
     components: {
-        Loading
+        Loading,
+        QrcodeVue
     },
     methods: {
         getAddress() {
             this.isLoading = true;
-            let uri = "http://localhost:8000/api/v1/deposit?session=" + $cookies.get('SessionCookies');
+            let uri = "http://192.168.1.21/api/v1/deposit?session=" + $cookies.get('SessionCookies');
             this.axios.get(uri).then(response => {
                 this.depositAddress = response.data.Address;
                 this.isLoading = false;

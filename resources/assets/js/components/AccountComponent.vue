@@ -2,7 +2,7 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-8">
-      <account-list />
+      <account-info />
     </div>
     <div class="col-md-4">
       <login />
@@ -22,7 +22,7 @@
 
 <script>
 import Login from './auth/LoginComponent'
-import AccountList from './accounts/AccountListComponent'
+import AccountInfo from './accounts/AccountInfoComponent'
 import Deposit from './accounts/DepositComponent'
 import Withdraw from './accounts/WithdrawComponent'
 import DepositHistories from './accounts/DepositHistoriesComponent';
@@ -31,7 +31,7 @@ export default {
   components: {
     Login,
     Deposit,
-    AccountList,
+    AccountInfo,
     Withdraw,
     DepositHistories
   }

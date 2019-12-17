@@ -20,6 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 //@diceLogin
 Route::post('/v1/login', 'Profiles\AccountController@diceLogin')->name('diceLogin');
+//@diceLogin
+Route::post('/v1/register', 'Profiles\AccountController@diceRegister')->name('diceRegister');
 //@balances
 Route::get('/v1/balances', 'Profiles\AccountController@balances')->name('profile.getBalances');
 //@getCurrentBalance
