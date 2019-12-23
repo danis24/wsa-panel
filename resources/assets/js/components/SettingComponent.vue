@@ -931,11 +931,11 @@
           <hr style="margin-top: 0.4rem; margin-bottom: 0.6rem;" />
           <div class="col-sm-12" v-if="configData.autoWithdraw.status == true">
             <div class="row">
-              <div class="col-md-12 col-lg-6">
+              <div class="col-md-12">
                 <div class="form-group">
                   <label class="form-label">Initial Balance</label>
                   <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                       <input
                         type="number"
                         class="form-control"
@@ -948,7 +948,7 @@
                 <div class="form-group">
                   <label class="form-label">Trigger Balance</label>
                   <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                       <input
                         type="number"
                         class="form-control"
@@ -961,11 +961,11 @@
                 <div class="form-group">
                   <label class="form-label">Destination Address</label>
                   <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                       <input
                         type="text"
                         class="form-control"
-                        placeholder="0"
+                        placeholder="Destination Address .."
                         v-model="configData.autoWithdraw.destinationAddress"
                       />
                     </div>
@@ -996,12 +996,47 @@
           <div class="row">
             <div class="col-6">
               <div>
-                <button class="btn btn-danger btn-block">Save As</button>
+                <button
+                  class="btn btn-danger btn-block"
+                  data-toggle="modal"
+                  data-target="#saveAsModal"
+                >Save As</button>
               </div>
             </div>
             <div class="col-6">
               <button class="btn btn-warning btn-block float-right">Load</button>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="saveAsModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="saveAsModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="saveAsModalLabel">Save As</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label class="form-label">Settings Name</label>
+                <input type="text" class="form-control" placeholder="Settings Name" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save Settings</button>
           </div>
         </div>
       </div>
@@ -1018,6 +1053,7 @@ export default {
   },
   data() {
     return {
+      showModal: false,
       saveLoader: false,
       configData: {
         changeBeetwen: {

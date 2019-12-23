@@ -70218,6 +70218,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -70227,6 +70262,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   data: function data() {
     return {
+      showModal: false,
       saveLoader: false,
       configData: {
         changeBeetwen: {
@@ -73115,14 +73151,14 @@ var render = function() {
           _vm.configData.autoWithdraw.status == true
             ? _c("div", { staticClass: "col-sm-12" }, [
                 _c("div", { staticClass: "row" }, [
-                  _c("div", { staticClass: "col-md-12 col-lg-6" }, [
+                  _c("div", { staticClass: "col-md-12" }, [
                     _c("div", { staticClass: "form-group" }, [
                       _c("label", { staticClass: "form-label" }, [
                         _vm._v("Initial Balance")
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-sm-6" }, [
+                        _c("div", { staticClass: "col-sm-12" }, [
                           _c("input", {
                             directives: [
                               {
@@ -73162,7 +73198,7 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-sm-6" }, [
+                        _c("div", { staticClass: "col-sm-12" }, [
                           _c("input", {
                             directives: [
                               {
@@ -73203,7 +73239,7 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-sm-6" }, [
+                        _c("div", { staticClass: "col-sm-12" }, [
                           _c("input", {
                             directives: [
                               {
@@ -73217,7 +73253,10 @@ var render = function() {
                               }
                             ],
                             staticClass: "form-control",
-                            attrs: { type: "text", placeholder: "0" },
+                            attrs: {
+                              type: "text",
+                              placeholder: "Destination Address .."
+                            },
                             domProps: {
                               value:
                                 _vm.configData.autoWithdraw.destinationAddress
@@ -73289,7 +73328,9 @@ var render = function() {
         _vm._v(" "),
         _vm._m(28)
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _vm._m(29)
   ])
 }
 var staticRenderFns = [
@@ -73589,9 +73630,14 @@ var staticRenderFns = [
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-6" }, [
           _c("div", [
-            _c("button", { staticClass: "btn btn-danger btn-block" }, [
-              _vm._v("Save As")
-            ])
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-danger btn-block",
+                attrs: { "data-toggle": "modal", "data-target": "#saveAsModal" }
+              },
+              [_vm._v("Save As")]
+            )
           ])
         ]),
         _vm._v(" "),
@@ -73604,6 +73650,85 @@ var staticRenderFns = [
         ])
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "saveAsModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "saveAsModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title",
+                    attrs: { id: "saveAsModalLabel" }
+                  },
+                  [_vm._v("Save As")]
+                ),
+                _vm._v(" "),
+                _c("button", {
+                  staticClass: "close",
+                  attrs: {
+                    type: "button",
+                    "data-dismiss": "modal",
+                    "aria-label": "Close"
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("form", [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { staticClass: "form-label" }, [
+                      _vm._v("Settings Name")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "text", placeholder: "Settings Name" }
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Close")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  { staticClass: "btn btn-primary", attrs: { type: "button" } },
+                  [_vm._v("Save Settings")]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
   }
 ]
 render._withStripped = true
