@@ -22,7 +22,7 @@
                         class="form-control"
                         placeholder="0"
                         @change="firstChangeBeerwenValidate"
-                        v-model="changeBeetwen.first"
+                        v-model="configData.changeBeetwen.first"
                       />
                     </div>
                     <div class="col-sm-1">-</div>
@@ -32,7 +32,7 @@
                         class="form-control"
                         placeholder="0"
                         @change="lastChangeBeerwenValidate"
-                        v-model="changeBeetwen.last"
+                        v-model="configData.changeBeetwen.last"
                       />
                     </div>
                   </div>
@@ -48,7 +48,7 @@
                         class="form-control"
                         placeholder="0"
                         @change="tradeCountValidate"
-                        v-model="tradeCount"
+                        v-model="configData.tradeCount"
                       />
                     </div>
                   </div>
@@ -60,7 +60,10 @@
                   <label class="form-label">Trade Logic</label>
                   <div class="row">
                     <div class="col-sm-11">
-                      <select class="form-control" v-model="tradeLogicSelected.selectedValue">
+                      <select
+                        class="form-control"
+                        v-model="configData.tradeLogicSelected.selectedValue"
+                      >
                         <option value="1">HIGH/LOW</option>
                         <option value="2">HIGH</option>
                         <option value="3">LOW</option>
@@ -69,7 +72,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group" v-if="tradeLogicSelected.selectedValue == 1">
+                <div class="form-group" v-if="configData.tradeLogicSelected.selectedValue == 1">
                   <div class="row">
                     <div class="col-sm-5">
                       <label class="form-label">Win HI/LO</label>
@@ -77,7 +80,7 @@
                         type="number"
                         class="form-control"
                         placeholder="0"
-                        v-model="tradeLogicHiLo.win"
+                        v-model="configData.tradeLogicHiLo.win"
                       />
                     </div>
                     <div class="col-sm-5">
@@ -86,7 +89,7 @@
                         type="number"
                         class="form-control"
                         placeholder="0"
-                        v-model="tradeLogicHiLo.lose"
+                        v-model="configData.tradeLogicHiLo.lose"
                       />
                     </div>
                   </div>
@@ -110,9 +113,8 @@
                     type="checkbox"
                     name="custom-switch-checkbox"
                     class="custom-switch-input"
-                    :checked="timeOutRequest.timeOutRequest == true"
-                    @click="timeOutRequestEvent"
-                    v-model="timeOutRequest.timeOutRequest"
+                    :checked="configData.timeOutRequest.timeOutRequest == true"
+                    v-model="configData.timeOutRequest.timeOutRequest"
                   />
                   <span class="custom-switch-indicator"></span>
                 </label>
@@ -120,7 +122,7 @@
             </div>
           </div>
           <hr style="margin-top: 0.4rem; margin-bottom: 0.6rem;" />
-          <div class="col-sm-12" v-if="timeOutRequest.timeOutRequest == true">
+          <div class="col-sm-12" v-if="configData.timeOutRequest.timeOutRequest == true">
             <div class="row">
               <div class="col-md-12 col-lg-6">
                 <div class="form-group">
@@ -131,7 +133,7 @@
                         type="number"
                         class="form-control"
                         placeholder="0"
-                        v-model="timeOutRequest.timeOutRequestValue"
+                        v-model="configData.timeOutRequest.timeOutRequestValue"
                       />
                     </div>
                     <div class="col-sm-6">Seconds</div>
@@ -146,9 +148,10 @@
                       <input
                         type="radio"
                         class="custom-control-input"
-                        name="example-inline-radios"
-                        :checked="timeOutRequest.ifTimeOut == 'stop'"
-                        @click="ifTimeOutEvent('stop')"
+                        name="ifTimeOut"
+                        value="stop"
+                        :checked="configData.timeOutRequest.ifTimeOut == 'stop'"
+                        v-model="configData.timeOutRequest.ifTimeOut"
                       />
                       <span class="custom-control-label">Stop</span>
                     </label>
@@ -156,9 +159,10 @@
                       <input
                         type="radio"
                         class="custom-control-input"
-                        name="example-inline-radios"
-                        :checked="timeOutRequest.ifTimeOut == 'delay'"
-                        @click="ifTimeOutEvent('delay')"
+                        name="ifTimeOut"
+                        value="delay"
+                        :checked="configData.timeOutRequest.ifTimeOut == 'delay'"
+                        v-model="configData.timeOutRequest.ifTimeOut"
                       />
                       <span class="custom-control-label">Delay</span>
                     </label>
@@ -187,7 +191,7 @@
                         type="number"
                         class="form-control"
                         placeholder="0"
-                        v-model="delay.onWin"
+                        v-model="configData.delay.onWin"
                       />
                     </div>
                     <div class="col-sm-6">Seconds</div>
@@ -203,7 +207,7 @@
                         type="number"
                         class="form-control"
                         placeholder="0"
-                        v-model="delay.onLose"
+                        v-model="configData.delay.onLose"
                       />
                     </div>
                     <div class="col-sm-6">Seconds</div>
@@ -232,7 +236,7 @@
                           type="checkbox"
                           name="custom-switch-checkbox"
                           class="custom-switch-input"
-                          :checked="martingleSingle.onWin.status == true"
+                          :checked="configData.martingleSingle.onWin.status == true"
                         />
                         <span class="custom-switch-indicator"></span>
                       </label>
@@ -245,7 +249,7 @@
                             type="number"
                             class="form-control"
                             placeholder="0"
-                            v-model="martingleSingle.onWin.value"
+                            v-model="configData.martingleSingle.onWin.value"
                           />
                         </div>
                       </div>
@@ -262,7 +266,7 @@
                           type="checkbox"
                           name="custom-switch-checkbox"
                           class="custom-switch-input"
-                          :checked="martingleSingle.onLose.status"
+                          :checked="configData.martingleSingle.onLose.status"
                         />
                         <span class="custom-switch-indicator"></span>
                       </label>
@@ -275,7 +279,7 @@
                             type="number"
                             class="form-control"
                             placeholder="0"
-                            v-model="martingleSingle.onLose.value"
+                            v-model="configData.martingleSingle.onLose.value"
                           />
                         </div>
                       </div>
@@ -305,9 +309,8 @@
                     type="checkbox"
                     name="custom-switch-checkbox"
                     class="custom-switch-input"
-                    :checked="martingleMulti.sameSingle == true"
-                    @click="sameMartingleSingleEvent"
-                    v-model="martingleMulti.sameSingle"
+                    :checked="configData.martingleMulti.sameSingle == true"
+                    v-model="configData.martingleMulti.sameSingle"
                   />
                   <span class="custom-switch-indicator"></span>
                 </label>
@@ -317,7 +320,7 @@
               <hr style="margin-top: 0.4rem; margin-bottom: 0.6rem;" />
             </div>
           </div>
-          <div class="col-sm-12" v-if="martingleMulti.sameSingle == false">
+          <div class="col-sm-12" v-if="configData.martingleMulti.sameSingle == false">
             <div class="row">
               <div class="col-md-12 col-lg-12">
                 <div class="form-group">
@@ -328,8 +331,8 @@
                           type="checkbox"
                           name="custom-switch-checkbox"
                           class="custom-switch-input"
-                          :checked="martingleMulti.onWin.status == true"
-                          v-model="martingleMulti.onWin.status"
+                          :checked="configData.martingleMulti.onWin.status == true"
+                          v-model="configData.martingleMulti.onWin.status"
                         />
                         <span class="custom-switch-indicator"></span>
                       </label>
@@ -342,7 +345,7 @@
                             type="number"
                             class="form-control"
                             placeholder="0"
-                            v-model="martingleMulti.onWin.value"
+                            v-model="configData.martingleMulti.onWin.value"
                           />
                         </div>
                       </div>
@@ -359,8 +362,8 @@
                           type="checkbox"
                           name="custom-switch-checkbox"
                           class="custom-switch-input"
-                          :checked="martingleMulti.onLose.status"
-                          v-model="martingleMulti.onLose.status"
+                          :checked="configData.martingleMulti.onLose.status"
+                          v-model="configData.martingleMulti.onLose.status"
                         />
                         <span class="custom-switch-indicator"></span>
                       </label>
@@ -373,7 +376,7 @@
                             type="number"
                             class="form-control"
                             placeholder="0"
-                            v-model="martingleMulti.onLose.value"
+                            v-model="configData.martingleMulti.onLose.value"
                           />
                         </div>
                       </div>
@@ -404,7 +407,7 @@
                     type="checkbox"
                     name="custom-switch-checkbox"
                     class="custom-switch-input"
-                    :checked="baseTradeAmount.usePersentage == true"
+                    :checked="configData.baseTradeAmount.usePersentage == true"
                   />
                   <span class="custom-switch-indicator"></span>
                 </label>
@@ -429,7 +432,7 @@
                             type="number"
                             class="form-control"
                             placeholder="0"
-                            v-model="baseTradeAmount.value"
+                            v-model="configData.baseTradeAmount.value"
                           />
                         </div>
                       </div>
@@ -464,14 +467,14 @@
                         type="number"
                         class="form-control"
                         placeholder="0"
-                        v-model="tradeAmount.profit.value"
+                        v-model="configData.tradeAmount.profit.value"
                       />
                       <label class="custom-control custom-checkbox">
                         <input
                           type="checkbox"
                           class="custom-control-input"
-                          :checked="tradeAmount.profit.mathBaseAmount == true"
-                          v-model="tradeAmount.profit.mathBaseAmount"
+                          :checked="configData.tradeAmount.profit.mathBaseAmount == true"
+                          v-model="configData.tradeAmount.profit.mathBaseAmount"
                         />
                         <span class="custom-control-label">X Base Amount</span>
                       </label>
@@ -487,8 +490,8 @@
                         <input
                           type="checkbox"
                           class="custom-control-input"
-                          :checked="tradeAmount.winStreak.status"
-                          v-model="tradeAmount.winStreak.status"
+                          :checked="configData.tradeAmount.winStreak.status"
+                          v-model="configData.tradeAmount.winStreak.status"
                         />
                         <span class="custom-control-label">Win Streak</span>
                       </label>
@@ -498,7 +501,7 @@
                         type="number"
                         class="form-control"
                         placeholder="0"
-                        v-model="tradeAmount.winStreak.value"
+                        v-model="configData.tradeAmount.winStreak.value"
                       />
                     </div>
                   </div>
@@ -516,8 +519,8 @@
                             class="custom-control-input"
                             name="tradeAmountOnWinStreak"
                             value="true"
-                            :checked="tradeAmount.winStreak.onWinStreak == true"
-                            v-model="tradeAmount.winStreak.onWinStreak"
+                            :checked="configData.tradeAmount.winStreak.onWinStreak == true"
+                            v-model="configData.tradeAmount.winStreak.onWinStreak"
                           />
                           <span class="custom-control-label">Stop</span>
                         </label>
@@ -527,8 +530,8 @@
                             class="custom-control-input"
                             name="tradeAmountOnWinStreak"
                             value="false"
-                            :checked="tradeAmount.winStreak.onWinStreak == false"
-                            v-model="tradeAmount.winStreak.onWinStreak"
+                            :checked="configData.tradeAmount.winStreak.onWinStreak == false"
+                            v-model="configData.tradeAmount.winStreak.onWinStreak"
                           />
                           <span class="custom-control-label">Reset</span>
                         </label>
@@ -546,7 +549,7 @@
                         type="number"
                         class="form-control"
                         placeholder="0"
-                        v-model="tradeAmount.winStreak.ifResetDelay"
+                        v-model="configData.tradeAmount.winStreak.ifResetDelay"
                       />
                       <label>Seconds</label>
                     </div>
@@ -561,8 +564,8 @@
                         <input
                           type="checkbox"
                           class="custom-control-input"
-                          :checked="tradeAmount.loseStreak.status == true"
-                          v-model="tradeAmount.loseStreak.status"
+                          :checked="configData.tradeAmount.loseStreak.status == true"
+                          v-model="configData.tradeAmount.loseStreak.status"
                         />
                         <span class="custom-control-label">Lose Streak</span>
                       </label>
@@ -572,7 +575,7 @@
                         type="number"
                         class="form-control"
                         placeholder="0"
-                        v-model="tradeAmount.loseStreak.value"
+                        v-model="configData.tradeAmount.loseStreak.value"
                       />
                     </div>
                   </div>
@@ -590,8 +593,8 @@
                             class="custom-control-input"
                             name="tradeAmountOnLoseStreak"
                             value="true"
-                            :checked="tradeAmount.loseStreak.onLoseStreak == true"
-                            v-model="tradeAmount.loseStreak.onLoseStreak"
+                            :checked="configData.tradeAmount.loseStreak.onLoseStreak == true"
+                            v-model="configData.tradeAmount.loseStreak.onLoseStreak"
                           />
                           <span class="custom-control-label">Stop</span>
                         </label>
@@ -601,8 +604,8 @@
                             class="custom-control-input"
                             name="tradeAmountOnLoseStreak"
                             value="false"
-                            :checked="tradeAmount.loseStreak.onLoseStreak == false"
-                            v-model="tradeAmount.loseStreak.onLoseStreak"
+                            :checked="configData.tradeAmount.loseStreak.onLoseStreak == false"
+                            v-model="configData.tradeAmount.loseStreak.onLoseStreak"
                           />
                           <span class="custom-control-label">Reset</span>
                         </label>
@@ -620,7 +623,7 @@
                         type="number"
                         class="form-control"
                         placeholder="0"
-                        v-model="tradeAmount.loseStreak.ifResetDelay"
+                        v-model="configData.tradeAmount.loseStreak.ifResetDelay"
                       />
                       <label>Seconds</label>
                     </div>
@@ -639,8 +642,8 @@
                             class="custom-control-input"
                             name="ifResetRecoverLose"
                             value="true"
-                            :checked="tradeAmount.loseStreak.ifResetRecoverLose == true"
-                            v-model="tradeAmount.loseStreak.ifResetRecoverLose"
+                            :checked="configData.tradeAmount.loseStreak.ifResetRecoverLose == true"
+                            v-model="configData.tradeAmount.loseStreak.ifResetRecoverLose"
                           />
                           <span class="custom-control-label">Yes</span>
                         </label>
@@ -650,8 +653,8 @@
                             class="custom-control-input"
                             name="ifResetRecoverLose"
                             value="false"
-                            :checked="tradeAmount.loseStreak.ifResetRecoverLose == false"
-                            v-model="tradeAmount.loseStreak.ifResetRecoverLose"
+                            :checked="configData.tradeAmount.loseStreak.ifResetRecoverLose == false"
+                            v-model="configData.tradeAmount.loseStreak.ifResetRecoverLose"
                           />
                           <span class="custom-control-label">No</span>
                         </label>
@@ -671,13 +674,13 @@
                         type="number"
                         class="form-control"
                         placeholder="0"
-                        v-model="tradeAmount.maxTradeAmount.value"
+                        v-model="configData.tradeAmount.maxTradeAmount.value"
                       />
                       <label class="custom-control custom-checkbox">
                         <input
                           type="checkbox"
                           class="custom-control-input"
-                          :checked="tradeAmount.maxTradeAmount.mathBaseAmount == true"
+                          :checked="configData.tradeAmount.maxTradeAmount.mathBaseAmount == true"
                         />
                         <span class="custom-control-label">X Base Amount</span>
                       </label>
@@ -697,8 +700,8 @@
                             class="custom-control-input"
                             name="maxTradeOnWin"
                             value="true"
-                            :checked="tradeAmount.maxTradeAmount.maxTradeOnWin == true"
-                            v-model="tradeAmount.maxTradeAmount.maxTradeOnWin"
+                            :checked="configData.tradeAmount.maxTradeAmount.maxTradeOnWin == true"
+                            v-model="configData.tradeAmount.maxTradeAmount.maxTradeOnWin"
                           />
                           <span class="custom-control-label">Stop</span>
                         </label>
@@ -708,8 +711,8 @@
                             class="custom-control-input"
                             name="maxTradeOnWin"
                             value="false"
-                            :checked="tradeAmount.maxTradeAmount.maxTradeOnWin == false"
-                            v-model="tradeAmount.maxTradeAmount.maxTradeOnWin"
+                            :checked="configData.tradeAmount.maxTradeAmount.maxTradeOnWin == false"
+                            v-model="configData.tradeAmount.maxTradeAmount.maxTradeOnWin"
                           />
                           <span class="custom-control-label">Reset</span>
                         </label>
@@ -728,8 +731,8 @@
                             class="custom-control-input"
                             name="maxTradeOnLose"
                             value="true"
-                            :checked="tradeAmount.maxTradeAmount.maxTradeOnLose == true"
-                            v-model="tradeAmount.maxTradeAmount.maxTradeOnLose"
+                            :checked="configData.tradeAmount.maxTradeAmount.maxTradeOnLose == true"
+                            v-model="configData.tradeAmount.maxTradeAmount.maxTradeOnLose"
                           />
                           <span class="custom-control-label">Stop</span>
                         </label>
@@ -739,8 +742,8 @@
                             class="custom-control-input"
                             name="maxTradeOnLose"
                             value="false"
-                            :checked="tradeAmount.maxTradeAmount.maxTradeOnLose == false"
-                            v-model="tradeAmount.maxTradeAmount.maxTradeOnLose"
+                            :checked="configData.tradeAmount.maxTradeAmount.maxTradeOnLose == false"
+                            v-model="configData.tradeAmount.maxTradeAmount.maxTradeOnLose"
                           />
                           <span class="custom-control-label">Reset</span>
                         </label>
@@ -772,8 +775,8 @@
                     type="checkbox"
                     name="usePersentageTakeProfitGlobal"
                     class="custom-switch-input"
-                    :checked="takeProfitGlobal.usePersentage == true"
-                    v-model="takeProfitGlobal.usePersentage"
+                    :checked="configData.takeProfitGlobal.usePersentage == true"
+                    v-model="configData.takeProfitGlobal.usePersentage"
                   />
                   <span class="custom-switch-indicator"></span>
                 </label>
@@ -798,7 +801,7 @@
                             type="number"
                             class="form-control"
                             placeholder="0"
-                            v-model="takeProfitGlobal.profitGlobalValue"
+                            v-model="configData.takeProfitGlobal.profitGlobalValue"
                           />
                         </div>
                       </div>
@@ -816,8 +819,8 @@
                       type="checkbox"
                       name="stopAfterTakeProfit"
                       class="custom-switch-input"
-                      :checked="takeProfitGlobal.stop == true"
-                      v-model="takeProfitGlobal.stop"
+                      :checked="configData.takeProfitGlobal.stop == true"
+                      v-model="configData.takeProfitGlobal.stop"
                     />
                     <span class="custom-switch-indicator"></span>
                   </label>
@@ -848,8 +851,8 @@
                     type="checkbox"
                     name="custom-switch-checkbox"
                     class="custom-switch-input"
-                    :checked="takeProfitSession.usePersentage == true"
-                    v-model="takeProfitSession.usePersentage"
+                    :checked="configData.takeProfitSession.usePersentage == true"
+                    v-model="configData.takeProfitSession.usePersentage"
                   />
                   <span class="custom-switch-indicator"></span>
                 </label>
@@ -874,7 +877,7 @@
                             type="number"
                             class="form-control"
                             placeholder="0"
-                            v-model="takeProfitSession.profitSessionValue"
+                            v-model="configData.takeProfitSession.profitSessionValue"
                           />
                         </div>
                       </div>
@@ -892,7 +895,7 @@
                       type="number"
                       class="form-control"
                       placeholder="0"
-                      v-model="takeProfitSession.delay"
+                      v-model="configData.takeProfitSession.delay"
                     />
                     <label>Seconds</label>
                   </div>
@@ -917,8 +920,8 @@
                     type="checkbox"
                     name="autoWithdraw"
                     class="custom-switch-input"
-                    :checked="autoWithdraw.status == true"
-                    v-model="autoWithdraw.status"
+                    :checked="configData.autoWithdraw.status == true"
+                    v-model="configData.autoWithdraw.status"
                   />
                   <span class="custom-switch-indicator"></span>
                 </label>
@@ -926,7 +929,7 @@
             </div>
           </div>
           <hr style="margin-top: 0.4rem; margin-bottom: 0.6rem;" />
-          <div class="col-sm-12" v-if="autoWithdraw.status == true">
+          <div class="col-sm-12" v-if="configData.autoWithdraw.status == true">
             <div class="row">
               <div class="col-md-12 col-lg-6">
                 <div class="form-group">
@@ -937,7 +940,7 @@
                         type="number"
                         class="form-control"
                         placeholder="0"
-                        v-model="autoWithdraw.initialBalance"
+                        v-model="configData.autoWithdraw.initialBalance"
                       />
                     </div>
                   </div>
@@ -950,7 +953,7 @@
                         type="number"
                         class="form-control"
                         placeholder="0"
-                        v-model="autoWithdraw.triggeredBalance"
+                        v-model="configData.autoWithdraw.triggeredBalance"
                       />
                     </div>
                   </div>
@@ -963,7 +966,7 @@
                         type="text"
                         class="form-control"
                         placeholder="0"
-                        v-model="autoWithdraw.destinationAddress"
+                        v-model="configData.autoWithdraw.destinationAddress"
                       />
                     </div>
                   </div>
@@ -975,8 +978,19 @@
       </div>
 
       <div class="col-md-4">
-        <div class="card p-3">
-          <button class="btn btn-success btn-block float-right">Save</button>
+        <div class="card p-3" v-if="this.saveLoader === true">
+          <button class="btn btn-success btn-block d-flex justify-content-center">
+            <!-- <fulfilling-bouncing-circle-spinner :animation-duration="4000" :size="25" color="#fff" /> -->
+            <hollow-dots-spinner
+              :animation-duration="1000"
+              :dot-size="20"
+              :dots-num="3"
+              color="#fff"
+            />
+          </button>
+        </div>
+        <div class="card p-3" v-if="this.saveLoader === false">
+          <button class="btn btn-success btn-block float-right" @click.prevent="saveConfig">Save</button>
         </div>
         <div class="card p-3">
           <div class="row">
@@ -996,116 +1010,134 @@
 </template>
 
 <script>
+import { HollowDotsSpinner } from "epic-spinners";
+
 export default {
+  components: {
+    HollowDotsSpinner
+  },
   data() {
     return {
-      changeBeetwen: {
-        first: 5,
-        last: 95
-      },
-      tradeCount: 200,
-      tradeLogicSelected: {
-        selectedValue: 1
-      },
-      tradeLogicHiLo: {
-        win: 1,
-        lose: 1
-      },
-      timeOutRequest: {
-        timeOutRequest: false,
-        timeOutRequestValue: 0,
-        ifTimeOut: "stop"
-      },
-      delay: {
-        onWin: 0,
-        onLose: 0
-      },
-      martingleSingle: {
-        onWin: {
-          status: false,
-          value: 0
+      saveLoader: false,
+      configData: {
+        changeBeetwen: {
+          first: 5,
+          last: 95
         },
-        onLose: {
+        tradeCount: 200,
+        tradeLogicSelected: {
+          selectedValue: 1
+        },
+        tradeLogicHiLo: {
+          win: 1,
+          lose: 1
+        },
+        timeOutRequest: {
+          timeOutRequest: false,
+          timeOutRequestValue: 0,
+          ifTimeOut: "stop"
+        },
+        delay: {
+          onWin: 0,
+          onLose: 0
+        },
+        martingleSingle: {
+          onWin: {
+            status: false,
+            value: 0
+          },
+          onLose: {
+            status: false,
+            value: 0
+          }
+        },
+
+        martingleMulti: {
+          sameSingle: false,
+          onWin: {
+            status: false,
+            value: 0
+          },
+          onLose: {
+            status: false,
+            value: 0
+          }
+        },
+
+        baseTradeAmount: {
+          usePersentage: false,
+          value: 1
+        },
+
+        tradeAmount: {
+          profit: {
+            mathBaseAmount: false,
+            value: 0
+          },
+          winStreak: {
+            status: false,
+            value: 0,
+            onWinStreak: true,
+            ifResetDelay: 0
+          },
+          loseStreak: {
+            status: false,
+            value: 0,
+            onLoseStreak: true,
+            ifResetDelay: 0,
+            ifResetRecoverLose: true
+          },
+          maxTradeAmount: {
+            mathBaseAmount: false,
+            value: 0,
+            maxTradeOnWin: true,
+            maxTradeOnLose: true
+          }
+        },
+
+        takeProfitGlobal: {
+          usePersentage: false,
+          profitGlobalValue: 0,
+          stop: false
+        },
+
+        takeProfitSession: {
+          usePersentage: false,
+          profitSessionValue: 0,
+          delay: 0
+        },
+
+        autoWithdraw: {
           status: false,
-          value: 0
+          initialBalance: 0,
+          triggeredBalance: 0,
+          destinationAddress: ""
         }
-      },
-
-      martingleMulti: {
-        sameSingle: false,
-        onWin: {
-          status: false,
-          value: 0
-        },
-        onLose: {
-          status: false,
-          value: 0
-        }
-      },
-
-      baseTradeAmount: {
-        usePersentage: false,
-        value: 1
-      },
-
-      tradeAmount: {
-        profit: {
-          mathBaseAmount: false,
-          value: 0
-        },
-        winStreak: {
-          status: false,
-          value: 0,
-          onWinStreak: true,
-          ifResetDelay: 0
-        },
-        loseStreak: {
-          status: true,
-          value: 0,
-          onLoseStreak: true,
-          ifResetDelay: 0,
-          ifResetRecoverLose: true
-        },
-        maxTradeAmount: {
-          mathBaseAmount: true,
-          value: 0,
-          maxTradeOnWin: true,
-          maxTradeOnLose: true
-        }
-      },
-
-      takeProfitGlobal: {
-        usePersentage: false,
-        profitGlobalValue: 0,
-        stop: false
-      },
-
-      takeProfitSession: {
-        usePersentage: false,
-        profitSessionValue: 0,
-        delay: 0
-      },
-
-      autoWithdraw: {
-        status: false,
-        initialBalance: 0,
-        triggeredBalance: 0,
-        destinationAddress: ""
       }
     };
   },
+  mounted() {
+    if (JSON.parse(this.$localStorage.get("configData")) != null) {
+      this.configData = JSON.parse(this.$localStorage.get("configData"));
+    }
+  },
   methods: {
     firstChangeBeerwenValidate: function() {
-      if (this.changeBeetwen.first < 5 || this.changeBeetwen.first > 95) {
+      if (
+        this.configData.changeBeetwen.first < 5 ||
+        this.configData.changeBeetwen.first > 95
+      ) {
         let toast = this.$toasted.show("Change Beetwen Must Be 5 - 95 !", {
           theme: "toasted-primary",
           position: "top-left",
           duration: 3000
         });
-        this.changeBeetwen.first = 5;
+        this.configData.changeBeetwen.first = 5;
       }
 
-      if (this.changeBeetwen.first > this.changeBeetwen.last) {
+      if (
+        this.configData.changeBeetwen.first > this.configData.changeBeetwen.last
+      ) {
         let toast = this.$toasted.show(
           "First change must be less then the last !",
           {
@@ -1114,21 +1146,25 @@ export default {
             duration: 3000
           }
         );
-        this.changeBeetwen.first = 5;
-        this.changeBeetwen.last = 95;
-        console.log("first");
+        this.configData.changeBeetwen.first = 5;
+        this.configData.changeBeetwen.last = 95;
       }
     },
     lastChangeBeerwenValidate: function() {
-      if (this.changeBeetwen.last < 5 || this.changeBeetwen.last > 95) {
+      if (
+        this.configData.changeBeetwen.last < 5 ||
+        this.configData.changeBeetwen.last > 95
+      ) {
         let toast = this.$toasted.show("Change Beetwen Must Be 5 - 95 !", {
           theme: "toasted-primary",
           position: "top-left",
           duration: 3000
         });
-        this.changeBeetwen.last = 95;
+        this.configData.changeBeetwen.last = 95;
       }
-      if (this.changeBeetwen.first > this.changeBeetwen.last) {
+      if (
+        this.configData.changeBeetwen.first > this.configData.changeBeetwen.last
+      ) {
         let toast = this.$toasted.show(
           "First change must be less then the last !",
           {
@@ -1137,29 +1173,32 @@ export default {
             duration: 3000
           }
         );
-        this.changeBeetwen.first = 5;
-        this.changeBeetwen.last = 95;
-        console.log("last");
+        this.configData.changeBeetwen.first = 5;
+        this.configData.changeBeetwen.last = 95;
       }
     },
     tradeCountValidate: function() {
-      if (this.tradeCount < 1 || this.tradeCount > 200) {
+      if (this.configData.tradeCount < 1 || this.configData.tradeCount > 200) {
         let toast = this.$toasted.show("Trade Count Must Be 1 - 200 !", {
           theme: "toasted-primary",
           position: "top-left",
           duration: 3000
         });
-        this.tradeCount = 200;
+        this.configData.tradeCount = 200;
       }
     },
-    timeOutRequestEvent: function() {
-      console.log(this.timeOutRequest.ifTimeOut);
-    },
-    ifTimeOutEvent: function(event) {
-      console.log(event);
-    },
-    sameMartingleSingleEvent: function() {
-      console.log(this.martingleMulti.sameSingle);
+    saveConfig() {
+      this.saveLoader = true;
+      if (
+        this.$localStorage.set("configData", JSON.stringify(this.configData))
+      ) {
+        this.saveLoader = false;
+        let toast = this.$toasted.show("Setting Saved !", {
+          theme: "toasted-primary",
+          position: "top-left",
+          duration: 5000
+        });
+      }
     }
   }
 };

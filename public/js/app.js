@@ -64815,7 +64815,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_lib_HalfCircleSpinner_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18__components_lib_HalfCircleSpinner_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_lib_AtomSpinner_vue__ = __webpack_require__(154);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__components_lib_AtomSpinner_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19__components_lib_AtomSpinner_vue__);
-/* unused harmony reexport HollowDotsSpinner */
+/* harmony reexport (default from non-hamory) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__components_lib_HollowDotsSpinner_vue___default.a; });
 /* unused harmony reexport PixelSpinner */
 /* unused harmony reexport FlowerSpinner */
 /* unused harmony reexport IntersectingCirclesSpinner */
@@ -68863,8 +68863,8 @@ var render = function() {
                           _c(
                             "button",
                             {
-                              staticClass: "btn btn-pill btn-success",
-                              attrs: { type: "button", id: "refreshBalances" }
+                              staticClass:
+                                "btn btn-pill btn-success d-flex justify-content-center"
                             },
                             [
                               _c("fulfilling-bouncing-circle-spinner", {
@@ -68935,7 +68935,10 @@ var render = function() {
                 ? _c("div", [
                     _c(
                       "button",
-                      { staticClass: "btn btn-success btn-block text-center" },
+                      {
+                        staticClass:
+                          "btn btn-success btn-block d-flex justify-content-center"
+                      },
                       [
                         _c("fulfilling-bouncing-circle-spinner", {
                           attrs: {
@@ -69203,6 +69206,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_epic_spinners__ = __webpack_require__(57);
 //
 //
 //
@@ -70200,166 +70204,193 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    HollowDotsSpinner: __WEBPACK_IMPORTED_MODULE_0_epic_spinners__["b" /* HollowDotsSpinner */]
+  },
   data: function data() {
     return {
-      changeBeetwen: {
-        first: 5,
-        last: 95
-      },
-      tradeCount: 200,
-      tradeLogicSelected: {
-        selectedValue: 1
-      },
-      tradeLogicHiLo: {
-        win: 1,
-        lose: 1
-      },
-      timeOutRequest: {
-        timeOutRequest: false,
-        timeOutRequestValue: 0,
-        ifTimeOut: "stop"
-      },
-      delay: {
-        onWin: 0,
-        onLose: 0
-      },
-      martingleSingle: {
-        onWin: {
-          status: false,
-          value: 0
+      saveLoader: false,
+      configData: {
+        changeBeetwen: {
+          first: 5,
+          last: 95
         },
-        onLose: {
+        tradeCount: 200,
+        tradeLogicSelected: {
+          selectedValue: 1
+        },
+        tradeLogicHiLo: {
+          win: 1,
+          lose: 1
+        },
+        timeOutRequest: {
+          timeOutRequest: false,
+          timeOutRequestValue: 0,
+          ifTimeOut: "stop"
+        },
+        delay: {
+          onWin: 0,
+          onLose: 0
+        },
+        martingleSingle: {
+          onWin: {
+            status: false,
+            value: 0
+          },
+          onLose: {
+            status: false,
+            value: 0
+          }
+        },
+
+        martingleMulti: {
+          sameSingle: false,
+          onWin: {
+            status: false,
+            value: 0
+          },
+          onLose: {
+            status: false,
+            value: 0
+          }
+        },
+
+        baseTradeAmount: {
+          usePersentage: false,
+          value: 1
+        },
+
+        tradeAmount: {
+          profit: {
+            mathBaseAmount: false,
+            value: 0
+          },
+          winStreak: {
+            status: false,
+            value: 0,
+            onWinStreak: true,
+            ifResetDelay: 0
+          },
+          loseStreak: {
+            status: false,
+            value: 0,
+            onLoseStreak: true,
+            ifResetDelay: 0,
+            ifResetRecoverLose: true
+          },
+          maxTradeAmount: {
+            mathBaseAmount: false,
+            value: 0,
+            maxTradeOnWin: true,
+            maxTradeOnLose: true
+          }
+        },
+
+        takeProfitGlobal: {
+          usePersentage: false,
+          profitGlobalValue: 0,
+          stop: false
+        },
+
+        takeProfitSession: {
+          usePersentage: false,
+          profitSessionValue: 0,
+          delay: 0
+        },
+
+        autoWithdraw: {
           status: false,
-          value: 0
+          initialBalance: 0,
+          triggeredBalance: 0,
+          destinationAddress: ""
         }
-      },
-
-      martingleMulti: {
-        sameSingle: false,
-        onWin: {
-          status: false,
-          value: 0
-        },
-        onLose: {
-          status: false,
-          value: 0
-        }
-      },
-
-      baseTradeAmount: {
-        usePersentage: false,
-        value: 1
-      },
-
-      tradeAmount: {
-        profit: {
-          mathBaseAmount: false,
-          value: 0
-        },
-        winStreak: {
-          status: false,
-          value: 0,
-          onWinStreak: true,
-          ifResetDelay: 0
-        },
-        loseStreak: {
-          status: true,
-          value: 0,
-          onLoseStreak: true,
-          ifResetDelay: 0,
-          ifResetRecoverLose: true
-        },
-        maxTradeAmount: {
-          mathBaseAmount: true,
-          value: 0,
-          maxTradeOnWin: true,
-          maxTradeOnLose: true
-        }
-      },
-
-      takeProfitGlobal: {
-        usePersentage: false,
-        profitGlobalValue: 0,
-        stop: false
-      },
-
-      takeProfitSession: {
-        usePersentage: false,
-        profitSessionValue: 0,
-        delay: 0
-      },
-
-      autoWithdraw: {
-        status: false,
-        initialBalance: 0,
-        triggeredBalance: 0,
-        destinationAddress: ""
       }
     };
+  },
+  mounted: function mounted() {
+    if (JSON.parse(this.$localStorage.get("configData")) != null) {
+      this.configData = JSON.parse(this.$localStorage.get("configData"));
+    }
   },
 
   methods: {
     firstChangeBeerwenValidate: function firstChangeBeerwenValidate() {
-      if (this.changeBeetwen.first < 5 || this.changeBeetwen.first > 95) {
+      if (this.configData.changeBeetwen.first < 5 || this.configData.changeBeetwen.first > 95) {
         var toast = this.$toasted.show("Change Beetwen Must Be 5 - 95 !", {
           theme: "toasted-primary",
           position: "top-left",
           duration: 3000
         });
-        this.changeBeetwen.first = 5;
+        this.configData.changeBeetwen.first = 5;
       }
 
-      if (this.changeBeetwen.first > this.changeBeetwen.last) {
+      if (this.configData.changeBeetwen.first > this.configData.changeBeetwen.last) {
         var _toast = this.$toasted.show("First change must be less then the last !", {
           theme: "toasted-primary",
           position: "top-left",
           duration: 3000
         });
-        this.changeBeetwen.first = 5;
-        this.changeBeetwen.last = 95;
-        console.log("first");
+        this.configData.changeBeetwen.first = 5;
+        this.configData.changeBeetwen.last = 95;
       }
     },
     lastChangeBeerwenValidate: function lastChangeBeerwenValidate() {
-      if (this.changeBeetwen.last < 5 || this.changeBeetwen.last > 95) {
+      if (this.configData.changeBeetwen.last < 5 || this.configData.changeBeetwen.last > 95) {
         var toast = this.$toasted.show("Change Beetwen Must Be 5 - 95 !", {
           theme: "toasted-primary",
           position: "top-left",
           duration: 3000
         });
-        this.changeBeetwen.last = 95;
+        this.configData.changeBeetwen.last = 95;
       }
-      if (this.changeBeetwen.first > this.changeBeetwen.last) {
+      if (this.configData.changeBeetwen.first > this.configData.changeBeetwen.last) {
         var _toast2 = this.$toasted.show("First change must be less then the last !", {
           theme: "toasted-primary",
           position: "top-left",
           duration: 3000
         });
-        this.changeBeetwen.first = 5;
-        this.changeBeetwen.last = 95;
-        console.log("last");
+        this.configData.changeBeetwen.first = 5;
+        this.configData.changeBeetwen.last = 95;
       }
     },
     tradeCountValidate: function tradeCountValidate() {
-      if (this.tradeCount < 1 || this.tradeCount > 200) {
+      if (this.configData.tradeCount < 1 || this.configData.tradeCount > 200) {
         var toast = this.$toasted.show("Trade Count Must Be 1 - 200 !", {
           theme: "toasted-primary",
           position: "top-left",
           duration: 3000
         });
-        this.tradeCount = 200;
+        this.configData.tradeCount = 200;
       }
     },
-    timeOutRequestEvent: function timeOutRequestEvent() {
-      console.log(this.timeOutRequest.ifTimeOut);
-    },
-    ifTimeOutEvent: function ifTimeOutEvent(event) {
-      console.log(event);
-    },
-    sameMartingleSingleEvent: function sameMartingleSingleEvent() {
-      console.log(this.martingleMulti.sameSingle);
+    saveConfig: function saveConfig() {
+      this.saveLoader = true;
+      if (this.$localStorage.set("configData", JSON.stringify(this.configData))) {
+        this.saveLoader = false;
+        var toast = this.$toasted.show("Setting Saved !", {
+          theme: "toasted-primary",
+          position: "top-left",
+          duration: 5000
+        });
+      }
     }
   }
 });
@@ -70393,13 +70424,13 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.changeBeetwen.first,
-                            expression: "changeBeetwen.first"
+                            value: _vm.configData.changeBeetwen.first,
+                            expression: "configData.changeBeetwen.first"
                           }
                         ],
                         staticClass: "form-control",
                         attrs: { type: "number", placeholder: "0" },
-                        domProps: { value: _vm.changeBeetwen.first },
+                        domProps: { value: _vm.configData.changeBeetwen.first },
                         on: {
                           change: _vm.firstChangeBeerwenValidate,
                           input: function($event) {
@@ -70407,7 +70438,7 @@ var render = function() {
                               return
                             }
                             _vm.$set(
-                              _vm.changeBeetwen,
+                              _vm.configData.changeBeetwen,
                               "first",
                               $event.target.value
                             )
@@ -70424,13 +70455,13 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.changeBeetwen.last,
-                            expression: "changeBeetwen.last"
+                            value: _vm.configData.changeBeetwen.last,
+                            expression: "configData.changeBeetwen.last"
                           }
                         ],
                         staticClass: "form-control",
                         attrs: { type: "number", placeholder: "0" },
-                        domProps: { value: _vm.changeBeetwen.last },
+                        domProps: { value: _vm.configData.changeBeetwen.last },
                         on: {
                           change: _vm.lastChangeBeerwenValidate,
                           input: function($event) {
@@ -70438,7 +70469,7 @@ var render = function() {
                               return
                             }
                             _vm.$set(
-                              _vm.changeBeetwen,
+                              _vm.configData.changeBeetwen,
                               "last",
                               $event.target.value
                             )
@@ -70463,20 +70494,24 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.tradeCount,
-                            expression: "tradeCount"
+                            value: _vm.configData.tradeCount,
+                            expression: "configData.tradeCount"
                           }
                         ],
                         staticClass: "form-control",
                         attrs: { type: "number", placeholder: "0" },
-                        domProps: { value: _vm.tradeCount },
+                        domProps: { value: _vm.configData.tradeCount },
                         on: {
                           change: _vm.tradeCountValidate,
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.tradeCount = $event.target.value
+                            _vm.$set(
+                              _vm.configData,
+                              "tradeCount",
+                              $event.target.value
+                            )
                           }
                         }
                       })
@@ -70500,8 +70535,10 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.tradeLogicSelected.selectedValue,
-                              expression: "tradeLogicSelected.selectedValue"
+                              value:
+                                _vm.configData.tradeLogicSelected.selectedValue,
+                              expression:
+                                "configData.tradeLogicSelected.selectedValue"
                             }
                           ],
                           staticClass: "form-control",
@@ -70516,7 +70553,7 @@ var render = function() {
                                   return val
                                 })
                               _vm.$set(
-                                _vm.tradeLogicSelected,
+                                _vm.configData.tradeLogicSelected,
                                 "selectedValue",
                                 $event.target.multiple
                                   ? $$selectedVal
@@ -70547,7 +70584,7 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm.tradeLogicSelected.selectedValue == 1
+                _vm.configData.tradeLogicSelected.selectedValue == 1
                   ? _c("div", { staticClass: "form-group" }, [
                       _c("div", { staticClass: "row" }, [
                         _c("div", { staticClass: "col-sm-5" }, [
@@ -70560,20 +70597,22 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.tradeLogicHiLo.win,
-                                expression: "tradeLogicHiLo.win"
+                                value: _vm.configData.tradeLogicHiLo.win,
+                                expression: "configData.tradeLogicHiLo.win"
                               }
                             ],
                             staticClass: "form-control",
                             attrs: { type: "number", placeholder: "0" },
-                            domProps: { value: _vm.tradeLogicHiLo.win },
+                            domProps: {
+                              value: _vm.configData.tradeLogicHiLo.win
+                            },
                             on: {
                               input: function($event) {
                                 if ($event.target.composing) {
                                   return
                                 }
                                 _vm.$set(
-                                  _vm.tradeLogicHiLo,
+                                  _vm.configData.tradeLogicHiLo,
                                   "win",
                                   $event.target.value
                                 )
@@ -70592,20 +70631,22 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.tradeLogicHiLo.lose,
-                                expression: "tradeLogicHiLo.lose"
+                                value: _vm.configData.tradeLogicHiLo.lose,
+                                expression: "configData.tradeLogicHiLo.lose"
                               }
                             ],
                             staticClass: "form-control",
                             attrs: { type: "number", placeholder: "0" },
-                            domProps: { value: _vm.tradeLogicHiLo.lose },
+                            domProps: {
+                              value: _vm.configData.tradeLogicHiLo.lose
+                            },
                             on: {
                               input: function($event) {
                                 if ($event.target.composing) {
                                   return
                                 }
                                 _vm.$set(
-                                  _vm.tradeLogicHiLo,
+                                  _vm.configData.tradeLogicHiLo,
                                   "lose",
                                   $event.target.value
                                 )
@@ -70633,22 +70674,27 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.timeOutRequest.timeOutRequest,
-                        expression: "timeOutRequest.timeOutRequest"
+                        value: _vm.configData.timeOutRequest.timeOutRequest,
+                        expression: "configData.timeOutRequest.timeOutRequest"
                       }
                     ],
                     staticClass: "custom-switch-input",
                     attrs: { type: "checkbox", name: "custom-switch-checkbox" },
                     domProps: {
-                      checked: _vm.timeOutRequest.timeOutRequest == true,
-                      checked: Array.isArray(_vm.timeOutRequest.timeOutRequest)
-                        ? _vm._i(_vm.timeOutRequest.timeOutRequest, null) > -1
-                        : _vm.timeOutRequest.timeOutRequest
+                      checked:
+                        _vm.configData.timeOutRequest.timeOutRequest == true,
+                      checked: Array.isArray(
+                        _vm.configData.timeOutRequest.timeOutRequest
+                      )
+                        ? _vm._i(
+                            _vm.configData.timeOutRequest.timeOutRequest,
+                            null
+                          ) > -1
+                        : _vm.configData.timeOutRequest.timeOutRequest
                     },
                     on: {
-                      click: _vm.timeOutRequestEvent,
                       change: function($event) {
-                        var $$a = _vm.timeOutRequest.timeOutRequest,
+                        var $$a = _vm.configData.timeOutRequest.timeOutRequest,
                           $$el = $event.target,
                           $$c = $$el.checked ? true : false
                         if (Array.isArray($$a)) {
@@ -70657,20 +70703,24 @@ var render = function() {
                           if ($$el.checked) {
                             $$i < 0 &&
                               _vm.$set(
-                                _vm.timeOutRequest,
+                                _vm.configData.timeOutRequest,
                                 "timeOutRequest",
                                 $$a.concat([$$v])
                               )
                           } else {
                             $$i > -1 &&
                               _vm.$set(
-                                _vm.timeOutRequest,
+                                _vm.configData.timeOutRequest,
                                 "timeOutRequest",
                                 $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                               )
                           }
                         } else {
-                          _vm.$set(_vm.timeOutRequest, "timeOutRequest", $$c)
+                          _vm.$set(
+                            _vm.configData.timeOutRequest,
+                            "timeOutRequest",
+                            $$c
+                          )
                         }
                       }
                     }
@@ -70686,7 +70736,7 @@ var render = function() {
             staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
           }),
           _vm._v(" "),
-          _vm.timeOutRequest.timeOutRequest == true
+          _vm.configData.timeOutRequest.timeOutRequest == true
             ? _c("div", { staticClass: "col-sm-12" }, [
                 _c("div", { staticClass: "row" }, [
                   _c("div", { staticClass: "col-md-12 col-lg-6" }, [
@@ -70702,14 +70752,19 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.timeOutRequest.timeOutRequestValue,
-                                expression: "timeOutRequest.timeOutRequestValue"
+                                value:
+                                  _vm.configData.timeOutRequest
+                                    .timeOutRequestValue,
+                                expression:
+                                  "configData.timeOutRequest.timeOutRequestValue"
                               }
                             ],
                             staticClass: "form-control",
                             attrs: { type: "number", placeholder: "0" },
                             domProps: {
-                              value: _vm.timeOutRequest.timeOutRequestValue
+                              value:
+                                _vm.configData.timeOutRequest
+                                  .timeOutRequestValue
                             },
                             on: {
                               input: function($event) {
@@ -70717,7 +70772,7 @@ var render = function() {
                                   return
                                 }
                                 _vm.$set(
-                                  _vm.timeOutRequest,
+                                  _vm.configData.timeOutRequest,
                                   "timeOutRequestValue",
                                   $event.target.value
                                 )
@@ -70748,17 +70803,38 @@ var render = function() {
                           },
                           [
                             _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value:
+                                    _vm.configData.timeOutRequest.ifTimeOut,
+                                  expression:
+                                    "configData.timeOutRequest.ifTimeOut"
+                                }
+                              ],
                               staticClass: "custom-control-input",
                               attrs: {
                                 type: "radio",
-                                name: "example-inline-radios"
+                                name: "ifTimeOut",
+                                value: "stop"
                               },
                               domProps: {
-                                checked: _vm.timeOutRequest.ifTimeOut == "stop"
+                                checked:
+                                  _vm.configData.timeOutRequest.ifTimeOut ==
+                                  "stop",
+                                checked: _vm._q(
+                                  _vm.configData.timeOutRequest.ifTimeOut,
+                                  "stop"
+                                )
                               },
                               on: {
-                                click: function($event) {
-                                  return _vm.ifTimeOutEvent("stop")
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.configData.timeOutRequest,
+                                    "ifTimeOut",
+                                    "stop"
+                                  )
                                 }
                               }
                             }),
@@ -70779,17 +70855,38 @@ var render = function() {
                           },
                           [
                             _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value:
+                                    _vm.configData.timeOutRequest.ifTimeOut,
+                                  expression:
+                                    "configData.timeOutRequest.ifTimeOut"
+                                }
+                              ],
                               staticClass: "custom-control-input",
                               attrs: {
                                 type: "radio",
-                                name: "example-inline-radios"
+                                name: "ifTimeOut",
+                                value: "delay"
                               },
                               domProps: {
-                                checked: _vm.timeOutRequest.ifTimeOut == "delay"
+                                checked:
+                                  _vm.configData.timeOutRequest.ifTimeOut ==
+                                  "delay",
+                                checked: _vm._q(
+                                  _vm.configData.timeOutRequest.ifTimeOut,
+                                  "delay"
+                                )
                               },
                               on: {
-                                click: function($event) {
-                                  return _vm.ifTimeOutEvent("delay")
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.configData.timeOutRequest,
+                                    "ifTimeOut",
+                                    "delay"
+                                  )
                                 }
                               }
                             }),
@@ -70827,19 +70924,23 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.delay.onWin,
-                            expression: "delay.onWin"
+                            value: _vm.configData.delay.onWin,
+                            expression: "configData.delay.onWin"
                           }
                         ],
                         staticClass: "form-control",
                         attrs: { type: "number", placeholder: "0" },
-                        domProps: { value: _vm.delay.onWin },
+                        domProps: { value: _vm.configData.delay.onWin },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.$set(_vm.delay, "onWin", $event.target.value)
+                            _vm.$set(
+                              _vm.configData.delay,
+                              "onWin",
+                              $event.target.value
+                            )
                           }
                         }
                       })
@@ -70863,19 +70964,23 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.delay.onLose,
-                            expression: "delay.onLose"
+                            value: _vm.configData.delay.onLose,
+                            expression: "configData.delay.onLose"
                           }
                         ],
                         staticClass: "form-control",
                         attrs: { type: "number", placeholder: "0" },
-                        domProps: { value: _vm.delay.onLose },
+                        domProps: { value: _vm.configData.delay.onLose },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
-                            _vm.$set(_vm.delay, "onLose", $event.target.value)
+                            _vm.$set(
+                              _vm.configData.delay,
+                              "onLose",
+                              $event.target.value
+                            )
                           }
                         }
                       })
@@ -70912,7 +71017,9 @@ var render = function() {
                               name: "custom-switch-checkbox"
                             },
                             domProps: {
-                              checked: _vm.martingleSingle.onWin.status == true
+                              checked:
+                                _vm.configData.martingleSingle.onWin.status ==
+                                true
                             }
                           }),
                           _vm._v(" "),
@@ -70933,14 +71040,16 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.martingleSingle.onWin.value,
-                                expression: "martingleSingle.onWin.value"
+                                value:
+                                  _vm.configData.martingleSingle.onWin.value,
+                                expression:
+                                  "configData.martingleSingle.onWin.value"
                               }
                             ],
                             staticClass: "form-control",
                             attrs: { type: "number", placeholder: "0" },
                             domProps: {
-                              value: _vm.martingleSingle.onWin.value
+                              value: _vm.configData.martingleSingle.onWin.value
                             },
                             on: {
                               input: function($event) {
@@ -70948,7 +71057,7 @@ var render = function() {
                                   return
                                 }
                                 _vm.$set(
-                                  _vm.martingleSingle.onWin,
+                                  _vm.configData.martingleSingle.onWin,
                                   "value",
                                   $event.target.value
                                 )
@@ -70980,7 +71089,8 @@ var render = function() {
                               name: "custom-switch-checkbox"
                             },
                             domProps: {
-                              checked: _vm.martingleSingle.onLose.status
+                              checked:
+                                _vm.configData.martingleSingle.onLose.status
                             }
                           }),
                           _vm._v(" "),
@@ -71001,14 +71111,16 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.martingleSingle.onLose.value,
-                                expression: "martingleSingle.onLose.value"
+                                value:
+                                  _vm.configData.martingleSingle.onLose.value,
+                                expression:
+                                  "configData.martingleSingle.onLose.value"
                               }
                             ],
                             staticClass: "form-control",
                             attrs: { type: "number", placeholder: "0" },
                             domProps: {
-                              value: _vm.martingleSingle.onLose.value
+                              value: _vm.configData.martingleSingle.onLose.value
                             },
                             on: {
                               input: function($event) {
@@ -71016,7 +71128,7 @@ var render = function() {
                                   return
                                 }
                                 _vm.$set(
-                                  _vm.martingleSingle.onLose,
+                                  _vm.configData.martingleSingle.onLose,
                                   "value",
                                   $event.target.value
                                 )
@@ -71047,22 +71159,26 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.martingleMulti.sameSingle,
-                        expression: "martingleMulti.sameSingle"
+                        value: _vm.configData.martingleMulti.sameSingle,
+                        expression: "configData.martingleMulti.sameSingle"
                       }
                     ],
                     staticClass: "custom-switch-input",
                     attrs: { type: "checkbox", name: "custom-switch-checkbox" },
                     domProps: {
-                      checked: _vm.martingleMulti.sameSingle == true,
-                      checked: Array.isArray(_vm.martingleMulti.sameSingle)
-                        ? _vm._i(_vm.martingleMulti.sameSingle, null) > -1
-                        : _vm.martingleMulti.sameSingle
+                      checked: _vm.configData.martingleMulti.sameSingle == true,
+                      checked: Array.isArray(
+                        _vm.configData.martingleMulti.sameSingle
+                      )
+                        ? _vm._i(
+                            _vm.configData.martingleMulti.sameSingle,
+                            null
+                          ) > -1
+                        : _vm.configData.martingleMulti.sameSingle
                     },
                     on: {
-                      click: _vm.sameMartingleSingleEvent,
                       change: function($event) {
-                        var $$a = _vm.martingleMulti.sameSingle,
+                        var $$a = _vm.configData.martingleMulti.sameSingle,
                           $$el = $event.target,
                           $$c = $$el.checked ? true : false
                         if (Array.isArray($$a)) {
@@ -71071,20 +71187,24 @@ var render = function() {
                           if ($$el.checked) {
                             $$i < 0 &&
                               _vm.$set(
-                                _vm.martingleMulti,
+                                _vm.configData.martingleMulti,
                                 "sameSingle",
                                 $$a.concat([$$v])
                               )
                           } else {
                             $$i > -1 &&
                               _vm.$set(
-                                _vm.martingleMulti,
+                                _vm.configData.martingleMulti,
                                 "sameSingle",
                                 $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                               )
                           }
                         } else {
-                          _vm.$set(_vm.martingleMulti, "sameSingle", $$c)
+                          _vm.$set(
+                            _vm.configData.martingleMulti,
+                            "sameSingle",
+                            $$c
+                          )
                         }
                       }
                     }
@@ -71105,7 +71225,7 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm.martingleMulti.sameSingle == false
+          _vm.configData.martingleMulti.sameSingle == false
             ? _c("div", { staticClass: "col-sm-12" }, [
                 _c("div", { staticClass: "row" }, [
                   _c("div", { staticClass: "col-md-12 col-lg-12" }, [
@@ -71124,8 +71244,11 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.martingleMulti.onWin.status,
-                                    expression: "martingleMulti.onWin.status"
+                                    value:
+                                      _vm.configData.martingleMulti.onWin
+                                        .status,
+                                    expression:
+                                      "configData.martingleMulti.onWin.status"
                                   }
                                 ],
                                 staticClass: "custom-switch-input",
@@ -71135,19 +71258,23 @@ var render = function() {
                                 },
                                 domProps: {
                                   checked:
-                                    _vm.martingleMulti.onWin.status == true,
+                                    _vm.configData.martingleMulti.onWin
+                                      .status == true,
                                   checked: Array.isArray(
-                                    _vm.martingleMulti.onWin.status
+                                    _vm.configData.martingleMulti.onWin.status
                                   )
                                     ? _vm._i(
-                                        _vm.martingleMulti.onWin.status,
+                                        _vm.configData.martingleMulti.onWin
+                                          .status,
                                         null
                                       ) > -1
-                                    : _vm.martingleMulti.onWin.status
+                                    : _vm.configData.martingleMulti.onWin.status
                                 },
                                 on: {
                                   change: function($event) {
-                                    var $$a = _vm.martingleMulti.onWin.status,
+                                    var $$a =
+                                        _vm.configData.martingleMulti.onWin
+                                          .status,
                                       $$el = $event.target,
                                       $$c = $$el.checked ? true : false
                                     if (Array.isArray($$a)) {
@@ -71156,14 +71283,14 @@ var render = function() {
                                       if ($$el.checked) {
                                         $$i < 0 &&
                                           _vm.$set(
-                                            _vm.martingleMulti.onWin,
+                                            _vm.configData.martingleMulti.onWin,
                                             "status",
                                             $$a.concat([$$v])
                                           )
                                       } else {
                                         $$i > -1 &&
                                           _vm.$set(
-                                            _vm.martingleMulti.onWin,
+                                            _vm.configData.martingleMulti.onWin,
                                             "status",
                                             $$a
                                               .slice(0, $$i)
@@ -71172,7 +71299,7 @@ var render = function() {
                                       }
                                     } else {
                                       _vm.$set(
-                                        _vm.martingleMulti.onWin,
+                                        _vm.configData.martingleMulti.onWin,
                                         "status",
                                         $$c
                                       )
@@ -71200,14 +71327,17 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.martingleMulti.onWin.value,
-                                    expression: "martingleMulti.onWin.value"
+                                    value:
+                                      _vm.configData.martingleMulti.onWin.value,
+                                    expression:
+                                      "configData.martingleMulti.onWin.value"
                                   }
                                 ],
                                 staticClass: "form-control",
                                 attrs: { type: "number", placeholder: "0" },
                                 domProps: {
-                                  value: _vm.martingleMulti.onWin.value
+                                  value:
+                                    _vm.configData.martingleMulti.onWin.value
                                 },
                                 on: {
                                   input: function($event) {
@@ -71215,7 +71345,7 @@ var render = function() {
                                       return
                                     }
                                     _vm.$set(
-                                      _vm.martingleMulti.onWin,
+                                      _vm.configData.martingleMulti.onWin,
                                       "value",
                                       $event.target.value
                                     )
@@ -71245,8 +71375,11 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.martingleMulti.onLose.status,
-                                    expression: "martingleMulti.onLose.status"
+                                    value:
+                                      _vm.configData.martingleMulti.onLose
+                                        .status,
+                                    expression:
+                                      "configData.martingleMulti.onLose.status"
                                   }
                                 ],
                                 staticClass: "custom-switch-input",
@@ -71255,19 +71388,24 @@ var render = function() {
                                   name: "custom-switch-checkbox"
                                 },
                                 domProps: {
-                                  checked: _vm.martingleMulti.onLose.status,
+                                  checked:
+                                    _vm.configData.martingleMulti.onLose.status,
                                   checked: Array.isArray(
-                                    _vm.martingleMulti.onLose.status
+                                    _vm.configData.martingleMulti.onLose.status
                                   )
                                     ? _vm._i(
-                                        _vm.martingleMulti.onLose.status,
+                                        _vm.configData.martingleMulti.onLose
+                                          .status,
                                         null
                                       ) > -1
-                                    : _vm.martingleMulti.onLose.status
+                                    : _vm.configData.martingleMulti.onLose
+                                        .status
                                 },
                                 on: {
                                   change: function($event) {
-                                    var $$a = _vm.martingleMulti.onLose.status,
+                                    var $$a =
+                                        _vm.configData.martingleMulti.onLose
+                                          .status,
                                       $$el = $event.target,
                                       $$c = $$el.checked ? true : false
                                     if (Array.isArray($$a)) {
@@ -71276,14 +71414,16 @@ var render = function() {
                                       if ($$el.checked) {
                                         $$i < 0 &&
                                           _vm.$set(
-                                            _vm.martingleMulti.onLose,
+                                            _vm.configData.martingleMulti
+                                              .onLose,
                                             "status",
                                             $$a.concat([$$v])
                                           )
                                       } else {
                                         $$i > -1 &&
                                           _vm.$set(
-                                            _vm.martingleMulti.onLose,
+                                            _vm.configData.martingleMulti
+                                              .onLose,
                                             "status",
                                             $$a
                                               .slice(0, $$i)
@@ -71292,7 +71432,7 @@ var render = function() {
                                       }
                                     } else {
                                       _vm.$set(
-                                        _vm.martingleMulti.onLose,
+                                        _vm.configData.martingleMulti.onLose,
                                         "status",
                                         $$c
                                       )
@@ -71320,14 +71460,18 @@ var render = function() {
                                   {
                                     name: "model",
                                     rawName: "v-model",
-                                    value: _vm.martingleMulti.onLose.value,
-                                    expression: "martingleMulti.onLose.value"
+                                    value:
+                                      _vm.configData.martingleMulti.onLose
+                                        .value,
+                                    expression:
+                                      "configData.martingleMulti.onLose.value"
                                   }
                                 ],
                                 staticClass: "form-control",
                                 attrs: { type: "number", placeholder: "0" },
                                 domProps: {
-                                  value: _vm.martingleMulti.onLose.value
+                                  value:
+                                    _vm.configData.martingleMulti.onLose.value
                                 },
                                 on: {
                                   input: function($event) {
@@ -71335,7 +71479,7 @@ var render = function() {
                                       return
                                     }
                                     _vm.$set(
-                                      _vm.martingleMulti.onLose,
+                                      _vm.configData.martingleMulti.onLose,
                                       "value",
                                       $event.target.value
                                     )
@@ -71366,7 +71510,8 @@ var render = function() {
                     staticClass: "custom-switch-input",
                     attrs: { type: "checkbox", name: "custom-switch-checkbox" },
                     domProps: {
-                      checked: _vm.baseTradeAmount.usePersentage == true
+                      checked:
+                        _vm.configData.baseTradeAmount.usePersentage == true
                     }
                   }),
                   _vm._v(" "),
@@ -71400,20 +71545,22 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.baseTradeAmount.value,
-                                expression: "baseTradeAmount.value"
+                                value: _vm.configData.baseTradeAmount.value,
+                                expression: "configData.baseTradeAmount.value"
                               }
                             ],
                             staticClass: "form-control",
                             attrs: { type: "number", placeholder: "0" },
-                            domProps: { value: _vm.baseTradeAmount.value },
+                            domProps: {
+                              value: _vm.configData.baseTradeAmount.value
+                            },
                             on: {
                               input: function($event) {
                                 if ($event.target.composing) {
                                   return
                                 }
                                 _vm.$set(
-                                  _vm.baseTradeAmount,
+                                  _vm.configData.baseTradeAmount,
                                   "value",
                                   $event.target.value
                                 )
@@ -71450,20 +71597,22 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.tradeAmount.profit.value,
-                            expression: "tradeAmount.profit.value"
+                            value: _vm.configData.tradeAmount.profit.value,
+                            expression: "configData.tradeAmount.profit.value"
                           }
                         ],
                         staticClass: "form-control",
                         attrs: { type: "number", placeholder: "0" },
-                        domProps: { value: _vm.tradeAmount.profit.value },
+                        domProps: {
+                          value: _vm.configData.tradeAmount.profit.value
+                        },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
                             _vm.$set(
-                              _vm.tradeAmount.profit,
+                              _vm.configData.tradeAmount.profit,
                               "value",
                               $event.target.value
                             )
@@ -71480,27 +71629,35 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.tradeAmount.profit.mathBaseAmount,
-                                expression: "tradeAmount.profit.mathBaseAmount"
+                                value:
+                                  _vm.configData.tradeAmount.profit
+                                    .mathBaseAmount,
+                                expression:
+                                  "configData.tradeAmount.profit.mathBaseAmount"
                               }
                             ],
                             staticClass: "custom-control-input",
                             attrs: { type: "checkbox" },
                             domProps: {
                               checked:
-                                _vm.tradeAmount.profit.mathBaseAmount == true,
+                                _vm.configData.tradeAmount.profit
+                                  .mathBaseAmount == true,
                               checked: Array.isArray(
-                                _vm.tradeAmount.profit.mathBaseAmount
+                                _vm.configData.tradeAmount.profit.mathBaseAmount
                               )
                                 ? _vm._i(
-                                    _vm.tradeAmount.profit.mathBaseAmount,
+                                    _vm.configData.tradeAmount.profit
+                                      .mathBaseAmount,
                                     null
                                   ) > -1
-                                : _vm.tradeAmount.profit.mathBaseAmount
+                                : _vm.configData.tradeAmount.profit
+                                    .mathBaseAmount
                             },
                             on: {
                               change: function($event) {
-                                var $$a = _vm.tradeAmount.profit.mathBaseAmount,
+                                var $$a =
+                                    _vm.configData.tradeAmount.profit
+                                      .mathBaseAmount,
                                   $$el = $event.target,
                                   $$c = $$el.checked ? true : false
                                 if (Array.isArray($$a)) {
@@ -71509,14 +71666,14 @@ var render = function() {
                                   if ($$el.checked) {
                                     $$i < 0 &&
                                       _vm.$set(
-                                        _vm.tradeAmount.profit,
+                                        _vm.configData.tradeAmount.profit,
                                         "mathBaseAmount",
                                         $$a.concat([$$v])
                                       )
                                   } else {
                                     $$i > -1 &&
                                       _vm.$set(
-                                        _vm.tradeAmount.profit,
+                                        _vm.configData.tradeAmount.profit,
                                         "mathBaseAmount",
                                         $$a
                                           .slice(0, $$i)
@@ -71525,7 +71682,7 @@ var render = function() {
                                   }
                                 } else {
                                   _vm.$set(
-                                    _vm.tradeAmount.profit,
+                                    _vm.configData.tradeAmount.profit,
                                     "mathBaseAmount",
                                     $$c
                                   )
@@ -71562,26 +71719,30 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.tradeAmount.winStreak.status,
-                                expression: "tradeAmount.winStreak.status"
+                                value:
+                                  _vm.configData.tradeAmount.winStreak.status,
+                                expression:
+                                  "configData.tradeAmount.winStreak.status"
                               }
                             ],
                             staticClass: "custom-control-input",
                             attrs: { type: "checkbox" },
                             domProps: {
-                              checked: _vm.tradeAmount.winStreak.status,
+                              checked:
+                                _vm.configData.tradeAmount.winStreak.status,
                               checked: Array.isArray(
-                                _vm.tradeAmount.winStreak.status
+                                _vm.configData.tradeAmount.winStreak.status
                               )
                                 ? _vm._i(
-                                    _vm.tradeAmount.winStreak.status,
+                                    _vm.configData.tradeAmount.winStreak.status,
                                     null
                                   ) > -1
-                                : _vm.tradeAmount.winStreak.status
+                                : _vm.configData.tradeAmount.winStreak.status
                             },
                             on: {
                               change: function($event) {
-                                var $$a = _vm.tradeAmount.winStreak.status,
+                                var $$a =
+                                    _vm.configData.tradeAmount.winStreak.status,
                                   $$el = $event.target,
                                   $$c = $$el.checked ? true : false
                                 if (Array.isArray($$a)) {
@@ -71590,14 +71751,14 @@ var render = function() {
                                   if ($$el.checked) {
                                     $$i < 0 &&
                                       _vm.$set(
-                                        _vm.tradeAmount.winStreak,
+                                        _vm.configData.tradeAmount.winStreak,
                                         "status",
                                         $$a.concat([$$v])
                                       )
                                   } else {
                                     $$i > -1 &&
                                       _vm.$set(
-                                        _vm.tradeAmount.winStreak,
+                                        _vm.configData.tradeAmount.winStreak,
                                         "status",
                                         $$a
                                           .slice(0, $$i)
@@ -71606,7 +71767,7 @@ var render = function() {
                                   }
                                 } else {
                                   _vm.$set(
-                                    _vm.tradeAmount.winStreak,
+                                    _vm.configData.tradeAmount.winStreak,
                                     "status",
                                     $$c
                                   )
@@ -71628,20 +71789,22 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.tradeAmount.winStreak.value,
-                            expression: "tradeAmount.winStreak.value"
+                            value: _vm.configData.tradeAmount.winStreak.value,
+                            expression: "configData.tradeAmount.winStreak.value"
                           }
                         ],
                         staticClass: "form-control",
                         attrs: { type: "number", placeholder: "0" },
-                        domProps: { value: _vm.tradeAmount.winStreak.value },
+                        domProps: {
+                          value: _vm.configData.tradeAmount.winStreak.value
+                        },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
                             _vm.$set(
-                              _vm.tradeAmount.winStreak,
+                              _vm.configData.tradeAmount.winStreak,
                               "value",
                               $event.target.value
                             )
@@ -71670,9 +71833,11 @@ var render = function() {
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.tradeAmount.winStreak.onWinStreak,
+                                  value:
+                                    _vm.configData.tradeAmount.winStreak
+                                      .onWinStreak,
                                   expression:
-                                    "tradeAmount.winStreak.onWinStreak"
+                                    "configData.tradeAmount.winStreak.onWinStreak"
                                 }
                               ],
                               staticClass: "custom-control-input",
@@ -71683,16 +71848,18 @@ var render = function() {
                               },
                               domProps: {
                                 checked:
-                                  _vm.tradeAmount.winStreak.onWinStreak == true,
+                                  _vm.configData.tradeAmount.winStreak
+                                    .onWinStreak == true,
                                 checked: _vm._q(
-                                  _vm.tradeAmount.winStreak.onWinStreak,
+                                  _vm.configData.tradeAmount.winStreak
+                                    .onWinStreak,
                                   "true"
                                 )
                               },
                               on: {
                                 change: function($event) {
                                   return _vm.$set(
-                                    _vm.tradeAmount.winStreak,
+                                    _vm.configData.tradeAmount.winStreak,
                                     "onWinStreak",
                                     "true"
                                   )
@@ -71720,9 +71887,11 @@ var render = function() {
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.tradeAmount.winStreak.onWinStreak,
+                                  value:
+                                    _vm.configData.tradeAmount.winStreak
+                                      .onWinStreak,
                                   expression:
-                                    "tradeAmount.winStreak.onWinStreak"
+                                    "configData.tradeAmount.winStreak.onWinStreak"
                                 }
                               ],
                               staticClass: "custom-control-input",
@@ -71733,17 +71902,18 @@ var render = function() {
                               },
                               domProps: {
                                 checked:
-                                  _vm.tradeAmount.winStreak.onWinStreak ==
-                                  false,
+                                  _vm.configData.tradeAmount.winStreak
+                                    .onWinStreak == false,
                                 checked: _vm._q(
-                                  _vm.tradeAmount.winStreak.onWinStreak,
+                                  _vm.configData.tradeAmount.winStreak
+                                    .onWinStreak,
                                   "false"
                                 )
                               },
                               on: {
                                 change: function($event) {
                                   return _vm.$set(
-                                    _vm.tradeAmount.winStreak,
+                                    _vm.configData.tradeAmount.winStreak,
                                     "onWinStreak",
                                     "false"
                                   )
@@ -71773,14 +71943,17 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.tradeAmount.winStreak.ifResetDelay,
-                            expression: "tradeAmount.winStreak.ifResetDelay"
+                            value:
+                              _vm.configData.tradeAmount.winStreak.ifResetDelay,
+                            expression:
+                              "configData.tradeAmount.winStreak.ifResetDelay"
                           }
                         ],
                         staticClass: "form-control",
                         attrs: { type: "number", placeholder: "0" },
                         domProps: {
-                          value: _vm.tradeAmount.winStreak.ifResetDelay
+                          value:
+                            _vm.configData.tradeAmount.winStreak.ifResetDelay
                         },
                         on: {
                           input: function($event) {
@@ -71788,7 +71961,7 @@ var render = function() {
                               return
                             }
                             _vm.$set(
-                              _vm.tradeAmount.winStreak,
+                              _vm.configData.tradeAmount.winStreak,
                               "ifResetDelay",
                               $event.target.value
                             )
@@ -71820,27 +71993,33 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.tradeAmount.loseStreak.status,
-                                expression: "tradeAmount.loseStreak.status"
+                                value:
+                                  _vm.configData.tradeAmount.loseStreak.status,
+                                expression:
+                                  "configData.tradeAmount.loseStreak.status"
                               }
                             ],
                             staticClass: "custom-control-input",
                             attrs: { type: "checkbox" },
                             domProps: {
                               checked:
-                                _vm.tradeAmount.loseStreak.status == true,
+                                _vm.configData.tradeAmount.loseStreak.status ==
+                                true,
                               checked: Array.isArray(
-                                _vm.tradeAmount.loseStreak.status
+                                _vm.configData.tradeAmount.loseStreak.status
                               )
                                 ? _vm._i(
-                                    _vm.tradeAmount.loseStreak.status,
+                                    _vm.configData.tradeAmount.loseStreak
+                                      .status,
                                     null
                                   ) > -1
-                                : _vm.tradeAmount.loseStreak.status
+                                : _vm.configData.tradeAmount.loseStreak.status
                             },
                             on: {
                               change: function($event) {
-                                var $$a = _vm.tradeAmount.loseStreak.status,
+                                var $$a =
+                                    _vm.configData.tradeAmount.loseStreak
+                                      .status,
                                   $$el = $event.target,
                                   $$c = $$el.checked ? true : false
                                 if (Array.isArray($$a)) {
@@ -71849,14 +72028,14 @@ var render = function() {
                                   if ($$el.checked) {
                                     $$i < 0 &&
                                       _vm.$set(
-                                        _vm.tradeAmount.loseStreak,
+                                        _vm.configData.tradeAmount.loseStreak,
                                         "status",
                                         $$a.concat([$$v])
                                       )
                                   } else {
                                     $$i > -1 &&
                                       _vm.$set(
-                                        _vm.tradeAmount.loseStreak,
+                                        _vm.configData.tradeAmount.loseStreak,
                                         "status",
                                         $$a
                                           .slice(0, $$i)
@@ -71865,7 +72044,7 @@ var render = function() {
                                   }
                                 } else {
                                   _vm.$set(
-                                    _vm.tradeAmount.loseStreak,
+                                    _vm.configData.tradeAmount.loseStreak,
                                     "status",
                                     $$c
                                   )
@@ -71887,20 +72066,23 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.tradeAmount.loseStreak.value,
-                            expression: "tradeAmount.loseStreak.value"
+                            value: _vm.configData.tradeAmount.loseStreak.value,
+                            expression:
+                              "configData.tradeAmount.loseStreak.value"
                           }
                         ],
                         staticClass: "form-control",
                         attrs: { type: "number", placeholder: "0" },
-                        domProps: { value: _vm.tradeAmount.loseStreak.value },
+                        domProps: {
+                          value: _vm.configData.tradeAmount.loseStreak.value
+                        },
                         on: {
                           input: function($event) {
                             if ($event.target.composing) {
                               return
                             }
                             _vm.$set(
-                              _vm.tradeAmount.loseStreak,
+                              _vm.configData.tradeAmount.loseStreak,
                               "value",
                               $event.target.value
                             )
@@ -71930,9 +72112,10 @@ var render = function() {
                                   name: "model",
                                   rawName: "v-model",
                                   value:
-                                    _vm.tradeAmount.loseStreak.onLoseStreak,
+                                    _vm.configData.tradeAmount.loseStreak
+                                      .onLoseStreak,
                                   expression:
-                                    "tradeAmount.loseStreak.onLoseStreak"
+                                    "configData.tradeAmount.loseStreak.onLoseStreak"
                                 }
                               ],
                               staticClass: "custom-control-input",
@@ -71943,17 +72126,18 @@ var render = function() {
                               },
                               domProps: {
                                 checked:
-                                  _vm.tradeAmount.loseStreak.onLoseStreak ==
-                                  true,
+                                  _vm.configData.tradeAmount.loseStreak
+                                    .onLoseStreak == true,
                                 checked: _vm._q(
-                                  _vm.tradeAmount.loseStreak.onLoseStreak,
+                                  _vm.configData.tradeAmount.loseStreak
+                                    .onLoseStreak,
                                   "true"
                                 )
                               },
                               on: {
                                 change: function($event) {
                                   return _vm.$set(
-                                    _vm.tradeAmount.loseStreak,
+                                    _vm.configData.tradeAmount.loseStreak,
                                     "onLoseStreak",
                                     "true"
                                   )
@@ -71982,9 +72166,10 @@ var render = function() {
                                   name: "model",
                                   rawName: "v-model",
                                   value:
-                                    _vm.tradeAmount.loseStreak.onLoseStreak,
+                                    _vm.configData.tradeAmount.loseStreak
+                                      .onLoseStreak,
                                   expression:
-                                    "tradeAmount.loseStreak.onLoseStreak"
+                                    "configData.tradeAmount.loseStreak.onLoseStreak"
                                 }
                               ],
                               staticClass: "custom-control-input",
@@ -71995,17 +72180,18 @@ var render = function() {
                               },
                               domProps: {
                                 checked:
-                                  _vm.tradeAmount.loseStreak.onLoseStreak ==
-                                  false,
+                                  _vm.configData.tradeAmount.loseStreak
+                                    .onLoseStreak == false,
                                 checked: _vm._q(
-                                  _vm.tradeAmount.loseStreak.onLoseStreak,
+                                  _vm.configData.tradeAmount.loseStreak
+                                    .onLoseStreak,
                                   "false"
                                 )
                               },
                               on: {
                                 change: function($event) {
                                   return _vm.$set(
-                                    _vm.tradeAmount.loseStreak,
+                                    _vm.configData.tradeAmount.loseStreak,
                                     "onLoseStreak",
                                     "false"
                                   )
@@ -72035,14 +72221,18 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.tradeAmount.loseStreak.ifResetDelay,
-                            expression: "tradeAmount.loseStreak.ifResetDelay"
+                            value:
+                              _vm.configData.tradeAmount.loseStreak
+                                .ifResetDelay,
+                            expression:
+                              "configData.tradeAmount.loseStreak.ifResetDelay"
                           }
                         ],
                         staticClass: "form-control",
                         attrs: { type: "number", placeholder: "0" },
                         domProps: {
-                          value: _vm.tradeAmount.loseStreak.ifResetDelay
+                          value:
+                            _vm.configData.tradeAmount.loseStreak.ifResetDelay
                         },
                         on: {
                           input: function($event) {
@@ -72050,7 +72240,7 @@ var render = function() {
                               return
                             }
                             _vm.$set(
-                              _vm.tradeAmount.loseStreak,
+                              _vm.configData.tradeAmount.loseStreak,
                               "ifResetDelay",
                               $event.target.value
                             )
@@ -72082,10 +72272,10 @@ var render = function() {
                                   name: "model",
                                   rawName: "v-model",
                                   value:
-                                    _vm.tradeAmount.loseStreak
+                                    _vm.configData.tradeAmount.loseStreak
                                       .ifResetRecoverLose,
                                   expression:
-                                    "tradeAmount.loseStreak.ifResetRecoverLose"
+                                    "configData.tradeAmount.loseStreak.ifResetRecoverLose"
                                 }
                               ],
                               staticClass: "custom-control-input",
@@ -72096,17 +72286,18 @@ var render = function() {
                               },
                               domProps: {
                                 checked:
-                                  _vm.tradeAmount.loseStreak
+                                  _vm.configData.tradeAmount.loseStreak
                                     .ifResetRecoverLose == true,
                                 checked: _vm._q(
-                                  _vm.tradeAmount.loseStreak.ifResetRecoverLose,
+                                  _vm.configData.tradeAmount.loseStreak
+                                    .ifResetRecoverLose,
                                   "true"
                                 )
                               },
                               on: {
                                 change: function($event) {
                                   return _vm.$set(
-                                    _vm.tradeAmount.loseStreak,
+                                    _vm.configData.tradeAmount.loseStreak,
                                     "ifResetRecoverLose",
                                     "true"
                                   )
@@ -72135,10 +72326,10 @@ var render = function() {
                                   name: "model",
                                   rawName: "v-model",
                                   value:
-                                    _vm.tradeAmount.loseStreak
+                                    _vm.configData.tradeAmount.loseStreak
                                       .ifResetRecoverLose,
                                   expression:
-                                    "tradeAmount.loseStreak.ifResetRecoverLose"
+                                    "configData.tradeAmount.loseStreak.ifResetRecoverLose"
                                 }
                               ],
                               staticClass: "custom-control-input",
@@ -72149,17 +72340,18 @@ var render = function() {
                               },
                               domProps: {
                                 checked:
-                                  _vm.tradeAmount.loseStreak
+                                  _vm.configData.tradeAmount.loseStreak
                                     .ifResetRecoverLose == false,
                                 checked: _vm._q(
-                                  _vm.tradeAmount.loseStreak.ifResetRecoverLose,
+                                  _vm.configData.tradeAmount.loseStreak
+                                    .ifResetRecoverLose,
                                   "false"
                                 )
                               },
                               on: {
                                 change: function($event) {
                                   return _vm.$set(
-                                    _vm.tradeAmount.loseStreak,
+                                    _vm.configData.tradeAmount.loseStreak,
                                     "ifResetRecoverLose",
                                     "false"
                                   )
@@ -72196,14 +72388,16 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.tradeAmount.maxTradeAmount.value,
-                            expression: "tradeAmount.maxTradeAmount.value"
+                            value:
+                              _vm.configData.tradeAmount.maxTradeAmount.value,
+                            expression:
+                              "configData.tradeAmount.maxTradeAmount.value"
                           }
                         ],
                         staticClass: "form-control",
                         attrs: { type: "number", placeholder: "0" },
                         domProps: {
-                          value: _vm.tradeAmount.maxTradeAmount.value
+                          value: _vm.configData.tradeAmount.maxTradeAmount.value
                         },
                         on: {
                           input: function($event) {
@@ -72211,7 +72405,7 @@ var render = function() {
                               return
                             }
                             _vm.$set(
-                              _vm.tradeAmount.maxTradeAmount,
+                              _vm.configData.tradeAmount.maxTradeAmount,
                               "value",
                               $event.target.value
                             )
@@ -72228,8 +72422,8 @@ var render = function() {
                             attrs: { type: "checkbox" },
                             domProps: {
                               checked:
-                                _vm.tradeAmount.maxTradeAmount.mathBaseAmount ==
-                                true
+                                _vm.configData.tradeAmount.maxTradeAmount
+                                  .mathBaseAmount == true
                             }
                           }),
                           _vm._v(" "),
@@ -72261,10 +72455,10 @@ var render = function() {
                                   name: "model",
                                   rawName: "v-model",
                                   value:
-                                    _vm.tradeAmount.maxTradeAmount
+                                    _vm.configData.tradeAmount.maxTradeAmount
                                       .maxTradeOnWin,
                                   expression:
-                                    "tradeAmount.maxTradeAmount.maxTradeOnWin"
+                                    "configData.tradeAmount.maxTradeAmount.maxTradeOnWin"
                                 }
                               ],
                               staticClass: "custom-control-input",
@@ -72275,17 +72469,18 @@ var render = function() {
                               },
                               domProps: {
                                 checked:
-                                  _vm.tradeAmount.maxTradeAmount
+                                  _vm.configData.tradeAmount.maxTradeAmount
                                     .maxTradeOnWin == true,
                                 checked: _vm._q(
-                                  _vm.tradeAmount.maxTradeAmount.maxTradeOnWin,
+                                  _vm.configData.tradeAmount.maxTradeAmount
+                                    .maxTradeOnWin,
                                   "true"
                                 )
                               },
                               on: {
                                 change: function($event) {
                                   return _vm.$set(
-                                    _vm.tradeAmount.maxTradeAmount,
+                                    _vm.configData.tradeAmount.maxTradeAmount,
                                     "maxTradeOnWin",
                                     "true"
                                   )
@@ -72314,10 +72509,10 @@ var render = function() {
                                   name: "model",
                                   rawName: "v-model",
                                   value:
-                                    _vm.tradeAmount.maxTradeAmount
+                                    _vm.configData.tradeAmount.maxTradeAmount
                                       .maxTradeOnWin,
                                   expression:
-                                    "tradeAmount.maxTradeAmount.maxTradeOnWin"
+                                    "configData.tradeAmount.maxTradeAmount.maxTradeOnWin"
                                 }
                               ],
                               staticClass: "custom-control-input",
@@ -72328,17 +72523,18 @@ var render = function() {
                               },
                               domProps: {
                                 checked:
-                                  _vm.tradeAmount.maxTradeAmount
+                                  _vm.configData.tradeAmount.maxTradeAmount
                                     .maxTradeOnWin == false,
                                 checked: _vm._q(
-                                  _vm.tradeAmount.maxTradeAmount.maxTradeOnWin,
+                                  _vm.configData.tradeAmount.maxTradeAmount
+                                    .maxTradeOnWin,
                                   "false"
                                 )
                               },
                               on: {
                                 change: function($event) {
                                   return _vm.$set(
-                                    _vm.tradeAmount.maxTradeAmount,
+                                    _vm.configData.tradeAmount.maxTradeAmount,
                                     "maxTradeOnWin",
                                     "false"
                                   )
@@ -72375,10 +72571,10 @@ var render = function() {
                                   name: "model",
                                   rawName: "v-model",
                                   value:
-                                    _vm.tradeAmount.maxTradeAmount
+                                    _vm.configData.tradeAmount.maxTradeAmount
                                       .maxTradeOnLose,
                                   expression:
-                                    "tradeAmount.maxTradeAmount.maxTradeOnLose"
+                                    "configData.tradeAmount.maxTradeAmount.maxTradeOnLose"
                                 }
                               ],
                               staticClass: "custom-control-input",
@@ -72389,17 +72585,18 @@ var render = function() {
                               },
                               domProps: {
                                 checked:
-                                  _vm.tradeAmount.maxTradeAmount
+                                  _vm.configData.tradeAmount.maxTradeAmount
                                     .maxTradeOnLose == true,
                                 checked: _vm._q(
-                                  _vm.tradeAmount.maxTradeAmount.maxTradeOnLose,
+                                  _vm.configData.tradeAmount.maxTradeAmount
+                                    .maxTradeOnLose,
                                   "true"
                                 )
                               },
                               on: {
                                 change: function($event) {
                                   return _vm.$set(
-                                    _vm.tradeAmount.maxTradeAmount,
+                                    _vm.configData.tradeAmount.maxTradeAmount,
                                     "maxTradeOnLose",
                                     "true"
                                   )
@@ -72428,10 +72625,10 @@ var render = function() {
                                   name: "model",
                                   rawName: "v-model",
                                   value:
-                                    _vm.tradeAmount.maxTradeAmount
+                                    _vm.configData.tradeAmount.maxTradeAmount
                                       .maxTradeOnLose,
                                   expression:
-                                    "tradeAmount.maxTradeAmount.maxTradeOnLose"
+                                    "configData.tradeAmount.maxTradeAmount.maxTradeOnLose"
                                 }
                               ],
                               staticClass: "custom-control-input",
@@ -72442,17 +72639,18 @@ var render = function() {
                               },
                               domProps: {
                                 checked:
-                                  _vm.tradeAmount.maxTradeAmount
+                                  _vm.configData.tradeAmount.maxTradeAmount
                                     .maxTradeOnLose == false,
                                 checked: _vm._q(
-                                  _vm.tradeAmount.maxTradeAmount.maxTradeOnLose,
+                                  _vm.configData.tradeAmount.maxTradeAmount
+                                    .maxTradeOnLose,
                                   "false"
                                 )
                               },
                               on: {
                                 change: function($event) {
                                   return _vm.$set(
-                                    _vm.tradeAmount.maxTradeAmount,
+                                    _vm.configData.tradeAmount.maxTradeAmount,
                                     "maxTradeOnLose",
                                     "false"
                                   )
@@ -72490,8 +72688,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.takeProfitGlobal.usePersentage,
-                        expression: "takeProfitGlobal.usePersentage"
+                        value: _vm.configData.takeProfitGlobal.usePersentage,
+                        expression: "configData.takeProfitGlobal.usePersentage"
                       }
                     ],
                     staticClass: "custom-switch-input",
@@ -72500,14 +72698,20 @@ var render = function() {
                       name: "usePersentageTakeProfitGlobal"
                     },
                     domProps: {
-                      checked: _vm.takeProfitGlobal.usePersentage == true,
-                      checked: Array.isArray(_vm.takeProfitGlobal.usePersentage)
-                        ? _vm._i(_vm.takeProfitGlobal.usePersentage, null) > -1
-                        : _vm.takeProfitGlobal.usePersentage
+                      checked:
+                        _vm.configData.takeProfitGlobal.usePersentage == true,
+                      checked: Array.isArray(
+                        _vm.configData.takeProfitGlobal.usePersentage
+                      )
+                        ? _vm._i(
+                            _vm.configData.takeProfitGlobal.usePersentage,
+                            null
+                          ) > -1
+                        : _vm.configData.takeProfitGlobal.usePersentage
                     },
                     on: {
                       change: function($event) {
-                        var $$a = _vm.takeProfitGlobal.usePersentage,
+                        var $$a = _vm.configData.takeProfitGlobal.usePersentage,
                           $$el = $event.target,
                           $$c = $$el.checked ? true : false
                         if (Array.isArray($$a)) {
@@ -72516,20 +72720,24 @@ var render = function() {
                           if ($$el.checked) {
                             $$i < 0 &&
                               _vm.$set(
-                                _vm.takeProfitGlobal,
+                                _vm.configData.takeProfitGlobal,
                                 "usePersentage",
                                 $$a.concat([$$v])
                               )
                           } else {
                             $$i > -1 &&
                               _vm.$set(
-                                _vm.takeProfitGlobal,
+                                _vm.configData.takeProfitGlobal,
                                 "usePersentage",
                                 $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                               )
                           }
                         } else {
-                          _vm.$set(_vm.takeProfitGlobal, "usePersentage", $$c)
+                          _vm.$set(
+                            _vm.configData.takeProfitGlobal,
+                            "usePersentage",
+                            $$c
+                          )
                         }
                       }
                     }
@@ -72565,14 +72773,19 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.takeProfitGlobal.profitGlobalValue,
-                                expression: "takeProfitGlobal.profitGlobalValue"
+                                value:
+                                  _vm.configData.takeProfitGlobal
+                                    .profitGlobalValue,
+                                expression:
+                                  "configData.takeProfitGlobal.profitGlobalValue"
                               }
                             ],
                             staticClass: "form-control",
                             attrs: { type: "number", placeholder: "0" },
                             domProps: {
-                              value: _vm.takeProfitGlobal.profitGlobalValue
+                              value:
+                                _vm.configData.takeProfitGlobal
+                                  .profitGlobalValue
                             },
                             on: {
                               input: function($event) {
@@ -72580,7 +72793,7 @@ var render = function() {
                                   return
                                 }
                                 _vm.$set(
-                                  _vm.takeProfitGlobal,
+                                  _vm.configData.takeProfitGlobal,
                                   "profitGlobalValue",
                                   $event.target.value
                                 )
@@ -72604,21 +72817,24 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.takeProfitGlobal.stop,
-                          expression: "takeProfitGlobal.stop"
+                          value: _vm.configData.takeProfitGlobal.stop,
+                          expression: "configData.takeProfitGlobal.stop"
                         }
                       ],
                       staticClass: "custom-switch-input",
                       attrs: { type: "checkbox", name: "stopAfterTakeProfit" },
                       domProps: {
-                        checked: _vm.takeProfitGlobal.stop == true,
-                        checked: Array.isArray(_vm.takeProfitGlobal.stop)
-                          ? _vm._i(_vm.takeProfitGlobal.stop, null) > -1
-                          : _vm.takeProfitGlobal.stop
+                        checked: _vm.configData.takeProfitGlobal.stop == true,
+                        checked: Array.isArray(
+                          _vm.configData.takeProfitGlobal.stop
+                        )
+                          ? _vm._i(_vm.configData.takeProfitGlobal.stop, null) >
+                            -1
+                          : _vm.configData.takeProfitGlobal.stop
                       },
                       on: {
                         change: function($event) {
-                          var $$a = _vm.takeProfitGlobal.stop,
+                          var $$a = _vm.configData.takeProfitGlobal.stop,
                             $$el = $event.target,
                             $$c = $$el.checked ? true : false
                           if (Array.isArray($$a)) {
@@ -72627,20 +72843,24 @@ var render = function() {
                             if ($$el.checked) {
                               $$i < 0 &&
                                 _vm.$set(
-                                  _vm.takeProfitGlobal,
+                                  _vm.configData.takeProfitGlobal,
                                   "stop",
                                   $$a.concat([$$v])
                                 )
                             } else {
                               $$i > -1 &&
                                 _vm.$set(
-                                  _vm.takeProfitGlobal,
+                                  _vm.configData.takeProfitGlobal,
                                   "stop",
                                   $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                                 )
                             }
                           } else {
-                            _vm.$set(_vm.takeProfitGlobal, "stop", $$c)
+                            _vm.$set(
+                              _vm.configData.takeProfitGlobal,
+                              "stop",
+                              $$c
+                            )
                           }
                         }
                       }
@@ -72670,23 +72890,28 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.takeProfitSession.usePersentage,
-                        expression: "takeProfitSession.usePersentage"
+                        value: _vm.configData.takeProfitSession.usePersentage,
+                        expression: "configData.takeProfitSession.usePersentage"
                       }
                     ],
                     staticClass: "custom-switch-input",
                     attrs: { type: "checkbox", name: "custom-switch-checkbox" },
                     domProps: {
-                      checked: _vm.takeProfitSession.usePersentage == true,
+                      checked:
+                        _vm.configData.takeProfitSession.usePersentage == true,
                       checked: Array.isArray(
-                        _vm.takeProfitSession.usePersentage
+                        _vm.configData.takeProfitSession.usePersentage
                       )
-                        ? _vm._i(_vm.takeProfitSession.usePersentage, null) > -1
-                        : _vm.takeProfitSession.usePersentage
+                        ? _vm._i(
+                            _vm.configData.takeProfitSession.usePersentage,
+                            null
+                          ) > -1
+                        : _vm.configData.takeProfitSession.usePersentage
                     },
                     on: {
                       change: function($event) {
-                        var $$a = _vm.takeProfitSession.usePersentage,
+                        var $$a =
+                            _vm.configData.takeProfitSession.usePersentage,
                           $$el = $event.target,
                           $$c = $$el.checked ? true : false
                         if (Array.isArray($$a)) {
@@ -72695,20 +72920,24 @@ var render = function() {
                           if ($$el.checked) {
                             $$i < 0 &&
                               _vm.$set(
-                                _vm.takeProfitSession,
+                                _vm.configData.takeProfitSession,
                                 "usePersentage",
                                 $$a.concat([$$v])
                               )
                           } else {
                             $$i > -1 &&
                               _vm.$set(
-                                _vm.takeProfitSession,
+                                _vm.configData.takeProfitSession,
                                 "usePersentage",
                                 $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                               )
                           }
                         } else {
-                          _vm.$set(_vm.takeProfitSession, "usePersentage", $$c)
+                          _vm.$set(
+                            _vm.configData.takeProfitSession,
+                            "usePersentage",
+                            $$c
+                          )
                         }
                       }
                     }
@@ -72744,15 +72973,19 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.takeProfitSession.profitSessionValue,
+                                value:
+                                  _vm.configData.takeProfitSession
+                                    .profitSessionValue,
                                 expression:
-                                  "takeProfitSession.profitSessionValue"
+                                  "configData.takeProfitSession.profitSessionValue"
                               }
                             ],
                             staticClass: "form-control",
                             attrs: { type: "number", placeholder: "0" },
                             domProps: {
-                              value: _vm.takeProfitSession.profitSessionValue
+                              value:
+                                _vm.configData.takeProfitSession
+                                  .profitSessionValue
                             },
                             on: {
                               input: function($event) {
@@ -72760,7 +72993,7 @@ var render = function() {
                                   return
                                 }
                                 _vm.$set(
-                                  _vm.takeProfitSession,
+                                  _vm.configData.takeProfitSession,
                                   "profitSessionValue",
                                   $event.target.value
                                 )
@@ -72784,20 +73017,22 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.takeProfitSession.delay,
-                          expression: "takeProfitSession.delay"
+                          value: _vm.configData.takeProfitSession.delay,
+                          expression: "configData.takeProfitSession.delay"
                         }
                       ],
                       staticClass: "form-control",
                       attrs: { type: "number", placeholder: "0" },
-                      domProps: { value: _vm.takeProfitSession.delay },
+                      domProps: {
+                        value: _vm.configData.takeProfitSession.delay
+                      },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
                           _vm.$set(
-                            _vm.takeProfitSession,
+                            _vm.configData.takeProfitSession,
                             "delay",
                             $event.target.value
                           )
@@ -72825,21 +73060,21 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.autoWithdraw.status,
-                        expression: "autoWithdraw.status"
+                        value: _vm.configData.autoWithdraw.status,
+                        expression: "configData.autoWithdraw.status"
                       }
                     ],
                     staticClass: "custom-switch-input",
                     attrs: { type: "checkbox", name: "autoWithdraw" },
                     domProps: {
-                      checked: _vm.autoWithdraw.status == true,
-                      checked: Array.isArray(_vm.autoWithdraw.status)
-                        ? _vm._i(_vm.autoWithdraw.status, null) > -1
-                        : _vm.autoWithdraw.status
+                      checked: _vm.configData.autoWithdraw.status == true,
+                      checked: Array.isArray(_vm.configData.autoWithdraw.status)
+                        ? _vm._i(_vm.configData.autoWithdraw.status, null) > -1
+                        : _vm.configData.autoWithdraw.status
                     },
                     on: {
                       change: function($event) {
-                        var $$a = _vm.autoWithdraw.status,
+                        var $$a = _vm.configData.autoWithdraw.status,
                           $$el = $event.target,
                           $$c = $$el.checked ? true : false
                         if (Array.isArray($$a)) {
@@ -72848,20 +73083,20 @@ var render = function() {
                           if ($$el.checked) {
                             $$i < 0 &&
                               _vm.$set(
-                                _vm.autoWithdraw,
+                                _vm.configData.autoWithdraw,
                                 "status",
                                 $$a.concat([$$v])
                               )
                           } else {
                             $$i > -1 &&
                               _vm.$set(
-                                _vm.autoWithdraw,
+                                _vm.configData.autoWithdraw,
                                 "status",
                                 $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                               )
                           }
                         } else {
-                          _vm.$set(_vm.autoWithdraw, "status", $$c)
+                          _vm.$set(_vm.configData.autoWithdraw, "status", $$c)
                         }
                       }
                     }
@@ -72877,7 +73112,7 @@ var render = function() {
             staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
           }),
           _vm._v(" "),
-          _vm.autoWithdraw.status == true
+          _vm.configData.autoWithdraw.status == true
             ? _c("div", { staticClass: "col-sm-12" }, [
                 _c("div", { staticClass: "row" }, [
                   _c("div", { staticClass: "col-md-12 col-lg-6" }, [
@@ -72893,14 +73128,16 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.autoWithdraw.initialBalance,
-                                expression: "autoWithdraw.initialBalance"
+                                value:
+                                  _vm.configData.autoWithdraw.initialBalance,
+                                expression:
+                                  "configData.autoWithdraw.initialBalance"
                               }
                             ],
                             staticClass: "form-control",
                             attrs: { type: "number", placeholder: "0" },
                             domProps: {
-                              value: _vm.autoWithdraw.initialBalance
+                              value: _vm.configData.autoWithdraw.initialBalance
                             },
                             on: {
                               input: function($event) {
@@ -72908,7 +73145,7 @@ var render = function() {
                                   return
                                 }
                                 _vm.$set(
-                                  _vm.autoWithdraw,
+                                  _vm.configData.autoWithdraw,
                                   "initialBalance",
                                   $event.target.value
                                 )
@@ -72931,14 +73168,17 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.autoWithdraw.triggeredBalance,
-                                expression: "autoWithdraw.triggeredBalance"
+                                value:
+                                  _vm.configData.autoWithdraw.triggeredBalance,
+                                expression:
+                                  "configData.autoWithdraw.triggeredBalance"
                               }
                             ],
                             staticClass: "form-control",
                             attrs: { type: "number", placeholder: "0" },
                             domProps: {
-                              value: _vm.autoWithdraw.triggeredBalance
+                              value:
+                                _vm.configData.autoWithdraw.triggeredBalance
                             },
                             on: {
                               input: function($event) {
@@ -72946,7 +73186,7 @@ var render = function() {
                                   return
                                 }
                                 _vm.$set(
-                                  _vm.autoWithdraw,
+                                  _vm.configData.autoWithdraw,
                                   "triggeredBalance",
                                   $event.target.value
                                 )
@@ -72969,14 +73209,18 @@ var render = function() {
                               {
                                 name: "model",
                                 rawName: "v-model",
-                                value: _vm.autoWithdraw.destinationAddress,
-                                expression: "autoWithdraw.destinationAddress"
+                                value:
+                                  _vm.configData.autoWithdraw
+                                    .destinationAddress,
+                                expression:
+                                  "configData.autoWithdraw.destinationAddress"
                               }
                             ],
                             staticClass: "form-control",
                             attrs: { type: "text", placeholder: "0" },
                             domProps: {
-                              value: _vm.autoWithdraw.destinationAddress
+                              value:
+                                _vm.configData.autoWithdraw.destinationAddress
                             },
                             on: {
                               input: function($event) {
@@ -72984,7 +73228,7 @@ var render = function() {
                                   return
                                 }
                                 _vm.$set(
-                                  _vm.autoWithdraw,
+                                  _vm.configData.autoWithdraw,
                                   "destinationAddress",
                                   $event.target.value
                                 )
@@ -73001,7 +73245,50 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _vm._m(28)
+      _c("div", { staticClass: "col-md-4" }, [
+        this.saveLoader === true
+          ? _c("div", { staticClass: "card p-3" }, [
+              _c(
+                "button",
+                {
+                  staticClass:
+                    "btn btn-success btn-block d-flex justify-content-center"
+                },
+                [
+                  _c("hollow-dots-spinner", {
+                    attrs: {
+                      "animation-duration": 1000,
+                      "dot-size": 20,
+                      "dots-num": 3,
+                      color: "#fff"
+                    }
+                  })
+                ],
+                1
+              )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        this.saveLoader === false
+          ? _c("div", { staticClass: "card p-3" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success btn-block float-right",
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.saveConfig($event)
+                    }
+                  }
+                },
+                [_vm._v("Save")]
+              )
+            ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm._m(28)
+      ])
     ])
   ])
 }
@@ -73298,30 +73585,22 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-4" }, [
-      _c("div", { staticClass: "card p-3" }, [
-        _c("button", { staticClass: "btn btn-success btn-block float-right" }, [
-          _vm._v("Save")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card p-3" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-6" }, [
-            _c("div", [
-              _c("button", { staticClass: "btn btn-danger btn-block" }, [
-                _vm._v("Save As")
-              ])
+    return _c("div", { staticClass: "card p-3" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-6" }, [
+          _c("div", [
+            _c("button", { staticClass: "btn btn-danger btn-block" }, [
+              _vm._v("Save As")
             ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-6" }, [
-            _c(
-              "button",
-              { staticClass: "btn btn-warning btn-block float-right" },
-              [_vm._v("Load")]
-            )
           ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-6" }, [
+          _c(
+            "button",
+            { staticClass: "btn btn-warning btn-block float-right" },
+            [_vm._v("Load")]
+          )
         ])
       ])
     ])

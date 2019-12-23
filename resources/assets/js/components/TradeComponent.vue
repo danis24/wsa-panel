@@ -24,7 +24,7 @@
                 <b>{{ this.balance*0.00000001 }}</b> Doge
                 <div class="float-right">
                   <div v-if="this.balanceLoader === true">
-                    <button class="btn btn-pill btn-success" type="button" id="refreshBalances">
+                    <button class="btn btn-pill btn-success d-flex justify-content-center">
                       <fulfilling-bouncing-circle-spinner
                         :animation-duration="4000"
                         :size="25"
@@ -82,7 +82,7 @@
           <div class="row">
             <div class="col-6">
               <div v-if="this.tradeLoader === true">
-                <button class="btn btn-success btn-block text-center">
+                <button class="btn btn-success btn-block d-flex justify-content-center">
                   <fulfilling-bouncing-circle-spinner
                     :animation-duration="4000"
                     :size="25"
