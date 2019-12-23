@@ -1,50 +1,49 @@
 <template>
-<div class="card card-default">
-  <loading :active.sync="isLoading" :is-full-page="fullPage"></loading>
-  <div class="card-header">
-
-    <div class="text-left col-sm-6">
-      Deposit Histories
+  <div class="card card-default">
+    <loading :active.sync="isLoading" :is-full-page="fullPage"></loading>
+    <div class="card-header">
+      <div class="text-left col-sm-6">Deposit Histories</div>
+      <div class="col-sm-6 text-right">
+        <button class="btn btn-pill btn-success" type="button" @click.prevent="refresh()">
+          <i class="fe fe-refresh-cw"></i>
+        </button>
+      </div>
     </div>
-    <div class="col-sm-6 text-right">
-      <button class="btn btn-pill btn-success" type="button" @click.prevent="refresh()"><i class="fe fe-refresh-cw"></i></button>
+
+    <div class="card-body o-auto" style="height: 11rem">
+      <table class="table">
+        <thead class="card-alert alert alert-primary mb-0">
+          <tr>
+            <th scope="col">Address</th>
+            <th scope="col">value</th>
+            <th scope="col">date</th>
+            <th scope="col">transaction hash</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="alert alert-success mb-0" v-for="deposit in deposits">
+            <td scope="row" width="1%">{{ deposit.Address }}</td>
+            <td>{{ deposit.Value*0.00000001 }} {{ deposit.Currency }}</td>
+            <td>{{ deposit.Date }}</td>
+            <td>{{ deposit.TransactionHash }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-
-  <div class="card-body o-auto" style="height: 11rem">
-    <table class="table">
-      <thead class="card-alert alert alert-primary mb-0">
-        <tr>
-          <th scope="col">Address</th>
-          <th scope="col">value</th>
-          <th scope="col">date</th>
-          <th scope="col">transaction hash</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="alert alert-success mb-0" v-for="deposit in deposits">
-          <td scope="row" width="1%">{{ deposit.Address }}</td>
-          <td>{{ deposit.Value*0.00000001 }} {{ deposit.Currency }}</td>
-          <td>{{ deposit.Date }}</td>
-          <td>{{ deposit.TransactionHash }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
 </template>
 
 <script>
-import Loading from 'vue-loading-overlay';
-// Import stylesheet
-import 'vue-loading-overlay/dist/vue-loading.css';
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
+
 export default {
   data() {
     return {
       deposits: [],
       isLoading: true,
       fullPage: false
-    }
+    };
   },
   created() {
     this.loadData();
@@ -54,9 +53,12 @@ export default {
   },
   methods: {
     loadData() {
-      let SessionId = $cookies.get('SessionCookies');
-      let uri = 'http://192.168.1.21/api/v1/deposit-histories?session=' + SessionId;
-      this.axios.get(uri).then(response => {
+      let SessionId = $cookies.get("SessionCookies");
+      let uri = "https://www.999doge.com/api/web.aspx";
+      var bodyFormData = new FormData();
+      bodyFormData.set("a", "GetDeposits");
+      bodyFormData.set("s", SessionId);
+      this.axios.post(uri, bodyFormData).then(response => {
         this.isLoading = false;
         this.deposits = response.data.Deposits;
       });
@@ -67,5 +69,5 @@ export default {
       this.loadData();
     }
   }
-}
+};
 </script>

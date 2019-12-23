@@ -63936,7 +63936,7 @@ var index = {
       (
         process.server ||
         process.SERVER_BUILD ||
-        (Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).VUE_ENV === 'server')
+        (Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).VUE_ENV === 'server')
       )
     ) {
       return
@@ -64668,12 +64668,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      balance: '',
+      balance: "",
       tradeList: [],
       breakTrade: false,
       balanceLoader: false,
@@ -64694,7 +64712,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     getBalance: function getBalance() {
       var _this = this;
 
-      var cookies = $cookies.get('SessionCookies');
+      var cookies = $cookies.get("SessionCookies");
       if (cookies === null) {
         var toast = this.$toasted.show("session not found, Please Login Now !", {
           theme: "toasted-primary",
@@ -64702,9 +64720,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           duration: 5000
         });
       } else {
-        var baseUrl = "http://192.168.1.21/api/v1/balances?session=" + $cookies.get('SessionCookies');
+        var baseUrl = "https://www.999doge.com/api/web.aspx";
         this.balanceLoader = true;
-        this.axios.get(baseUrl).then(function (response) {
+
+        var bodyFormData = new FormData();
+        bodyFormData.set("a", "GetBalance");
+        bodyFormData.set("s", $cookies.get("SessionCookies"));
+        bodyFormData.set("Currency", "doge");
+        bodyFormData.set("Referrals", 0);
+        bodyFormData.set("Stats", 0);
+        this.axios.post(baseUrl, bodyFormData).then(function (response) {
           _this.balance = response.data.Balance;
           _this.balanceLoader = false;
         });
@@ -64895,7 +64920,7 @@ var content = __webpack_require__(60);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("d2e60e4a", content, false, {});
+var update = __webpack_require__(2)("2d5cd52e", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -65119,7 +65144,7 @@ var content = __webpack_require__(66);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("3c8a32be", content, false, {});
+var update = __webpack_require__(2)("badd3b24", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -65325,7 +65350,7 @@ var content = __webpack_require__(71);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("cb6fb4bc", content, false, {});
+var update = __webpack_require__(2)("177db916", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -65557,7 +65582,7 @@ var content = __webpack_require__(76);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("559fa12b", content, false, {});
+var update = __webpack_require__(2)("48b6f238", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -65748,7 +65773,7 @@ var content = __webpack_require__(81);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("71ecc241", content, false, {});
+var update = __webpack_require__(2)("32c33e0e", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -65914,7 +65939,7 @@ var content = __webpack_require__(86);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("4878a304", content, false, {});
+var update = __webpack_require__(2)("e8b75dde", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -66107,7 +66132,7 @@ var content = __webpack_require__(91);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("5a8c7718", content, false, {});
+var update = __webpack_require__(2)("15f84ff2", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -66306,7 +66331,7 @@ var content = __webpack_require__(96);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("433bf468", content, false, {});
+var update = __webpack_require__(2)("40fbd042", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -66468,7 +66493,7 @@ var content = __webpack_require__(101);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("45778ca6", content, false, {});
+var update = __webpack_require__(2)("7edb65f9", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -66661,7 +66686,7 @@ var content = __webpack_require__(106);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("591a6283", content, false, {});
+var update = __webpack_require__(2)("e0f7a060", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -66857,7 +66882,7 @@ var content = __webpack_require__(111);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("f3b01b32", content, false, {});
+var update = __webpack_require__(2)("5ef85c18", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -67067,7 +67092,7 @@ var content = __webpack_require__(116);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("05c2963d", content, false, {});
+var update = __webpack_require__(2)("501e75ca", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -67265,7 +67290,7 @@ var content = __webpack_require__(121);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("7877015d", content, false, {});
+var update = __webpack_require__(2)("308a7c30", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -67460,7 +67485,7 @@ var content = __webpack_require__(126);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("da84ab24", content, false, {});
+var update = __webpack_require__(2)("44bff981", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -67644,7 +67669,7 @@ var content = __webpack_require__(131);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("df6358ae", content, false, {});
+var update = __webpack_require__(2)("5124cf76", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -67861,7 +67886,7 @@ var content = __webpack_require__(136);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("573d1f01", content, false, {});
+var update = __webpack_require__(2)("debe0f58", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -68069,7 +68094,7 @@ var content = __webpack_require__(141);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("15ff3a12", content, false, {});
+var update = __webpack_require__(2)("4ef960ca", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -68307,7 +68332,7 @@ var content = __webpack_require__(146);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("f144f552", content, false, {});
+var update = __webpack_require__(2)("ef04d12c", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -68504,7 +68529,7 @@ var content = __webpack_require__(151);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("749cf489", content, false, {});
+var update = __webpack_require__(2)("0b6cd0dc", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -68681,7 +68706,7 @@ var content = __webpack_require__(156);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("3c94ecdc", content, false, {});
+var update = __webpack_require__(2)("3249436f", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -68826,11 +68851,11 @@ var render = function() {
                 "div",
                 { staticClass: "card-alert alert alert-success mb-0" },
                 [
-                  _vm._v("\r\n              Balance : "),
+                  _vm._v("\n              Balance :\n              "),
                   _c("br"),
                   _vm._v(" "),
                   _c("b", [_vm._v(_vm._s(this.balance * 0.00000001))]),
-                  _vm._v(" Doge\r\n              "),
+                  _vm._v(" Doge\n              "),
                   _c("div", { staticClass: "float-right" }, [
                     this.balanceLoader === true
                       ? _c("div", [
@@ -68884,17 +68909,13 @@ var render = function() {
                 "div",
                 { staticClass: "card-alert alert alert-primary mb-0" },
                 [
-                  _vm._v("\r\n              TRADE STATUS :\r\n              "),
+                  _vm._v("\n              TRADE STATUS :\n              "),
                   _vm.tradeStatus === false
-                    ? _c("label", [
-                        _vm._v("\r\n                OFF\r\n              ")
-                      ])
+                    ? _c("label", [_vm._v("OFF")])
                     : _vm._e(),
                   _vm._v(" "),
                   _vm.tradeStatus === true
-                    ? _c("label", [
-                        _vm._v("\r\n                ON\r\n              ")
-                      ])
+                    ? _c("label", [_vm._v("ON")])
                     : _vm._e()
                 ]
               )
@@ -68951,7 +68972,7 @@ var render = function() {
               _c(
                 "button",
                 {
-                  staticClass: "btn btn-danger btn-block  float-right",
+                  staticClass: "btn btn-danger btn-block float-right",
                   on: {
                     click: function($event) {
                       $event.preventDefault()
@@ -68965,8 +68986,10 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
+        _vm._m(2),
+        _vm._v(" "),
         _c("div", { staticClass: "card" }, [
-          _vm._m(2),
+          _vm._m(3),
           _vm._v(" "),
           _c(
             "div",
@@ -68976,7 +68999,7 @@ var render = function() {
             },
             [
               _c("table", { staticClass: "table" }, [
-                _vm._m(3),
+                _vm._m(4),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -69040,15 +69063,13 @@ var staticRenderFns = [
       _c("div", { staticClass: "card p-3" }, [
         _c("div", { staticClass: "d-flex align-items-center" }, [
           _c("div", { staticClass: "col-sm-11" }, [
-            _c("small", { staticClass: "text-muted" }, [_vm._v("Lastrain")]),
+            _c("small", { staticClass: "text-muted" }, [
+              _c("i", [_vm._v("LastRain")])
+            ]),
+            _vm._v(" "),
             _c("br"),
             _vm._v(" "),
-            _c("h4", { staticClass: "m-0" }, [_vm._v("120")]),
-            _vm._v(" "),
-            _c("small", { staticClass: "text-muted" }, [
-              _vm._v("Last Update: "),
-              _c("i", [_vm._v("a minutes ago")])
-            ])
+            _c("h4", { staticClass: "m-0" }, [_vm._v("120")])
           ])
         ])
       ])
@@ -69065,20 +69086,30 @@ var staticRenderFns = [
         _c("div", { staticClass: "row" }, [
           _c("div", { staticClass: "col-6" }, [
             _c("p", { staticClass: "text-center" }, [
-              _vm._v("\r\n                  Sessions"),
+              _vm._v("\n                  Sessions\n                  "),
               _c("br"),
-              _vm._v("\r\n                  100\r\n                ")
+              _vm._v("100\n                ")
             ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "col-6" }, [
             _c("p", { staticClass: "text-center" }, [
-              _vm._v("\r\n                  Global"),
+              _vm._v("\n                  Global\n                  "),
               _c("br"),
-              _vm._v("\r\n                  2000\r\n                ")
+              _vm._v("2000\n                ")
             ])
           ])
         ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card p-3" }, [
+      _c("button", { staticClass: "btn btn-warning btn-block float-right" }, [
+        _vm._v("Stop On WIN")
       ])
     ])
   },
@@ -69171,6 +69202,94 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -70034,11 +70153,7 @@ var staticRenderFns = [
             })
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "col-sm-1" }, [
-            _vm._v(
-              "\r\n                                        -\r\n                                    "
-            )
-          ]),
+          _c("div", { staticClass: "col-sm-1" }, [_vm._v("-")]),
           _vm._v(" "),
           _c("div", { staticClass: "col-sm-5" }, [
             _c("input", {
@@ -71118,7 +71233,7 @@ var staticRenderFns = [
           _c("div", { staticClass: "col-sm-12" }, [
             _c("div", { staticClass: "float-sm-left" }, [
               _c("label", { staticClass: "label" }, [
-                _vm._v(" Stop After Take Profit")
+                _vm._v("Stop After Take Profit")
               ])
             ]),
             _vm._v(" "),
@@ -71316,11 +71431,9 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col-md-4" }, [
       _c("div", { staticClass: "card p-3" }, [
-        _c(
-          "button",
-          { staticClass: "btn btn-success btn-block  float-right" },
-          [_vm._v("Save")]
-        )
+        _c("button", { staticClass: "btn btn-success btn-block float-right" }, [
+          _vm._v("Save")
+        ])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "card p-3" }, [
@@ -71336,7 +71449,7 @@ var staticRenderFns = [
           _c("div", { staticClass: "col-6" }, [
             _c(
               "button",
-              { staticClass: "btn btn-warning btn-block  float-right" },
+              { staticClass: "btn btn-warning btn-block float-right" },
               [_vm._v("Load")]
             )
           ])
@@ -71540,6 +71653,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -71553,8 +71691,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     Loading: this.VueLoading
   },
   mounted: function mounted() {
-    if (JSON.parse(this.$localStorage.get('auth')) != null) {
-      this.login = JSON.parse(this.$localStorage.get('auth'));
+    if (JSON.parse(this.$localStorage.get("auth")) != null) {
+      this.login = JSON.parse(this.$localStorage.get("auth"));
     }
   },
 
@@ -71562,12 +71700,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     actionRegister: function actionRegister() {
       var _this = this;
 
-      var basUrl = 'http://192.168.1.21/api/v1/register';
+      var basUrl = "http://localhost:8000/api/v1/register";
 
       var loader = this.$loading.show({
-        loader: 'dots',
-        color: '#5EABED',
-        backgroundColor: '#000000'
+        loader: "dots",
+        color: "#5EABED",
+        backgroundColor: "#000000"
       });
 
       this.axios.post(basUrl, this.login).then(function (response) {
@@ -71593,15 +71731,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     actionLogin: function actionLogin() {
       var _this2 = this;
 
-      var basUrl = 'http://192.168.1.21/api/v1/login';
+      var basUrl = "https://www.999doge.com/api/web.aspx";
 
       var loader = this.$loading.show({
-        loader: 'dots',
-        color: '#5EABED',
-        backgroundColor: '#000000'
+        loader: "dots",
+        color: "#5EABED",
+        backgroundColor: "#000000"
       });
 
-      this.axios.post(basUrl, this.login).then(function (response) {
+      // Set attribute data
+      var bodyFormData = new FormData();
+      bodyFormData.set("a", "Login");
+      bodyFormData.set("Key", "7d02bcaf7a584578b8fc7781bc849422");
+      bodyFormData.set("Username", this.login.username);
+      bodyFormData.set("Password", this.login.password);
+
+      this.axios.post(basUrl, bodyFormData).then(function (response) {
         if (response.data.error != undefined) {
           loader.hide();
           var toast = _this2.$toasted.show(response.data.error, {
@@ -71619,9 +71764,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           });
         }
         if (response.data.SessionCookie != undefined) {
-          $cookies.set('SessionCookies', response.data.SessionCookie);
-          $cookies.set('AccountId', response.data.AccountId);
-          _this2.$localStorage.set('auth', JSON.stringify(_this2.login));
+          $cookies.set("SessionCookies", response.data.SessionCookie);
+          $cookies.set("AccountId", response.data.AccountId);
+          _this2.$localStorage.set("auth", JSON.stringify(_this2.login));
           loader.hide();
 
           var _toast3 = _this2.$toasted.show("Login Success :)", {
@@ -71769,7 +71914,10 @@ var render = function() {
                     }
                   }
                 },
-                [_c("i", { staticClass: "fe fe-user" }), _vm._v(" Register")]
+                [
+                  _c("i", { staticClass: "fe fe-user" }),
+                  _vm._v(" Register\n          ")
+                ]
               )
             ])
           ])
@@ -71786,7 +71934,7 @@ var staticRenderFns = [
     return _c(
       "button",
       { staticClass: "btn btn-pill btn-success", attrs: { type: "submit" } },
-      [_c("i", { staticClass: "fe fe-lock" }), _vm._v(" Login")]
+      [_c("i", { staticClass: "fe fe-lock" }), _vm._v(" Login\n          ")]
     )
   }
 ]
@@ -71897,6 +72045,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -71916,15 +72066,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   mounted: function mounted() {
     this.getWithdrawHistoris();
-    this.accountId = $cookies.get('AccountId');
+    this.accountId = $cookies.get("AccountId");
   },
 
   methods: {
     getWithdrawHistoris: function getWithdrawHistoris() {
       var _this = this;
 
-      var baseUrl = "http://192.168.1.21/api/v1/withdraw-histories?session=" + $cookies.get('SessionCookies');
-      this.axios.get(baseUrl).then(function (response) {
+      var baseUrl = "https://www.999doge.com/api/web.aspx";
+
+      var sessionCookies = $cookies.get("SessionCookies");
+      var bodyFormData = new FormData();
+      bodyFormData.set("a", "GetWithdrawals");
+      bodyFormData.set("s", sessionCookies);
+      this.axios.post(baseUrl, bodyFormData).then(function (response) {
         _this.withdrawals = response.data.Withdrawals;
         _this.isLoading = false;
       });
@@ -72139,36 +72294,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            depositAddress: '',
-            isLoading: false,
-            fullPage: false
-        };
-    },
+  data: function data() {
+    return {
+      depositAddress: "",
+      isLoading: false,
+      fullPage: false
+    };
+  },
 
-    components: {
-        Loading: __WEBPACK_IMPORTED_MODULE_0_vue_loading_overlay___default.a,
-        QrcodeVue: __WEBPACK_IMPORTED_MODULE_2_qrcode_vue__["a" /* default */]
-    },
-    methods: {
-        getAddress: function getAddress() {
-            var _this = this;
+  components: {
+    Loading: __WEBPACK_IMPORTED_MODULE_0_vue_loading_overlay___default.a,
+    QrcodeVue: __WEBPACK_IMPORTED_MODULE_2_qrcode_vue__["a" /* default */]
+  },
+  methods: {
+    getAddress: function getAddress() {
+      var _this = this;
 
-            this.isLoading = true;
-            var uri = "http://192.168.1.21/api/v1/deposit?session=" + $cookies.get('SessionCookies');
-            this.axios.get(uri).then(function (response) {
-                _this.depositAddress = response.data.Address;
-                _this.isLoading = false;
-            });
-        }
+      this.isLoading = true;
+      var sessionCookies = $cookies.get("SessionCookies");
+      var uri = "https://www.999doge.com/api/web.aspx";
+
+      var bodyFormData = new FormData();
+      bodyFormData.set("a", "GetDepositAddress");
+      bodyFormData.set("s", sessionCookies);
+      bodyFormData.set("Currency", "doge");
+      this.axios.post(uri, bodyFormData).then(function (response) {
+        _this.depositAddress = response.data.Address;
+        _this.isLoading = false;
+      });
     }
+  }
 });
 
 /***/ }),
@@ -73339,7 +73503,10 @@ var render = function() {
                   }
                 }
               },
-              [_c("i", { staticClass: "fe fe-layers" }), _vm._v(" Get Address")]
+              [
+                _c("i", { staticClass: "fe fe-layers" }),
+                _vm._v(" Get Address\n        ")
+              ]
             )
           ]),
           _vm._v(" "),
@@ -73349,9 +73516,9 @@ var render = function() {
                 { staticClass: "col-sm-8" },
                 [
                   _vm._v(
-                    "\r\n                Deposit Address : " +
+                    "\n        Deposit Address : " +
                       _vm._s(this.depositAddress) +
-                      " "
+                      "\n        "
                   ),
                   _c("hr", {
                     staticStyle: {
@@ -73655,10 +73822,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
-// Import stylesheet
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -73679,9 +73845,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     loadData: function loadData() {
       var _this = this;
 
-      var SessionId = $cookies.get('SessionCookies');
-      var uri = 'http://192.168.1.21/api/v1/deposit-histories?session=' + SessionId;
-      this.axios.get(uri).then(function (response) {
+      var SessionId = $cookies.get("SessionCookies");
+      var uri = "https://www.999doge.com/api/web.aspx";
+      var bodyFormData = new FormData();
+      bodyFormData.set("a", "GetDeposits");
+      bodyFormData.set("s", SessionId);
+      this.axios.post(uri, bodyFormData).then(function (response) {
         _this.isLoading = false;
         _this.deposits = response.data.Deposits;
       });
@@ -73716,7 +73885,7 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "card-header" }, [
         _c("div", { staticClass: "text-left col-sm-6" }, [
-          _vm._v("\r\n      Deposit Histories\r\n    ")
+          _vm._v("Deposit Histories")
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "col-sm-6 text-right" }, [
