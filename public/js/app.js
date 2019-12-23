@@ -64735,6 +64735,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
       }
     },
+    setBetInfo: function setBetInfo() {},
     startTrade: function startTrade() {
       this.tradeStatus = true;
       this.breakTrade = false;
@@ -69995,17 +69996,370 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      tradeLogicSelected: 1
+      changeBeetwen: {
+        first: 5,
+        last: 95
+      },
+      tradeCount: 200,
+      tradeLogicSelected: {
+        selectedValue: 1
+      },
+      tradeLogicHiLo: {
+        win: 1,
+        lose: 1
+      },
+      timeOutRequest: {
+        timeOutRequest: false,
+        timeOutRequestValue: 0,
+        ifTimeOut: "stop"
+      },
+      delay: {
+        onWin: 0,
+        onLose: 0
+      },
+      martingleSingle: {
+        onWin: {
+          status: false,
+          value: 0
+        },
+        onLose: {
+          status: false,
+          value: 0
+        }
+      },
+
+      martingleMulti: {
+        sameSingle: false,
+        onWin: {
+          status: false,
+          value: 0
+        },
+        onLose: {
+          status: false,
+          value: 0
+        }
+      },
+
+      baseTradeAmount: {
+        usePersentage: false,
+        value: 1
+      },
+
+      tradeAmount: {
+        profit: {
+          mathBaseAmount: false,
+          value: 0
+        },
+        winStreak: {
+          status: false,
+          value: 0,
+          onWinStreak: true,
+          ifResetDelay: 0
+        },
+        loseStreak: {
+          status: true,
+          value: 0,
+          onLoseStreak: true,
+          ifResetDelay: 0,
+          ifResetRecoverLose: true
+        },
+        maxTradeAmount: {
+          mathBaseAmount: true,
+          value: 0,
+          maxTradeOnWin: true,
+          maxTradeOnLose: true
+        }
+      },
+
+      takeProfitGlobal: {
+        usePersentage: false,
+        profitGlobalValue: 0,
+        stop: false
+      },
+
+      takeProfitSession: {
+        usePersentage: false,
+        profitSessionValue: 0,
+        delay: 0
+      },
+
+      autoWithdraw: {
+        status: false,
+        initialBalance: 0,
+        triggeredBalance: 0,
+        destinationAddress: ""
+      }
     };
   },
 
   methods: {
-    tradeLogicSelectedEvent: function tradeLogicSelectedEvent() {
-      console.log(this.tradeLogicSelected);
+    firstChangeBeerwenValidate: function firstChangeBeerwenValidate() {
+      if (this.changeBeetwen.first < 5 || this.changeBeetwen.first > 95) {
+        var toast = this.$toasted.show("Change Beetwen Must Be 5 - 95 !", {
+          theme: "toasted-primary",
+          position: "top-left",
+          duration: 3000
+        });
+        this.changeBeetwen.first = 5;
+      }
+
+      if (this.changeBeetwen.first > this.changeBeetwen.last) {
+        var _toast = this.$toasted.show("First change must be less then the last !", {
+          theme: "toasted-primary",
+          position: "top-left",
+          duration: 3000
+        });
+        this.changeBeetwen.first = 5;
+        this.changeBeetwen.last = 95;
+        console.log("first");
+      }
+    },
+    lastChangeBeerwenValidate: function lastChangeBeerwenValidate() {
+      if (this.changeBeetwen.last < 5 || this.changeBeetwen.last > 95) {
+        var toast = this.$toasted.show("Change Beetwen Must Be 5 - 95 !", {
+          theme: "toasted-primary",
+          position: "top-left",
+          duration: 3000
+        });
+        this.changeBeetwen.last = 95;
+      }
+      if (this.changeBeetwen.first > this.changeBeetwen.last) {
+        var _toast2 = this.$toasted.show("First change must be less then the last !", {
+          theme: "toasted-primary",
+          position: "top-left",
+          duration: 3000
+        });
+        this.changeBeetwen.first = 5;
+        this.changeBeetwen.last = 95;
+        console.log("last");
+      }
+    },
+    tradeCountValidate: function tradeCountValidate() {
+      if (this.tradeCount < 1 || this.tradeCount > 200) {
+        var toast = this.$toasted.show("Trade Count Must Be 1 - 200 !", {
+          theme: "toasted-primary",
+          position: "top-left",
+          duration: 3000
+        });
+        this.tradeCount = 200;
+      }
+    },
+    timeOutRequestEvent: function timeOutRequestEvent() {
+      console.log(this.timeOutRequest.ifTimeOut);
+    },
+    ifTimeOutEvent: function ifTimeOutEvent(event) {
+      console.log(event);
+    },
+    sameMartingleSingleEvent: function sameMartingleSingleEvent() {
+      console.log(this.martingleMulti.sameSingle);
     }
   }
 });
@@ -70026,9 +70380,110 @@ var render = function() {
           _vm._v(" "),
           _c("div", { staticClass: "col-sm-12" }, [
             _c("div", { staticClass: "row" }, [
-              _vm._m(1),
+              _c("div", { staticClass: "col-sm-12 col-lg-6" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { staticClass: "form-label" }, [
+                    _vm._v("Change Beetwen")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-sm-5" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.changeBeetwen.first,
+                            expression: "changeBeetwen.first"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "number", placeholder: "0" },
+                        domProps: { value: _vm.changeBeetwen.first },
+                        on: {
+                          change: _vm.firstChangeBeerwenValidate,
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.changeBeetwen,
+                              "first",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-1" }, [_vm._v("-")]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-5" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.changeBeetwen.last,
+                            expression: "changeBeetwen.last"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "number", placeholder: "0" },
+                        domProps: { value: _vm.changeBeetwen.last },
+                        on: {
+                          change: _vm.lastChangeBeerwenValidate,
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.changeBeetwen,
+                              "last",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ])
+                  ])
+                ])
+              ]),
               _vm._v(" "),
-              _vm._m(2),
+              _c("div", { staticClass: "col-md-12 col-lg-6" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { staticClass: "form-label" }, [
+                    _vm._v("Trade Count")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-sm-5" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.tradeCount,
+                            expression: "tradeCount"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "number", placeholder: "0" },
+                        domProps: { value: _vm.tradeCount },
+                        on: {
+                          change: _vm.tradeCountValidate,
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.tradeCount = $event.target.value
+                          }
+                        }
+                      })
+                    ])
+                  ])
+                ])
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "col-md-12 col-lg-6" }, [
                 _c("div", { staticClass: "form-group" }, [
@@ -70045,28 +70500,29 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.tradeLogicSelected,
-                              expression: "tradeLogicSelected"
+                              value: _vm.tradeLogicSelected.selectedValue,
+                              expression: "tradeLogicSelected.selectedValue"
                             }
                           ],
                           staticClass: "form-control",
                           on: {
-                            change: [
-                              function($event) {
-                                var $$selectedVal = Array.prototype.filter
-                                  .call($event.target.options, function(o) {
-                                    return o.selected
-                                  })
-                                  .map(function(o) {
-                                    var val = "_value" in o ? o._value : o.value
-                                    return val
-                                  })
-                                _vm.tradeLogicSelected = $event.target.multiple
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.tradeLogicSelected,
+                                "selectedValue",
+                                $event.target.multiple
                                   ? $$selectedVal
                                   : $$selectedVal[0]
-                              },
-                              _vm.tradeLogicSelectedEvent
-                            ]
+                              )
+                            }
                           }
                         },
                         [
@@ -70091,34 +70547,2461 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm.tradeLogicSelected == 1
-                  ? _c("div", { staticClass: "form-group" }, [_vm._m(3)])
+                _vm.tradeLogicSelected.selectedValue == 1
+                  ? _c("div", { staticClass: "form-group" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-sm-5" }, [
+                          _c("label", { staticClass: "form-label" }, [
+                            _vm._v("Win HI/LO")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.tradeLogicHiLo.win,
+                                expression: "tradeLogicHiLo.win"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "number", placeholder: "0" },
+                            domProps: { value: _vm.tradeLogicHiLo.win },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.tradeLogicHiLo,
+                                  "win",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-sm-5" }, [
+                          _c("label", { staticClass: "form-label" }, [
+                            _vm._v("Lose HI/LO")
+                          ]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.tradeLogicHiLo.lose,
+                                expression: "tradeLogicHiLo.lose"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "number", placeholder: "0" },
+                            domProps: { value: _vm.tradeLogicHiLo.lose },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.tradeLogicHiLo,
+                                  "lose",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ])
+                    ])
                   : _vm._e()
               ])
             ])
           ])
         ]),
         _vm._v(" "),
-        _vm._m(4),
+        _c("div", { staticClass: "card card-default p-3" }, [
+          _c("div", { staticClass: "row" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-6" }, [
+              _c("div", { staticClass: "text-right" }, [
+                _c("label", { staticClass: "custom-switch" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.timeOutRequest.timeOutRequest,
+                        expression: "timeOutRequest.timeOutRequest"
+                      }
+                    ],
+                    staticClass: "custom-switch-input",
+                    attrs: { type: "checkbox", name: "custom-switch-checkbox" },
+                    domProps: {
+                      checked: _vm.timeOutRequest.timeOutRequest == true,
+                      checked: Array.isArray(_vm.timeOutRequest.timeOutRequest)
+                        ? _vm._i(_vm.timeOutRequest.timeOutRequest, null) > -1
+                        : _vm.timeOutRequest.timeOutRequest
+                    },
+                    on: {
+                      click: _vm.timeOutRequestEvent,
+                      change: function($event) {
+                        var $$a = _vm.timeOutRequest.timeOutRequest,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = null,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 &&
+                              _vm.$set(
+                                _vm.timeOutRequest,
+                                "timeOutRequest",
+                                $$a.concat([$$v])
+                              )
+                          } else {
+                            $$i > -1 &&
+                              _vm.$set(
+                                _vm.timeOutRequest,
+                                "timeOutRequest",
+                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                              )
+                          }
+                        } else {
+                          _vm.$set(_vm.timeOutRequest, "timeOutRequest", $$c)
+                        }
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "custom-switch-indicator" })
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("hr", {
+            staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
+          }),
+          _vm._v(" "),
+          _vm.timeOutRequest.timeOutRequest == true
+            ? _c("div", { staticClass: "col-sm-12" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-12 col-lg-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { staticClass: "form-label" }, [
+                        _vm._v("Timeout")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-sm-6" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.timeOutRequest.timeOutRequestValue,
+                                expression: "timeOutRequest.timeOutRequestValue"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "number", placeholder: "0" },
+                            domProps: {
+                              value: _vm.timeOutRequest.timeOutRequestValue
+                            },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.timeOutRequest,
+                                  "timeOutRequestValue",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-sm-6" }, [
+                          _vm._v("Seconds")
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-12 col-lg-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("div", { staticClass: "form-label" }, [
+                        _vm._v("If Timeout")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "custom-controls-stacked" }, [
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "custom-control custom-radio custom-control-inline"
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "radio",
+                                name: "example-inline-radios"
+                              },
+                              domProps: {
+                                checked: _vm.timeOutRequest.ifTimeOut == "stop"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.ifTimeOutEvent("stop")
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticClass: "custom-control-label" },
+                              [_vm._v("Stop")]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "custom-control custom-radio custom-control-inline"
+                          },
+                          [
+                            _c("input", {
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "radio",
+                                name: "example-inline-radios"
+                              },
+                              domProps: {
+                                checked: _vm.timeOutRequest.ifTimeOut == "delay"
+                              },
+                              on: {
+                                click: function($event) {
+                                  return _vm.ifTimeOutEvent("delay")
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticClass: "custom-control-label" },
+                              [_vm._v("Delay")]
+                            )
+                          ]
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            : _vm._e()
+        ]),
         _vm._v(" "),
-        _vm._m(5),
+        _c("div", { staticClass: "card card-default p-3" }, [
+          _vm._m(2),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-12" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-12 col-lg-6" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { staticClass: "form-label" }, [
+                    _vm._v("On Win")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-sm-6" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.delay.onWin,
+                            expression: "delay.onWin"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "number", placeholder: "0" },
+                        domProps: { value: _vm.delay.onWin },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.delay, "onWin", $event.target.value)
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [_vm._v("Seconds")])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-12 col-lg-6" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { staticClass: "form-label" }, [
+                    _vm._v("On Lose")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-sm-6" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.delay.onLose,
+                            expression: "delay.onLose"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "number", placeholder: "0" },
+                        domProps: { value: _vm.delay.onLose },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.delay, "onLose", $event.target.value)
+                          }
+                        }
+                      })
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [_vm._v("Seconds")])
+                  ])
+                ])
+              ])
+            ])
+          ])
+        ]),
         _vm._v(" "),
-        _vm._m(6),
+        _c("div", { staticClass: "card card-default p-3" }, [
+          _vm._m(3),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-12" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-12 col-lg-12" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-sm-2" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "custom-switch pt-2",
+                          staticStyle: { "padding-left": "0.25rem" }
+                        },
+                        [
+                          _c("input", {
+                            staticClass: "custom-switch-input",
+                            attrs: {
+                              type: "checkbox",
+                              name: "custom-switch-checkbox"
+                            },
+                            domProps: {
+                              checked: _vm.martingleSingle.onWin.status == true
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "custom-switch-indicator" })
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-9" }, [
+                      _c("label", { staticClass: "form-label" }, [
+                        _vm._v("On Win")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-sm-6" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.martingleSingle.onWin.value,
+                                expression: "martingleSingle.onWin.value"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "number", placeholder: "0" },
+                            domProps: {
+                              value: _vm.martingleSingle.onWin.value
+                            },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.martingleSingle.onWin,
+                                  "value",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-md-12 col-lg-12" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-sm-2" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "custom-switch pt-2",
+                          staticStyle: { "padding-left": "0.25rem" }
+                        },
+                        [
+                          _c("input", {
+                            staticClass: "custom-switch-input",
+                            attrs: {
+                              type: "checkbox",
+                              name: "custom-switch-checkbox"
+                            },
+                            domProps: {
+                              checked: _vm.martingleSingle.onLose.status
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "custom-switch-indicator" })
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-9" }, [
+                      _c("label", { staticClass: "form-label" }, [
+                        _vm._v("On Lose")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-sm-6" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.martingleSingle.onLose.value,
+                                expression: "martingleSingle.onLose.value"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "number", placeholder: "0" },
+                            domProps: {
+                              value: _vm.martingleSingle.onLose.value
+                            },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.martingleSingle.onLose,
+                                  "value",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ])
+        ]),
         _vm._v(" "),
-        _vm._m(7),
+        _c("div", { staticClass: "card card-default p-3" }, [
+          _c("div", { staticClass: "row" }, [
+            _vm._m(4),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-12" }, [
+              _vm._m(5),
+              _vm._v(" "),
+              _c("div", { staticClass: "float-sm-right text-right" }, [
+                _c("label", { staticClass: "custom-switch" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.martingleMulti.sameSingle,
+                        expression: "martingleMulti.sameSingle"
+                      }
+                    ],
+                    staticClass: "custom-switch-input",
+                    attrs: { type: "checkbox", name: "custom-switch-checkbox" },
+                    domProps: {
+                      checked: _vm.martingleMulti.sameSingle == true,
+                      checked: Array.isArray(_vm.martingleMulti.sameSingle)
+                        ? _vm._i(_vm.martingleMulti.sameSingle, null) > -1
+                        : _vm.martingleMulti.sameSingle
+                    },
+                    on: {
+                      click: _vm.sameMartingleSingleEvent,
+                      change: function($event) {
+                        var $$a = _vm.martingleMulti.sameSingle,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = null,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 &&
+                              _vm.$set(
+                                _vm.martingleMulti,
+                                "sameSingle",
+                                $$a.concat([$$v])
+                              )
+                          } else {
+                            $$i > -1 &&
+                              _vm.$set(
+                                _vm.martingleMulti,
+                                "sameSingle",
+                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                              )
+                          }
+                        } else {
+                          _vm.$set(_vm.martingleMulti, "sameSingle", $$c)
+                        }
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "custom-switch-indicator" })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "clearfix" }),
+              _vm._v(" "),
+              _c("hr", {
+                staticStyle: {
+                  "margin-top": "0.4rem",
+                  "margin-bottom": "0.6rem"
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _vm.martingleMulti.sameSingle == false
+            ? _c("div", { staticClass: "col-sm-12" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-12 col-lg-12" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-sm-2" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "custom-switch pt-2",
+                              staticStyle: { "padding-left": "0.25rem" }
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.martingleMulti.onWin.status,
+                                    expression: "martingleMulti.onWin.status"
+                                  }
+                                ],
+                                staticClass: "custom-switch-input",
+                                attrs: {
+                                  type: "checkbox",
+                                  name: "custom-switch-checkbox"
+                                },
+                                domProps: {
+                                  checked:
+                                    _vm.martingleMulti.onWin.status == true,
+                                  checked: Array.isArray(
+                                    _vm.martingleMulti.onWin.status
+                                  )
+                                    ? _vm._i(
+                                        _vm.martingleMulti.onWin.status,
+                                        null
+                                      ) > -1
+                                    : _vm.martingleMulti.onWin.status
+                                },
+                                on: {
+                                  change: function($event) {
+                                    var $$a = _vm.martingleMulti.onWin.status,
+                                      $$el = $event.target,
+                                      $$c = $$el.checked ? true : false
+                                    if (Array.isArray($$a)) {
+                                      var $$v = null,
+                                        $$i = _vm._i($$a, $$v)
+                                      if ($$el.checked) {
+                                        $$i < 0 &&
+                                          _vm.$set(
+                                            _vm.martingleMulti.onWin,
+                                            "status",
+                                            $$a.concat([$$v])
+                                          )
+                                      } else {
+                                        $$i > -1 &&
+                                          _vm.$set(
+                                            _vm.martingleMulti.onWin,
+                                            "status",
+                                            $$a
+                                              .slice(0, $$i)
+                                              .concat($$a.slice($$i + 1))
+                                          )
+                                      }
+                                    } else {
+                                      _vm.$set(
+                                        _vm.martingleMulti.onWin,
+                                        "status",
+                                        $$c
+                                      )
+                                    }
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("span", {
+                                staticClass: "custom-switch-indicator"
+                              })
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-sm-6" }, [
+                          _c("label", { staticClass: "form-label" }, [
+                            _vm._v("On Win")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "row" }, [
+                            _c("div", { staticClass: "col-sm-12" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.martingleMulti.onWin.value,
+                                    expression: "martingleMulti.onWin.value"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "number", placeholder: "0" },
+                                domProps: {
+                                  value: _vm.martingleMulti.onWin.value
+                                },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.martingleMulti.onWin,
+                                      "value",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ])
+                          ])
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-12 col-lg-12" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-sm-2" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "custom-switch pt-2",
+                              staticStyle: { "padding-left": "0.25rem" }
+                            },
+                            [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.martingleMulti.onLose.status,
+                                    expression: "martingleMulti.onLose.status"
+                                  }
+                                ],
+                                staticClass: "custom-switch-input",
+                                attrs: {
+                                  type: "checkbox",
+                                  name: "custom-switch-checkbox"
+                                },
+                                domProps: {
+                                  checked: _vm.martingleMulti.onLose.status,
+                                  checked: Array.isArray(
+                                    _vm.martingleMulti.onLose.status
+                                  )
+                                    ? _vm._i(
+                                        _vm.martingleMulti.onLose.status,
+                                        null
+                                      ) > -1
+                                    : _vm.martingleMulti.onLose.status
+                                },
+                                on: {
+                                  change: function($event) {
+                                    var $$a = _vm.martingleMulti.onLose.status,
+                                      $$el = $event.target,
+                                      $$c = $$el.checked ? true : false
+                                    if (Array.isArray($$a)) {
+                                      var $$v = null,
+                                        $$i = _vm._i($$a, $$v)
+                                      if ($$el.checked) {
+                                        $$i < 0 &&
+                                          _vm.$set(
+                                            _vm.martingleMulti.onLose,
+                                            "status",
+                                            $$a.concat([$$v])
+                                          )
+                                      } else {
+                                        $$i > -1 &&
+                                          _vm.$set(
+                                            _vm.martingleMulti.onLose,
+                                            "status",
+                                            $$a
+                                              .slice(0, $$i)
+                                              .concat($$a.slice($$i + 1))
+                                          )
+                                      }
+                                    } else {
+                                      _vm.$set(
+                                        _vm.martingleMulti.onLose,
+                                        "status",
+                                        $$c
+                                      )
+                                    }
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("span", {
+                                staticClass: "custom-switch-indicator"
+                              })
+                            ]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-sm-6" }, [
+                          _c("label", { staticClass: "form-label" }, [
+                            _vm._v("On Lose")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "row" }, [
+                            _c("div", { staticClass: "col-sm-12" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.martingleMulti.onLose.value,
+                                    expression: "martingleMulti.onLose.value"
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                attrs: { type: "number", placeholder: "0" },
+                                domProps: {
+                                  value: _vm.martingleMulti.onLose.value
+                                },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.martingleMulti.onLose,
+                                      "value",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ])
+                          ])
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            : _vm._e()
+        ]),
         _vm._v(" "),
-        _vm._m(8),
+        _c("div", { staticClass: "card card-default p-3" }, [
+          _c("div", { staticClass: "row" }, [
+            _vm._m(6),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-12" }, [
+              _vm._m(7),
+              _vm._v(" "),
+              _c("div", { staticClass: "float-sm-right text-right" }, [
+                _c("label", { staticClass: "custom-switch" }, [
+                  _c("input", {
+                    staticClass: "custom-switch-input",
+                    attrs: { type: "checkbox", name: "custom-switch-checkbox" },
+                    domProps: {
+                      checked: _vm.baseTradeAmount.usePersentage == true
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "custom-switch-indicator" })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "clearfix" }),
+              _vm._v(" "),
+              _c("hr", {
+                staticStyle: {
+                  "margin-top": "0.4rem",
+                  "margin-bottom": "0.6rem"
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-12" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-12 col-lg-12" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _vm._m(8),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-sm-12" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.baseTradeAmount.value,
+                                expression: "baseTradeAmount.value"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "number", placeholder: "0" },
+                            domProps: { value: _vm.baseTradeAmount.value },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.baseTradeAmount,
+                                  "value",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ])
+        ]),
         _vm._v(" "),
-        _vm._m(9),
+        _c("div", { staticClass: "card card-default p-3" }, [
+          _vm._m(9),
+          _vm._v(" "),
+          _c("hr", {
+            staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-12" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-12" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _vm._m(10),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.tradeAmount.profit.value,
+                            expression: "tradeAmount.profit.value"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "number", placeholder: "0" },
+                        domProps: { value: _vm.tradeAmount.profit.value },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.tradeAmount.profit,
+                              "value",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        { staticClass: "custom-control custom-checkbox" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.tradeAmount.profit.mathBaseAmount,
+                                expression: "tradeAmount.profit.mathBaseAmount"
+                              }
+                            ],
+                            staticClass: "custom-control-input",
+                            attrs: { type: "checkbox" },
+                            domProps: {
+                              checked:
+                                _vm.tradeAmount.profit.mathBaseAmount == true,
+                              checked: Array.isArray(
+                                _vm.tradeAmount.profit.mathBaseAmount
+                              )
+                                ? _vm._i(
+                                    _vm.tradeAmount.profit.mathBaseAmount,
+                                    null
+                                  ) > -1
+                                : _vm.tradeAmount.profit.mathBaseAmount
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.tradeAmount.profit.mathBaseAmount,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(
+                                        _vm.tradeAmount.profit,
+                                        "mathBaseAmount",
+                                        $$a.concat([$$v])
+                                      )
+                                  } else {
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        _vm.tradeAmount.profit,
+                                        "mathBaseAmount",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
+                                  }
+                                } else {
+                                  _vm.$set(
+                                    _vm.tradeAmount.profit,
+                                    "mathBaseAmount",
+                                    $$c
+                                  )
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "custom-control-label" }, [
+                            _vm._v("X Base Amount")
+                          ])
+                        ]
+                      )
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("hr", {
+                  staticStyle: {
+                    "margin-top": "0.4rem",
+                    "margin-bottom": "0.6rem"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-sm-3" }, [
+                      _c(
+                        "label",
+                        { staticClass: "custom-control custom-checkbox" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.tradeAmount.winStreak.status,
+                                expression: "tradeAmount.winStreak.status"
+                              }
+                            ],
+                            staticClass: "custom-control-input",
+                            attrs: { type: "checkbox" },
+                            domProps: {
+                              checked: _vm.tradeAmount.winStreak.status,
+                              checked: Array.isArray(
+                                _vm.tradeAmount.winStreak.status
+                              )
+                                ? _vm._i(
+                                    _vm.tradeAmount.winStreak.status,
+                                    null
+                                  ) > -1
+                                : _vm.tradeAmount.winStreak.status
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.tradeAmount.winStreak.status,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(
+                                        _vm.tradeAmount.winStreak,
+                                        "status",
+                                        $$a.concat([$$v])
+                                      )
+                                  } else {
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        _vm.tradeAmount.winStreak,
+                                        "status",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
+                                  }
+                                } else {
+                                  _vm.$set(
+                                    _vm.tradeAmount.winStreak,
+                                    "status",
+                                    $$c
+                                  )
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "custom-control-label" }, [
+                            _vm._v("Win Streak")
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.tradeAmount.winStreak.value,
+                            expression: "tradeAmount.winStreak.value"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "number", placeholder: "0" },
+                        domProps: { value: _vm.tradeAmount.winStreak.value },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.tradeAmount.winStreak,
+                              "value",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _vm._m(11),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [
+                      _c("div", { staticClass: "custom-controls-stacked" }, [
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "custom-control custom-radio custom-control-inline"
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.tradeAmount.winStreak.onWinStreak,
+                                  expression:
+                                    "tradeAmount.winStreak.onWinStreak"
+                                }
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "radio",
+                                name: "tradeAmountOnWinStreak",
+                                value: "true"
+                              },
+                              domProps: {
+                                checked:
+                                  _vm.tradeAmount.winStreak.onWinStreak == true,
+                                checked: _vm._q(
+                                  _vm.tradeAmount.winStreak.onWinStreak,
+                                  "true"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.tradeAmount.winStreak,
+                                    "onWinStreak",
+                                    "true"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticClass: "custom-control-label" },
+                              [_vm._v("Stop")]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "custom-control custom-radio custom-control-inline"
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.tradeAmount.winStreak.onWinStreak,
+                                  expression:
+                                    "tradeAmount.winStreak.onWinStreak"
+                                }
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "radio",
+                                name: "tradeAmountOnWinStreak",
+                                value: "false"
+                              },
+                              domProps: {
+                                checked:
+                                  _vm.tradeAmount.winStreak.onWinStreak ==
+                                  false,
+                                checked: _vm._q(
+                                  _vm.tradeAmount.winStreak.onWinStreak,
+                                  "false"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.tradeAmount.winStreak,
+                                    "onWinStreak",
+                                    "false"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticClass: "custom-control-label" },
+                              [_vm._v("Reset")]
+                            )
+                          ]
+                        )
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _vm._m(12),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.tradeAmount.winStreak.ifResetDelay,
+                            expression: "tradeAmount.winStreak.ifResetDelay"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "number", placeholder: "0" },
+                        domProps: {
+                          value: _vm.tradeAmount.winStreak.ifResetDelay
+                        },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.tradeAmount.winStreak,
+                              "ifResetDelay",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", [_vm._v("Seconds")])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("hr", {
+                  staticStyle: {
+                    "margin-top": "0.4rem",
+                    "margin-bottom": "0.6rem"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-sm-3" }, [
+                      _c(
+                        "label",
+                        { staticClass: "custom-control custom-checkbox" },
+                        [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.tradeAmount.loseStreak.status,
+                                expression: "tradeAmount.loseStreak.status"
+                              }
+                            ],
+                            staticClass: "custom-control-input",
+                            attrs: { type: "checkbox" },
+                            domProps: {
+                              checked:
+                                _vm.tradeAmount.loseStreak.status == true,
+                              checked: Array.isArray(
+                                _vm.tradeAmount.loseStreak.status
+                              )
+                                ? _vm._i(
+                                    _vm.tradeAmount.loseStreak.status,
+                                    null
+                                  ) > -1
+                                : _vm.tradeAmount.loseStreak.status
+                            },
+                            on: {
+                              change: function($event) {
+                                var $$a = _vm.tradeAmount.loseStreak.status,
+                                  $$el = $event.target,
+                                  $$c = $$el.checked ? true : false
+                                if (Array.isArray($$a)) {
+                                  var $$v = null,
+                                    $$i = _vm._i($$a, $$v)
+                                  if ($$el.checked) {
+                                    $$i < 0 &&
+                                      _vm.$set(
+                                        _vm.tradeAmount.loseStreak,
+                                        "status",
+                                        $$a.concat([$$v])
+                                      )
+                                  } else {
+                                    $$i > -1 &&
+                                      _vm.$set(
+                                        _vm.tradeAmount.loseStreak,
+                                        "status",
+                                        $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1))
+                                      )
+                                  }
+                                } else {
+                                  _vm.$set(
+                                    _vm.tradeAmount.loseStreak,
+                                    "status",
+                                    $$c
+                                  )
+                                }
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "custom-control-label" }, [
+                            _vm._v("Lose Streak")
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.tradeAmount.loseStreak.value,
+                            expression: "tradeAmount.loseStreak.value"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "number", placeholder: "0" },
+                        domProps: { value: _vm.tradeAmount.loseStreak.value },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.tradeAmount.loseStreak,
+                              "value",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _vm._m(13),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [
+                      _c("div", { staticClass: "custom-controls-stacked" }, [
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "custom-control custom-radio custom-control-inline"
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value:
+                                    _vm.tradeAmount.loseStreak.onLoseStreak,
+                                  expression:
+                                    "tradeAmount.loseStreak.onLoseStreak"
+                                }
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "radio",
+                                name: "tradeAmountOnLoseStreak",
+                                value: "true"
+                              },
+                              domProps: {
+                                checked:
+                                  _vm.tradeAmount.loseStreak.onLoseStreak ==
+                                  true,
+                                checked: _vm._q(
+                                  _vm.tradeAmount.loseStreak.onLoseStreak,
+                                  "true"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.tradeAmount.loseStreak,
+                                    "onLoseStreak",
+                                    "true"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticClass: "custom-control-label" },
+                              [_vm._v("Stop")]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "custom-control custom-radio custom-control-inline"
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value:
+                                    _vm.tradeAmount.loseStreak.onLoseStreak,
+                                  expression:
+                                    "tradeAmount.loseStreak.onLoseStreak"
+                                }
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "radio",
+                                name: "tradeAmountOnLoseStreak",
+                                value: "false"
+                              },
+                              domProps: {
+                                checked:
+                                  _vm.tradeAmount.loseStreak.onLoseStreak ==
+                                  false,
+                                checked: _vm._q(
+                                  _vm.tradeAmount.loseStreak.onLoseStreak,
+                                  "false"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.tradeAmount.loseStreak,
+                                    "onLoseStreak",
+                                    "false"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticClass: "custom-control-label" },
+                              [_vm._v("Reset")]
+                            )
+                          ]
+                        )
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _vm._m(14),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.tradeAmount.loseStreak.ifResetDelay,
+                            expression: "tradeAmount.loseStreak.ifResetDelay"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "number", placeholder: "0" },
+                        domProps: {
+                          value: _vm.tradeAmount.loseStreak.ifResetDelay
+                        },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.tradeAmount.loseStreak,
+                              "ifResetDelay",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", [_vm._v("Seconds")])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _vm._m(15),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [
+                      _c("div", { staticClass: "custom-controls-stacked" }, [
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "custom-control custom-radio custom-control-inline"
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value:
+                                    _vm.tradeAmount.loseStreak
+                                      .ifResetRecoverLose,
+                                  expression:
+                                    "tradeAmount.loseStreak.ifResetRecoverLose"
+                                }
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "radio",
+                                name: "ifResetRecoverLose",
+                                value: "true"
+                              },
+                              domProps: {
+                                checked:
+                                  _vm.tradeAmount.loseStreak
+                                    .ifResetRecoverLose == true,
+                                checked: _vm._q(
+                                  _vm.tradeAmount.loseStreak.ifResetRecoverLose,
+                                  "true"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.tradeAmount.loseStreak,
+                                    "ifResetRecoverLose",
+                                    "true"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticClass: "custom-control-label" },
+                              [_vm._v("Yes")]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "custom-control custom-radio custom-control-inline"
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value:
+                                    _vm.tradeAmount.loseStreak
+                                      .ifResetRecoverLose,
+                                  expression:
+                                    "tradeAmount.loseStreak.ifResetRecoverLose"
+                                }
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "radio",
+                                name: "ifResetRecoverLose",
+                                value: "false"
+                              },
+                              domProps: {
+                                checked:
+                                  _vm.tradeAmount.loseStreak
+                                    .ifResetRecoverLose == false,
+                                checked: _vm._q(
+                                  _vm.tradeAmount.loseStreak.ifResetRecoverLose,
+                                  "false"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.tradeAmount.loseStreak,
+                                    "ifResetRecoverLose",
+                                    "false"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticClass: "custom-control-label" },
+                              [_vm._v("No")]
+                            )
+                          ]
+                        )
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("hr", {
+                  staticStyle: {
+                    "margin-top": "0.4rem",
+                    "margin-bottom": "0.6rem"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _vm._m(16),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.tradeAmount.maxTradeAmount.value,
+                            expression: "tradeAmount.maxTradeAmount.value"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "number", placeholder: "0" },
+                        domProps: {
+                          value: _vm.tradeAmount.maxTradeAmount.value
+                        },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.tradeAmount.maxTradeAmount,
+                              "value",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        { staticClass: "custom-control custom-checkbox" },
+                        [
+                          _c("input", {
+                            staticClass: "custom-control-input",
+                            attrs: { type: "checkbox" },
+                            domProps: {
+                              checked:
+                                _vm.tradeAmount.maxTradeAmount.mathBaseAmount ==
+                                true
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "custom-control-label" }, [
+                            _vm._v("X Base Amount")
+                          ])
+                        ]
+                      )
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _vm._m(17),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [
+                      _c("div", { staticClass: "custom-controls-stacked" }, [
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "custom-control custom-radio custom-control-inline"
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value:
+                                    _vm.tradeAmount.maxTradeAmount
+                                      .maxTradeOnWin,
+                                  expression:
+                                    "tradeAmount.maxTradeAmount.maxTradeOnWin"
+                                }
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "radio",
+                                name: "maxTradeOnWin",
+                                value: "true"
+                              },
+                              domProps: {
+                                checked:
+                                  _vm.tradeAmount.maxTradeAmount
+                                    .maxTradeOnWin == true,
+                                checked: _vm._q(
+                                  _vm.tradeAmount.maxTradeAmount.maxTradeOnWin,
+                                  "true"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.tradeAmount.maxTradeAmount,
+                                    "maxTradeOnWin",
+                                    "true"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticClass: "custom-control-label" },
+                              [_vm._v("Stop")]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "custom-control custom-radio custom-control-inline"
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value:
+                                    _vm.tradeAmount.maxTradeAmount
+                                      .maxTradeOnWin,
+                                  expression:
+                                    "tradeAmount.maxTradeAmount.maxTradeOnWin"
+                                }
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "radio",
+                                name: "maxTradeOnWin",
+                                value: "false"
+                              },
+                              domProps: {
+                                checked:
+                                  _vm.tradeAmount.maxTradeAmount
+                                    .maxTradeOnWin == false,
+                                checked: _vm._q(
+                                  _vm.tradeAmount.maxTradeAmount.maxTradeOnWin,
+                                  "false"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.tradeAmount.maxTradeAmount,
+                                    "maxTradeOnWin",
+                                    "false"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticClass: "custom-control-label" },
+                              [_vm._v("Reset")]
+                            )
+                          ]
+                        )
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _vm._m(18),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [
+                      _c("div", { staticClass: "custom-controls-stacked" }, [
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "custom-control custom-radio custom-control-inline"
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value:
+                                    _vm.tradeAmount.maxTradeAmount
+                                      .maxTradeOnLose,
+                                  expression:
+                                    "tradeAmount.maxTradeAmount.maxTradeOnLose"
+                                }
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "radio",
+                                name: "maxTradeOnLose",
+                                value: "true"
+                              },
+                              domProps: {
+                                checked:
+                                  _vm.tradeAmount.maxTradeAmount
+                                    .maxTradeOnLose == true,
+                                checked: _vm._q(
+                                  _vm.tradeAmount.maxTradeAmount.maxTradeOnLose,
+                                  "true"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.tradeAmount.maxTradeAmount,
+                                    "maxTradeOnLose",
+                                    "true"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticClass: "custom-control-label" },
+                              [_vm._v("Stop")]
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass:
+                              "custom-control custom-radio custom-control-inline"
+                          },
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value:
+                                    _vm.tradeAmount.maxTradeAmount
+                                      .maxTradeOnLose,
+                                  expression:
+                                    "tradeAmount.maxTradeAmount.maxTradeOnLose"
+                                }
+                              ],
+                              staticClass: "custom-control-input",
+                              attrs: {
+                                type: "radio",
+                                name: "maxTradeOnLose",
+                                value: "false"
+                              },
+                              domProps: {
+                                checked:
+                                  _vm.tradeAmount.maxTradeAmount
+                                    .maxTradeOnLose == false,
+                                checked: _vm._q(
+                                  _vm.tradeAmount.maxTradeAmount.maxTradeOnLose,
+                                  "false"
+                                )
+                              },
+                              on: {
+                                change: function($event) {
+                                  return _vm.$set(
+                                    _vm.tradeAmount.maxTradeAmount,
+                                    "maxTradeOnLose",
+                                    "false"
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              { staticClass: "custom-control-label" },
+                              [_vm._v("Reset")]
+                            )
+                          ]
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            ])
+          ])
+        ]),
         _vm._v(" "),
-        _vm._m(10),
+        _c("div", { staticClass: "card card-default p-3" }, [
+          _c("div", { staticClass: "row" }, [
+            _vm._m(19),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-12" }, [
+              _vm._m(20),
+              _vm._v(" "),
+              _c("div", { staticClass: "float-sm-right text-right" }, [
+                _c("label", { staticClass: "custom-switch" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.takeProfitGlobal.usePersentage,
+                        expression: "takeProfitGlobal.usePersentage"
+                      }
+                    ],
+                    staticClass: "custom-switch-input",
+                    attrs: {
+                      type: "checkbox",
+                      name: "usePersentageTakeProfitGlobal"
+                    },
+                    domProps: {
+                      checked: _vm.takeProfitGlobal.usePersentage == true,
+                      checked: Array.isArray(_vm.takeProfitGlobal.usePersentage)
+                        ? _vm._i(_vm.takeProfitGlobal.usePersentage, null) > -1
+                        : _vm.takeProfitGlobal.usePersentage
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = _vm.takeProfitGlobal.usePersentage,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = null,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 &&
+                              _vm.$set(
+                                _vm.takeProfitGlobal,
+                                "usePersentage",
+                                $$a.concat([$$v])
+                              )
+                          } else {
+                            $$i > -1 &&
+                              _vm.$set(
+                                _vm.takeProfitGlobal,
+                                "usePersentage",
+                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                              )
+                          }
+                        } else {
+                          _vm.$set(_vm.takeProfitGlobal, "usePersentage", $$c)
+                        }
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "custom-switch-indicator" })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "clearfix" }),
+              _vm._v(" "),
+              _c("hr", {
+                staticStyle: {
+                  "margin-top": "0.4rem",
+                  "margin-bottom": "0.6rem"
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-12" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-12 col-lg-12" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _vm._m(21),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-sm-12" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.takeProfitGlobal.profitGlobalValue,
+                                expression: "takeProfitGlobal.profitGlobalValue"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "number", placeholder: "0" },
+                            domProps: {
+                              value: _vm.takeProfitGlobal.profitGlobalValue
+                            },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.takeProfitGlobal,
+                                  "profitGlobalValue",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-12" }, [
+                _vm._m(22),
+                _vm._v(" "),
+                _c("div", { staticClass: "float-sm-right text-right" }, [
+                  _c("label", { staticClass: "custom-switch" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.takeProfitGlobal.stop,
+                          expression: "takeProfitGlobal.stop"
+                        }
+                      ],
+                      staticClass: "custom-switch-input",
+                      attrs: { type: "checkbox", name: "stopAfterTakeProfit" },
+                      domProps: {
+                        checked: _vm.takeProfitGlobal.stop == true,
+                        checked: Array.isArray(_vm.takeProfitGlobal.stop)
+                          ? _vm._i(_vm.takeProfitGlobal.stop, null) > -1
+                          : _vm.takeProfitGlobal.stop
+                      },
+                      on: {
+                        change: function($event) {
+                          var $$a = _vm.takeProfitGlobal.stop,
+                            $$el = $event.target,
+                            $$c = $$el.checked ? true : false
+                          if (Array.isArray($$a)) {
+                            var $$v = null,
+                              $$i = _vm._i($$a, $$v)
+                            if ($$el.checked) {
+                              $$i < 0 &&
+                                _vm.$set(
+                                  _vm.takeProfitGlobal,
+                                  "stop",
+                                  $$a.concat([$$v])
+                                )
+                            } else {
+                              $$i > -1 &&
+                                _vm.$set(
+                                  _vm.takeProfitGlobal,
+                                  "stop",
+                                  $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                )
+                            }
+                          } else {
+                            _vm.$set(_vm.takeProfitGlobal, "stop", $$c)
+                          }
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("span", { staticClass: "custom-switch-indicator" })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "clearfix" })
+              ])
+            ])
+          ])
+        ]),
         _vm._v(" "),
-        _vm._m(11),
+        _c("div", { staticClass: "card card-default p-3" }, [
+          _c("div", { staticClass: "row" }, [
+            _vm._m(23),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-12" }, [
+              _vm._m(24),
+              _vm._v(" "),
+              _c("div", { staticClass: "float-sm-right text-right" }, [
+                _c("label", { staticClass: "custom-switch" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.takeProfitSession.usePersentage,
+                        expression: "takeProfitSession.usePersentage"
+                      }
+                    ],
+                    staticClass: "custom-switch-input",
+                    attrs: { type: "checkbox", name: "custom-switch-checkbox" },
+                    domProps: {
+                      checked: _vm.takeProfitSession.usePersentage == true,
+                      checked: Array.isArray(
+                        _vm.takeProfitSession.usePersentage
+                      )
+                        ? _vm._i(_vm.takeProfitSession.usePersentage, null) > -1
+                        : _vm.takeProfitSession.usePersentage
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = _vm.takeProfitSession.usePersentage,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = null,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 &&
+                              _vm.$set(
+                                _vm.takeProfitSession,
+                                "usePersentage",
+                                $$a.concat([$$v])
+                              )
+                          } else {
+                            $$i > -1 &&
+                              _vm.$set(
+                                _vm.takeProfitSession,
+                                "usePersentage",
+                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                              )
+                          }
+                        } else {
+                          _vm.$set(_vm.takeProfitSession, "usePersentage", $$c)
+                        }
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "custom-switch-indicator" })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "clearfix" }),
+              _vm._v(" "),
+              _c("hr", {
+                staticStyle: {
+                  "margin-top": "0.4rem",
+                  "margin-bottom": "0.6rem"
+                }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-12" }, [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-12 col-lg-12" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("div", { staticClass: "row" }, [
+                    _vm._m(25),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-6" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-sm-12" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.takeProfitSession.profitSessionValue,
+                                expression:
+                                  "takeProfitSession.profitSessionValue"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "number", placeholder: "0" },
+                            domProps: {
+                              value: _vm.takeProfitSession.profitSessionValue
+                            },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.takeProfitSession,
+                                  "profitSessionValue",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-sm-12" }, [
+                _c("div", { staticClass: "row" }, [
+                  _vm._m(26),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-6" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.takeProfitSession.delay,
+                          expression: "takeProfitSession.delay"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "number", placeholder: "0" },
+                      domProps: { value: _vm.takeProfitSession.delay },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.takeProfitSession,
+                            "delay",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("label", [_vm._v("Seconds")])
+                  ])
+                ])
+              ])
+            ])
+          ])
+        ]),
         _vm._v(" "),
-        _vm._m(12)
+        _c("div", { staticClass: "card card-default p-3" }, [
+          _c("div", { staticClass: "row" }, [
+            _vm._m(27),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-sm-6" }, [
+              _c("div", { staticClass: "text-right" }, [
+                _c("label", { staticClass: "custom-switch" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.autoWithdraw.status,
+                        expression: "autoWithdraw.status"
+                      }
+                    ],
+                    staticClass: "custom-switch-input",
+                    attrs: { type: "checkbox", name: "autoWithdraw" },
+                    domProps: {
+                      checked: _vm.autoWithdraw.status == true,
+                      checked: Array.isArray(_vm.autoWithdraw.status)
+                        ? _vm._i(_vm.autoWithdraw.status, null) > -1
+                        : _vm.autoWithdraw.status
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = _vm.autoWithdraw.status,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = null,
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 &&
+                              _vm.$set(
+                                _vm.autoWithdraw,
+                                "status",
+                                $$a.concat([$$v])
+                              )
+                          } else {
+                            $$i > -1 &&
+                              _vm.$set(
+                                _vm.autoWithdraw,
+                                "status",
+                                $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                              )
+                          }
+                        } else {
+                          _vm.$set(_vm.autoWithdraw, "status", $$c)
+                        }
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "custom-switch-indicator" })
+                ])
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("hr", {
+            staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
+          }),
+          _vm._v(" "),
+          _vm.autoWithdraw.status == true
+            ? _c("div", { staticClass: "col-sm-12" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-md-12 col-lg-6" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { staticClass: "form-label" }, [
+                        _vm._v("Initial Balance")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-sm-6" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.autoWithdraw.initialBalance,
+                                expression: "autoWithdraw.initialBalance"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "number", placeholder: "0" },
+                            domProps: {
+                              value: _vm.autoWithdraw.initialBalance
+                            },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.autoWithdraw,
+                                  "initialBalance",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { staticClass: "form-label" }, [
+                        _vm._v("Trigger Balance")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-sm-6" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.autoWithdraw.triggeredBalance,
+                                expression: "autoWithdraw.triggeredBalance"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "number", placeholder: "0" },
+                            domProps: {
+                              value: _vm.autoWithdraw.triggeredBalance
+                            },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.autoWithdraw,
+                                  "triggeredBalance",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { staticClass: "form-label" }, [
+                        _vm._v("Destination Address")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-sm-6" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.autoWithdraw.destinationAddress,
+                                expression: "autoWithdraw.destinationAddress"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "text", placeholder: "0" },
+                            domProps: {
+                              value: _vm.autoWithdraw.destinationAddress
+                            },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.autoWithdraw,
+                                  "destinationAddress",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ])
+                      ])
+                    ])
+                  ])
+                ])
+              ])
+            : _vm._e()
+        ])
       ]),
       _vm._v(" "),
-      _vm._m(13)
+      _vm._m(28)
     ])
   ])
 }
@@ -70141,27 +73024,9 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-sm-12 col-lg-6" }, [
+    return _c("div", { staticClass: "col-sm-6" }, [
       _c("div", { staticClass: "form-group" }, [
-        _c("label", { staticClass: "form-label" }, [_vm._v("Change Beetwen")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-sm-5" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "number", placeholder: "0" }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-sm-1" }, [_vm._v("-")]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-sm-5" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "number", placeholder: "0" }
-            })
-          ])
-        ])
+        _c("label", { staticClass: "form-label" }, [_vm._v("Timeout Requests")])
       ])
     ])
   },
@@ -70169,19 +73034,88 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-12 col-lg-6" }, [
+    return _c("div", { staticClass: "col-sm-12" }, [
       _c("div", { staticClass: "form-group" }, [
-        _c("label", { staticClass: "form-label" }, [_vm._v("Trade Count")]),
+        _c("label", { staticClass: "form-label" }, [_vm._v("Delay")]),
         _vm._v(" "),
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-sm-5" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "number", placeholder: "0" }
-            })
-          ])
-        ])
+        _c("hr", {
+          staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
+        })
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-12" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { staticClass: "form-label" }, [
+          _vm._v("Martingle Single Tradecount")
+        ]),
+        _vm._v(" "),
+        _c("hr", {
+          staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
+        })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-12" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { staticClass: "form-label" }, [
+          _vm._v("Martingle Multi Tradecount")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("hr", {
+        staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "float-sm-left" }, [
+      _c("label", { staticClass: "label" }, [
+        _vm._v("Same as Martingle Single")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-12" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { staticClass: "form-label" }, [
+          _vm._v("Base Trade Amount")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("hr", {
+        staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "float-sm-left" }, [
+      _c("label", { staticClass: "label" }, [_vm._v("Use Persentage")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-3" }, [
+      _c("label", { staticClass: "form-label" }, [_vm._v("Base Trade")])
     ])
   },
   function() {
@@ -70189,182 +73123,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-sm-5" }, [
-        _c("label", { staticClass: "form-label" }, [_vm._v("Win HI/LO")]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control",
-          attrs: { type: "number", placeholder: "0" }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-5" }, [
-        _c("label", { staticClass: "form-label" }, [_vm._v("Lose HI/LO")]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control",
-          attrs: { type: "number", placeholder: "0" }
-        })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card card-default p-3" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-sm-6" }, [
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { staticClass: "form-label" }, [
-              _vm._v("Timeout Requests")
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-sm-6" }, [
-          _c("div", { staticClass: "text-right" }, [
-            _c("label", { staticClass: "custom-switch" }, [
-              _c("input", {
-                staticClass: "custom-switch-input",
-                attrs: { type: "checkbox", name: "custom-switch-checkbox" }
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "custom-switch-indicator" })
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("hr", {
-        staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-12" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-12 col-lg-6" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { staticClass: "form-label" }, [_vm._v("Timeout")]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "number", placeholder: "0" }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [_vm._v("Seconds")])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-12 col-lg-6" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "form-label" }, [_vm._v("If Timeout")]),
-              _vm._v(" "),
-              _c("div", { staticClass: "custom-controls-stacked" }, [
-                _c(
-                  "label",
-                  {
-                    staticClass:
-                      "custom-control custom-radio custom-control-inline"
-                  },
-                  [
-                    _c("input", {
-                      staticClass: "custom-control-input",
-                      attrs: {
-                        type: "radio",
-                        name: "example-inline-radios",
-                        value: "option1",
-                        checked: ""
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "custom-control-label" }, [
-                      _vm._v("Stop")
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "label",
-                  {
-                    staticClass:
-                      "custom-control custom-radio custom-control-inline"
-                  },
-                  [
-                    _c("input", {
-                      staticClass: "custom-control-input",
-                      attrs: {
-                        type: "radio",
-                        name: "example-inline-radios",
-                        value: "option2"
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "custom-control-label" }, [
-                      _vm._v("Delay")
-                    ])
-                  ]
-                )
-              ])
-            ])
-          ])
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card card-default p-3" }, [
-      _c("div", { staticClass: "col-sm-12" }, [
+      _c("div", { staticClass: "col-sm-6" }, [
         _c("div", { staticClass: "form-group" }, [
-          _c("label", { staticClass: "form-label" }, [_vm._v("Delay")]),
-          _vm._v(" "),
-          _c("hr", {
-            staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-12" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-12 col-lg-6" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { staticClass: "form-label" }, [_vm._v("On Win")]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "number", placeholder: "0" }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [_vm._v("Seconds")])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-12 col-lg-6" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { staticClass: "form-label" }, [_vm._v("On Lose")]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "number", placeholder: "0" }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [_vm._v("Seconds")])
-              ])
-            ])
-          ])
+          _c("label", { staticClass: "form-label" }, [_vm._v("Trade Amount")])
         ])
       ])
     ])
@@ -70373,105 +73134,49 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card card-default p-3" }, [
-      _c("div", { staticClass: "col-sm-12" }, [
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { staticClass: "form-label" }, [
-            _vm._v("Martingle Single Tradecount")
-          ]),
-          _vm._v(" "),
-          _c("hr", {
-            staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-12" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-12 col-lg-12" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-2" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "custom-switch pt-2",
-                      staticStyle: { "padding-left": "0.25rem" }
-                    },
-                    [
-                      _c("input", {
-                        staticClass: "custom-switch-input",
-                        attrs: {
-                          type: "checkbox",
-                          name: "custom-switch-checkbox"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "custom-switch-indicator" })
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-9" }, [
-                  _c("label", { staticClass: "form-label" }, [
-                    _vm._v("On Win")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col-sm-6" }, [
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "number", placeholder: "0" }
-                      })
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-12 col-lg-12" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-2" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "custom-switch pt-2",
-                      staticStyle: { "padding-left": "0.25rem" }
-                    },
-                    [
-                      _c("input", {
-                        staticClass: "custom-switch-input",
-                        attrs: {
-                          type: "checkbox",
-                          name: "custom-switch-checkbox"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "custom-switch-indicator" })
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-9" }, [
-                  _c("label", { staticClass: "form-label" }, [
-                    _vm._v("On Lose")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col-sm-6" }, [
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "number", placeholder: "0" }
-                      })
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          ])
-        ])
+    return _c("div", { staticClass: "col-sm-3" }, [
+      _c("label", { staticClass: "form-label" }, [_vm._v("Profit")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-3" }, [
+      _c("label", { staticClass: "form-label" }, [_vm._v("On Win Streak")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-3" }, [
+      _c("label", { staticClass: "form-label" }, [_vm._v("If Reset Delay")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-3" }, [
+      _c("label", { staticClass: "form-label" }, [_vm._v("On Lose Streak")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-3" }, [
+      _c("label", { staticClass: "form-label" }, [_vm._v("If Reset Delay")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-3" }, [
+      _c("label", { staticClass: "form-label" }, [
+        _vm._v("If Reset Recover Lose")
       ])
     ])
   },
@@ -70479,949 +73184,113 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card card-default p-3" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-sm-12" }, [
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { staticClass: "form-label" }, [
-              _vm._v("Martingle Multi Tradecount")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("hr", {
-            staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-sm-12" }, [
-          _c("div", { staticClass: "float-sm-left" }, [
-            _c("label", { staticClass: "label" }, [
-              _vm._v("Same as Martingle Single")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "float-sm-right text-right" }, [
-            _c("label", { staticClass: "custom-switch" }, [
-              _c("input", {
-                staticClass: "custom-switch-input",
-                attrs: { type: "checkbox", name: "custom-switch-checkbox" }
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "custom-switch-indicator" })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "clearfix" }),
-          _vm._v(" "),
-          _c("hr", {
-            staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-12" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-12 col-lg-12" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-2" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "custom-switch pt-2",
-                      staticStyle: { "padding-left": "0.25rem" }
-                    },
-                    [
-                      _c("input", {
-                        staticClass: "custom-switch-input",
-                        attrs: {
-                          type: "checkbox",
-                          name: "custom-switch-checkbox"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "custom-switch-indicator" })
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("label", { staticClass: "form-label" }, [
-                    _vm._v("On Win")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col-sm-12" }, [
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "number", placeholder: "0" }
-                      })
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-md-12 col-lg-12" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-2" }, [
-                  _c(
-                    "label",
-                    {
-                      staticClass: "custom-switch pt-2",
-                      staticStyle: { "padding-left": "0.25rem" }
-                    },
-                    [
-                      _c("input", {
-                        staticClass: "custom-switch-input",
-                        attrs: {
-                          type: "checkbox",
-                          name: "custom-switch-checkbox"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "custom-switch-indicator" })
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("label", { staticClass: "form-label" }, [
-                    _vm._v("On Lose")
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col-sm-12" }, [
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "number", placeholder: "0" }
-                      })
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "col-sm-3" }, [
+      _c("label", { staticClass: "form-label" }, [_vm._v("Max Trade Amount")])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card card-default p-3" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-sm-12" }, [
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { staticClass: "form-label" }, [
-              _vm._v("Base Trade Amount")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("hr", {
-            staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-sm-12" }, [
-          _c("div", { staticClass: "float-sm-left" }, [
-            _c("label", { staticClass: "label" }, [_vm._v("Use Persentage")])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "float-sm-right text-right" }, [
-            _c("label", { staticClass: "custom-switch" }, [
-              _c("input", {
-                staticClass: "custom-switch-input",
-                attrs: { type: "checkbox", name: "custom-switch-checkbox" }
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "custom-switch-indicator" })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "clearfix" }),
-          _vm._v(" "),
-          _c("hr", {
-            staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-12" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-12 col-lg-12" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-3" }, [
-                  _c("label", { staticClass: "form-label" }, [
-                    _vm._v("Base Trade")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col-sm-12" }, [
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "number", placeholder: "0" }
-                      })
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "col-sm-3" }, [
+      _c("label", { staticClass: "form-label" }, [_vm._v("Max Trade On Win")])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card card-default p-3" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-sm-6" }, [
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { staticClass: "form-label" }, [_vm._v("Trade Amount")])
-          ])
+    return _c("div", { staticClass: "col-sm-3" }, [
+      _c("label", { staticClass: "form-label" }, [_vm._v("Max Trade On Lose")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-12" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { staticClass: "form-label" }, [
+          _vm._v("Take Profit Global")
         ])
       ]),
       _vm._v(" "),
       _c("hr", {
         staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-12" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-12" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-3" }, [
-                  _c("label", { staticClass: "form-label" }, [_vm._v("Profit")])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "number", placeholder: "0" }
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "label",
-                    { staticClass: "custom-control custom-checkbox" },
-                    [
-                      _c("input", {
-                        staticClass: "custom-control-input",
-                        attrs: { type: "checkbox" }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "custom-control-label" }, [
-                        _vm._v("X Base Amount")
-                      ])
-                    ]
-                  )
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("hr", {
-              staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-3" }, [
-                  _c(
-                    "label",
-                    { staticClass: "custom-control custom-checkbox" },
-                    [
-                      _c("input", {
-                        staticClass: "custom-control-input",
-                        attrs: { type: "checkbox" }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "custom-control-label" }, [
-                        _vm._v("Win Streak")
-                      ])
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "number", placeholder: "0" }
-                  })
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-3" }, [
-                  _c("label", { staticClass: "form-label" }, [
-                    _vm._v("On Win Streak")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "custom-controls-stacked" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass:
-                          "custom-control custom-radio custom-control-inline"
-                      },
-                      [
-                        _c("input", {
-                          staticClass: "custom-control-input",
-                          attrs: {
-                            type: "radio",
-                            name: "example-inline-radios",
-                            value: "option1",
-                            checked: ""
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "custom-control-label" }, [
-                          _vm._v("Stop")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      {
-                        staticClass:
-                          "custom-control custom-radio custom-control-inline"
-                      },
-                      [
-                        _c("input", {
-                          staticClass: "custom-control-input",
-                          attrs: {
-                            type: "radio",
-                            name: "example-inline-radios",
-                            value: "option2"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "custom-control-label" }, [
-                          _vm._v("Reset")
-                        ])
-                      ]
-                    )
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-3" }, [
-                  _c("label", { staticClass: "form-label" }, [
-                    _vm._v("If Reset Delay")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "number", placeholder: "0" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", [_vm._v("Seconds")])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("hr", {
-              staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-3" }, [
-                  _c(
-                    "label",
-                    { staticClass: "custom-control custom-checkbox" },
-                    [
-                      _c("input", {
-                        staticClass: "custom-control-input",
-                        attrs: { type: "checkbox" }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "custom-control-label" }, [
-                        _vm._v("Lose Streak")
-                      ])
-                    ]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "number", placeholder: "0" }
-                  })
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-3" }, [
-                  _c("label", { staticClass: "form-label" }, [
-                    _vm._v("On Lose Streak")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "custom-controls-stacked" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass:
-                          "custom-control custom-radio custom-control-inline"
-                      },
-                      [
-                        _c("input", {
-                          staticClass: "custom-control-input",
-                          attrs: {
-                            type: "radio",
-                            name: "example-inline-radios",
-                            value: "option1",
-                            checked: ""
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "custom-control-label" }, [
-                          _vm._v("Stop")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      {
-                        staticClass:
-                          "custom-control custom-radio custom-control-inline"
-                      },
-                      [
-                        _c("input", {
-                          staticClass: "custom-control-input",
-                          attrs: {
-                            type: "radio",
-                            name: "example-inline-radios",
-                            value: "option2"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "custom-control-label" }, [
-                          _vm._v("Reset")
-                        ])
-                      ]
-                    )
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-3" }, [
-                  _c("label", { staticClass: "form-label" }, [
-                    _vm._v("If Reset Delay")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "number", placeholder: "0" }
-                  }),
-                  _vm._v(" "),
-                  _c("label", [_vm._v("Seconds")])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-3" }, [
-                  _c("label", { staticClass: "form-label" }, [
-                    _vm._v("If Reset Recover Lose")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "custom-controls-stacked" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass:
-                          "custom-control custom-radio custom-control-inline"
-                      },
-                      [
-                        _c("input", {
-                          staticClass: "custom-control-input",
-                          attrs: {
-                            type: "radio",
-                            name: "example-inline-radios",
-                            value: "option1",
-                            checked: ""
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "custom-control-label" }, [
-                          _vm._v("Stop")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      {
-                        staticClass:
-                          "custom-control custom-radio custom-control-inline"
-                      },
-                      [
-                        _c("input", {
-                          staticClass: "custom-control-input",
-                          attrs: {
-                            type: "radio",
-                            name: "example-inline-radios",
-                            value: "option2"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "custom-control-label" }, [
-                          _vm._v("Reset")
-                        ])
-                      ]
-                    )
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("hr", {
-              staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-3" }, [
-                  _c("label", { staticClass: "form-label" }, [
-                    _vm._v("Max Trade Amount")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "number", placeholder: "0" }
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "label",
-                    { staticClass: "custom-control custom-checkbox" },
-                    [
-                      _c("input", {
-                        staticClass: "custom-control-input",
-                        attrs: { type: "checkbox" }
-                      }),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "custom-control-label" }, [
-                        _vm._v("X Base Amount")
-                      ])
-                    ]
-                  )
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-3" }, [
-                  _c("label", { staticClass: "form-label" }, [
-                    _vm._v("Max Trade On Win")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "custom-controls-stacked" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass:
-                          "custom-control custom-radio custom-control-inline"
-                      },
-                      [
-                        _c("input", {
-                          staticClass: "custom-control-input",
-                          attrs: {
-                            type: "radio",
-                            name: "example-inline-radios",
-                            value: "option1",
-                            checked: ""
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "custom-control-label" }, [
-                          _vm._v("Stop")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      {
-                        staticClass:
-                          "custom-control custom-radio custom-control-inline"
-                      },
-                      [
-                        _c("input", {
-                          staticClass: "custom-control-input",
-                          attrs: {
-                            type: "radio",
-                            name: "example-inline-radios",
-                            value: "option2"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "custom-control-label" }, [
-                          _vm._v("Reset")
-                        ])
-                      ]
-                    )
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-3" }, [
-                  _c("label", { staticClass: "form-label" }, [
-                    _vm._v("Max Trade On Lose")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "custom-controls-stacked" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass:
-                          "custom-control custom-radio custom-control-inline"
-                      },
-                      [
-                        _c("input", {
-                          staticClass: "custom-control-input",
-                          attrs: {
-                            type: "radio",
-                            name: "example-inline-radios",
-                            value: "option1",
-                            checked: ""
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "custom-control-label" }, [
-                          _vm._v("Stop")
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      {
-                        staticClass:
-                          "custom-control custom-radio custom-control-inline"
-                      },
-                      [
-                        _c("input", {
-                          staticClass: "custom-control-input",
-                          attrs: {
-                            type: "radio",
-                            name: "example-inline-radios",
-                            value: "option2"
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c("span", { staticClass: "custom-control-label" }, [
-                          _vm._v("Reset")
-                        ])
-                      ]
-                    )
-                  ])
-                ])
-              ])
-            ])
-          ])
-        ])
-      ])
+      })
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card card-default p-3" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-sm-12" }, [
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { staticClass: "form-label" }, [
-              _vm._v("Take Profit Global")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("hr", {
-            staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-sm-12" }, [
-          _c("div", { staticClass: "float-sm-left" }, [
-            _c("label", { staticClass: "label" }, [_vm._v("Use Persentage")])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "float-sm-right text-right" }, [
-            _c("label", { staticClass: "custom-switch" }, [
-              _c("input", {
-                staticClass: "custom-switch-input",
-                attrs: { type: "checkbox", name: "custom-switch-checkbox" }
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "custom-switch-indicator" })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "clearfix" }),
-          _vm._v(" "),
-          _c("hr", {
-            staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-12" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-12 col-lg-12" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-3" }, [
-                  _c("label", { staticClass: "form-label" }, [
-                    _vm._v("Profit Global")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col-sm-12" }, [
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "number", placeholder: "0" }
-                      })
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-sm-12" }, [
-            _c("div", { staticClass: "float-sm-left" }, [
-              _c("label", { staticClass: "label" }, [
-                _vm._v("Stop After Take Profit")
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "float-sm-right text-right" }, [
-              _c("label", { staticClass: "custom-switch" }, [
-                _c("input", {
-                  staticClass: "custom-switch-input",
-                  attrs: { type: "checkbox", name: "custom-switch-checkbox" }
-                }),
-                _vm._v(" "),
-                _c("span", { staticClass: "custom-switch-indicator" })
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "clearfix" })
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "float-sm-left" }, [
+      _c("label", { staticClass: "label" }, [_vm._v("Use Persentage")])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card card-default p-3" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-sm-12" }, [
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { staticClass: "form-label" }, [
-              _vm._v("Take Profit Sessions")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("hr", {
-            staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-sm-12" }, [
-          _c("div", { staticClass: "float-sm-left" }, [
-            _c("label", { staticClass: "label" }, [_vm._v("Use Persentage")])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "float-sm-right text-right" }, [
-            _c("label", { staticClass: "custom-switch" }, [
-              _c("input", {
-                staticClass: "custom-switch-input",
-                attrs: { type: "checkbox", name: "custom-switch-checkbox" }
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "custom-switch-indicator" })
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "clearfix" }),
-          _vm._v(" "),
-          _c("hr", {
-            staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-12" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-12 col-lg-12" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-3" }, [
-                  _c("label", { staticClass: "form-label" }, [
-                    _vm._v("Profit Sessions")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col-sm-12" }, [
-                      _c("input", {
-                        staticClass: "form-control",
-                        attrs: { type: "number", placeholder: "0" }
-                      })
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-sm-12" }, [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-sm-3" }, [
-                _c("label", { staticClass: "form-label" }, [_vm._v("Delay")])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-sm-6" }, [
-                _c("input", {
-                  staticClass: "form-control",
-                  attrs: { type: "number", placeholder: "0" }
-                }),
-                _vm._v(" "),
-                _c("label", [_vm._v("Seconds")])
-              ])
-            ])
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "col-sm-3" }, [
+      _c("label", { staticClass: "form-label" }, [_vm._v("Profit Global")])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card card-default p-3" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-sm-6" }, [
-          _c("div", { staticClass: "form-group" }, [
-            _c("label", { staticClass: "form-label" }, [
-              _vm._v("Auto Withdraw")
-            ])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-sm-6" }, [
-          _c("div", { staticClass: "text-right" }, [
-            _c("label", { staticClass: "custom-switch" }, [
-              _c("input", {
-                staticClass: "custom-switch-input",
-                attrs: { type: "checkbox", name: "custom-switch-checkbox" }
-              }),
-              _vm._v(" "),
-              _c("span", { staticClass: "custom-switch-indicator" })
-            ])
-          ])
+    return _c("div", { staticClass: "float-sm-left" }, [
+      _c("label", { staticClass: "label" }, [_vm._v("Stop After Take Profit")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-12" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { staticClass: "form-label" }, [
+          _vm._v("Take Profit Sessions")
         ])
       ]),
       _vm._v(" "),
       _c("hr", {
         staticStyle: { "margin-top": "0.4rem", "margin-bottom": "0.6rem" }
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-12" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-12 col-lg-6" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { staticClass: "form-label" }, [
-                _vm._v("Initial Balance")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "number", placeholder: "0" }
-                  })
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { staticClass: "form-label" }, [
-                _vm._v("Trigger Balance")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "number", placeholder: "0" }
-                  })
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { staticClass: "form-label" }, [
-                _vm._v("Destination Address")
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-sm-6" }, [
-                  _c("input", {
-                    staticClass: "form-control",
-                    attrs: { type: "text", placeholder: "0" }
-                  })
-                ])
-              ])
-            ])
-          ])
-        ])
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "float-sm-left" }, [
+      _c("label", { staticClass: "label" }, [_vm._v("Use Persentage")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-3" }, [
+      _c("label", { staticClass: "form-label" }, [_vm._v("Profit Sessions")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-3" }, [
+      _c("label", { staticClass: "form-label" }, [_vm._v("Delay")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-6" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { staticClass: "form-label" }, [_vm._v("Auto Withdraw")])
       ])
     ])
   },

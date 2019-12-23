@@ -190,6 +190,7 @@ export default {
       }
     },
 
+    setBetInfo() {},
     startTrade() {
       this.tradeStatus = true;
       this.breakTrade = false;
