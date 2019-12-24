@@ -190,8 +190,33 @@ export default {
       }
     },
 
-    setBetInfo() {},
+    automateBetsParam()
+    {
+      var formBodyData = new FormData();
+      formBodyData.set("a", "PlaceAutomatedBets");
+      formBodyData.set("s", $cookies.get("SessionCookies"));
+      formBodyData.set("BasePayIn", "");
+      formBodyData.set("Low", "");
+      formBodyData.set("High", "");
+      formBodyData.set("MaxBets", "");
+      formBodyData.set("ResetOnWin", "");
+      formBodyData.set("ResetOnLose", "");
+      formBodyData.set("IncreaseOnWinPercent", "");
+      formBodyData.set("IncreaseOnLosePercent", "");
+      formBodyData.set("MaxPayIn", "");
+      formBodyData.set("ResetOnLoseMaxBet", "");
+      formBodyData.set("StopOnLoseMaxBet", "");
+      formBodyData.set("StopMaxBalance", "");
+      formBodyData.set("StopMinBalance", "");
+      formBodyData.set("StartingPayIn", "");
+      formBodyData.set("Compact", "");
+      formBodyData.set("Currency", "doge");
+      formBodyData.set("ProtocolVersion", "2");
+    },
     startTrade() {
+      var RANGE_MIN = 0;
+      var RANGE_MAX = 999999;
+
       this.tradeStatus = true;
       this.breakTrade = false;
       this.tradeList = [];
@@ -203,7 +228,6 @@ export default {
             clearInterval(timer);
           }
           if (this.breakTrade === false) {
-            console.log("turn no. " + counter);
             this.tradeList.push({
               win: true,
               hiLo: "H",
@@ -211,9 +235,9 @@ export default {
               payOut: 2000,
               profit: 1800
             });
+            this.balance += (1/0.00000001);
+            console.log(Math.floor(this.balance));
             this.isWin = true;
-            console.log(this.isWin);
-            console.log(this.tradeList);
             counter++;
           }
         }.bind(this),

@@ -76,7 +76,6 @@ export default {
       });
 
       this.axios.get(baseUrl).then(response => {
-        console.log(response.data.config_data);
         if(this.$localStorage.set("configData", response.data.config_data)){
           loader.hide();
           let toast = this.$toasted.show("Setting Loaded !", {
