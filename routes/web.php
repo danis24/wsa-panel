@@ -24,3 +24,4 @@ Route::get('/settings/loads', 'HomeController@index')->name('setting.load');
 Route::get('/settings/collections', 'Settings\SettingController@browse')->name('setting.browse');
 Route::post('/settings/create', 'Settings\SettingController@create')->name('setting.create');
 Route::delete('/settings/collections/{id}', 'Settings\SettingController@delete')->name('setting.delete');
+Route::get('/settings/collections/{id}', 'Settings\SettingController@select')->name('settings.select');

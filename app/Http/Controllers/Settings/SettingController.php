@@ -28,6 +28,15 @@ class SettingController extends Controller
         return response()->json($settings);
     }
 
+    public function select($id)
+    {
+        $settings = $this->setting
+            ->where("user_id", "=", Auth::id())
+            ->where("id", "=", $id)
+            ->first();
+        return response()->json($settings);
+    }
+
     public function create(Request $request)
     {
         $request->validate([

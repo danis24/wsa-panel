@@ -19,7 +19,7 @@
                       >Delete</button>
                     </div>
                     <div class="col-sm-6">
-                      <button class="btn btn-warning btn-block">Load</button>
+                      <button class="btn btn-warning btn-block" @click.prevent="loadSettings(collection.id)">Load</button>
                     </div>
                   </div>
                 </td>
@@ -62,6 +62,29 @@ export default {
         });
         if (response.data.status == "ok") {
           this.settingCollections.splice(event, 1);
+        }
+      });
+    },
+    loadSettings(id)
+    {
+      let baseUrl = "http://localhost:8000/settings/collections/" + id;
+
+      let loader = this.$loading.show({
+        loader: "dots",
+        color: "#5EABED",
+        backgroundColor: "#000000"
+      });
+
+      this.axios.get(baseUrl).then(response => {
+        console.log(response.data.config_data);
+        if(this.$localStorage.set("configData", response.data.config_data)){
+          loader.hide();
+          let toast = this.$toasted.show("Setting Loaded !", {
+            theme: "toasted-primary",
+            position: "top-left",
+            duration: 5000
+          });
+         this.$router.push('/settings');
         }
       });
     }
