@@ -1004,7 +1004,7 @@
               </div>
             </div>
             <div class="col-6">
-              <button class="btn btn-warning btn-block float-right">Load</button>
+              <router-link to="/settings/loads" class="btn btn-warning btn-block float-right">Load</router-link>
             </div>
           </div>
         </div>
@@ -1030,13 +1030,33 @@
             <form>
               <div class="form-group">
                 <label class="form-label">Settings Name</label>
-                <input type="text" class="form-control" placeholder="Settings Name" />
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Settings Name"
+                  v-model="settingNameValue"
+                />
               </div>
             </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save Settings</button>
+            <div v-if="this.saveSettingLoader === true">
+              <button class="btn btn-primary btn-block d-flex justify-content-center">
+                <fulfilling-bouncing-circle-spinner
+                  :animation-duration="4000"
+                  :size="25"
+                  color="#fff"
+                />
+              </button>
+            </div>
+            <div v-if="this.saveSettingLoader === false">
+              <button
+                type="button"
+                class="btn btn-primary"
+                @click.prevent="saveAsEvent"
+              >Save Settings</button>
+            </div>
           </div>
         </div>
       </div>
@@ -1046,13 +1066,18 @@
 
 <script>
 import { HollowDotsSpinner } from "epic-spinners";
+import { FulfillingBouncingCircleSpinner } from "epic-spinners";
+import $ from "jquery";
 
 export default {
   components: {
-    HollowDotsSpinner
+    HollowDotsSpinner,
+    FulfillingBouncingCircleSpinner
   },
   data() {
     return {
+      saveSettingLoader: false,
+      settingNameValue: "",
       showModal: false,
       saveLoader: false,
       configData: {
@@ -1158,6 +1183,23 @@ export default {
     }
   },
   methods: {
+    saveAsEvent: function() {
+      this.saveSettingLoader = true;
+      let baseUrl = "http://localhost:8000/settings/create";
+      var bodyFormData = new FormData();
+      bodyFormData.set("settings_name", this.settingNameValue);
+      bodyFormData.set("config_data", JSON.stringify(this.configData));
+      this.axios.post(baseUrl, bodyFormData).then(response => {
+        let toast = this.$toasted.show(response.data.message, {
+          theme: "toasted-primary",
+          position: "top-left",
+          duration: 3000
+        });
+        this.saveSettingLoader = false;
+        $("#saveAsModal").modal("hide");
+        this.$emit("saveAsEvent");
+      });
+    },
     firstChangeBeerwenValidate: function() {
       if (
         this.configData.changeBeetwen.first < 5 ||

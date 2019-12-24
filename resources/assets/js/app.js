@@ -29,6 +29,7 @@ Vue.use(VueLocalStorage)
 import TradeComponent from './components/TradeComponent.vue';
 import SettingComponent from './components/SettingComponent.vue';
 import AccountComponent from './components/AccountComponent.vue';
+import SettingLoadComponent from './components/SettingLoadComponent.vue';
 
 const routes = [
     {
@@ -45,6 +46,11 @@ const routes = [
         name: 'account',
         path: '/accounts',
         component: AccountComponent
+    },
+    {
+        name: 'load',
+        path: '/settings/loads',
+        component: SettingLoadComponent
     }
 ];
 

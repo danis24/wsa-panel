@@ -1476,6 +1476,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_SettingComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_SettingComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_AccountComponent_vue__ = __webpack_require__(163);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_AccountComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__components_AccountComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_SettingLoadComponent_vue__ = __webpack_require__(190);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_SettingLoadComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_SettingLoadComponent_vue__);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -1508,6 +1510,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_6_vue_localstorage___default.a);
 
 
 
+
 var routes = [{
     name: 'home',
     path: '/home',
@@ -1520,6 +1523,10 @@ var routes = [{
     name: 'account',
     path: '/accounts',
     component: __WEBPACK_IMPORTED_MODULE_10__components_AccountComponent_vue___default.a
+}, {
+    name: 'load',
+    path: '/settings/loads',
+    component: __WEBPACK_IMPORTED_MODULE_11__components_SettingLoadComponent_vue___default.a
 }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
@@ -69207,6 +69214,8 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_epic_spinners__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
 //
 //
 //
@@ -70253,15 +70262,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    HollowDotsSpinner: __WEBPACK_IMPORTED_MODULE_0_epic_spinners__["b" /* HollowDotsSpinner */]
+    HollowDotsSpinner: __WEBPACK_IMPORTED_MODULE_0_epic_spinners__["b" /* HollowDotsSpinner */],
+    FulfillingBouncingCircleSpinner: __WEBPACK_IMPORTED_MODULE_0_epic_spinners__["a" /* FulfillingBouncingCircleSpinner */]
   },
   data: function data() {
     return {
+      saveSettingLoader: false,
+      settingNameValue: "",
       showModal: false,
       saveLoader: false,
       configData: {
@@ -70368,6 +70402,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   methods: {
+    saveAsEvent: function saveAsEvent() {
+      var _this = this;
+
+      this.saveSettingLoader = true;
+      var baseUrl = "http://localhost:8000/settings/create";
+      var bodyFormData = new FormData();
+      bodyFormData.set("settings_name", this.settingNameValue);
+      bodyFormData.set("config_data", JSON.stringify(this.configData));
+      this.axios.post(baseUrl, bodyFormData).then(function (response) {
+        var toast = _this.$toasted.show(response.data.message, {
+          theme: "toasted-primary",
+          position: "top-left",
+          duration: 3000
+        });
+        _this.saveSettingLoader = false;
+        __WEBPACK_IMPORTED_MODULE_1_jquery___default()("#saveAsModal").modal("hide");
+        _this.$emit("saveAsEvent");
+      });
+    },
     firstChangeBeerwenValidate: function firstChangeBeerwenValidate() {
       if (this.configData.changeBeetwen.first < 5 || this.configData.changeBeetwen.first > 95) {
         var toast = this.$toasted.show("Change Beetwen Must Be 5 - 95 !", {
@@ -73326,11 +73379,138 @@ var render = function() {
             ])
           : _vm._e(),
         _vm._v(" "),
-        _vm._m(28)
+        _c("div", { staticClass: "card p-3" }, [
+          _c("div", { staticClass: "row" }, [
+            _vm._m(28),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "col-6" },
+              [
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn btn-warning btn-block float-right",
+                    attrs: { to: "/settings/loads" }
+                  },
+                  [_vm._v("Load")]
+                )
+              ],
+              1
+            )
+          ])
+        ])
       ])
     ]),
     _vm._v(" "),
-    _vm._m(29)
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "saveAsModal",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "saveAsModalLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(29),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c("form", [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { staticClass: "form-label" }, [
+                      _vm._v("Settings Name")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.settingNameValue,
+                          expression: "settingNameValue"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text", placeholder: "Settings Name" },
+                      domProps: { value: _vm.settingNameValue },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.settingNameValue = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-footer" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-secondary",
+                    attrs: { type: "button", "data-dismiss": "modal" }
+                  },
+                  [_vm._v("Close")]
+                ),
+                _vm._v(" "),
+                this.saveSettingLoader === true
+                  ? _c("div", [
+                      _c(
+                        "button",
+                        {
+                          staticClass:
+                            "btn btn-primary btn-block d-flex justify-content-center"
+                        },
+                        [
+                          _c("fulfilling-bouncing-circle-spinner", {
+                            attrs: {
+                              "animation-duration": 4000,
+                              size: 25,
+                              color: "#fff"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                this.saveSettingLoader === false
+                  ? _c("div", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.saveAsEvent($event)
+                            }
+                          }
+                        },
+                        [_vm._v("Save Settings")]
+                      )
+                    ])
+                  : _vm._e()
+              ])
+            ])
+          ]
+        )
+      ]
+    )
   ])
 }
 var staticRenderFns = [
@@ -73626,28 +73806,16 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card p-3" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-6" }, [
-          _c("div", [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-danger btn-block",
-                attrs: { "data-toggle": "modal", "data-target": "#saveAsModal" }
-              },
-              [_vm._v("Save As")]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-6" }, [
-          _c(
-            "button",
-            { staticClass: "btn btn-warning btn-block float-right" },
-            [_vm._v("Load")]
-          )
-        ])
+    return _c("div", { staticClass: "col-6" }, [
+      _c("div", [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-danger btn-block",
+            attrs: { "data-toggle": "modal", "data-target": "#saveAsModal" }
+          },
+          [_vm._v("Save As")]
+        )
       ])
     ])
   },
@@ -73655,80 +73823,22 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "modal fade",
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "saveAsModalLabel" } },
+        [_vm._v("Save As")]
+      ),
+      _vm._v(" "),
+      _c("button", {
+        staticClass: "close",
         attrs: {
-          id: "saveAsModal",
-          tabindex: "-1",
-          role: "dialog",
-          "aria-labelledby": "saveAsModalLabel",
-          "aria-hidden": "true"
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
         }
-      },
-      [
-        _c(
-          "div",
-          { staticClass: "modal-dialog", attrs: { role: "document" } },
-          [
-            _c("div", { staticClass: "modal-content" }, [
-              _c("div", { staticClass: "modal-header" }, [
-                _c(
-                  "h5",
-                  {
-                    staticClass: "modal-title",
-                    attrs: { id: "saveAsModalLabel" }
-                  },
-                  [_vm._v("Save As")]
-                ),
-                _vm._v(" "),
-                _c("button", {
-                  staticClass: "close",
-                  attrs: {
-                    type: "button",
-                    "data-dismiss": "modal",
-                    "aria-label": "Close"
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-body" }, [
-                _c("form", [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", { staticClass: "form-label" }, [
-                      _vm._v("Settings Name")
-                    ]),
-                    _vm._v(" "),
-                    _c("input", {
-                      staticClass: "form-control",
-                      attrs: { type: "text", placeholder: "Settings Name" }
-                    })
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal-footer" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary",
-                    attrs: { type: "button", "data-dismiss": "modal" }
-                  },
-                  [_vm._v("Close")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  { staticClass: "btn btn-primary", attrs: { type: "button" } },
-                  [_vm._v("Save Settings")]
-                )
-              ])
-            ])
-          ]
-        )
-      ]
-    )
+      })
+    ])
   }
 ]
 render._withStripped = true
@@ -76283,6 +76393,229 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(191)
+/* template */
+var __vue_template__ = __webpack_require__(192)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/SettingLoadComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-36aaf504", Component.options)
+  } else {
+    hotAPI.reload("data-v-36aaf504", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 191 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      settingCollections: []
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    var baseUrl = "http://localhost:8000/settings/collections";
+    this.axios.get(baseUrl).then(function (response) {
+      _this.settingCollections = response.data;
+    });
+  },
+
+  methods: {
+    deleteCollection: function deleteCollection(event, id) {
+      var _this2 = this;
+
+      var baseUrl = "http://localhost:8000/settings/collections/" + id;
+      var loader = this.$loading.show({
+        loader: "dots",
+        color: "#5EABED",
+        backgroundColor: "#000000"
+      });
+      this.axios.delete(baseUrl).then(function (response) {
+        loader.hide();
+        var toast = _this2.$toasted.show(response.data.message, {
+          theme: "toasted-primary",
+          position: "top-left",
+          duration: 5000
+        });
+        if (response.data.status == "ok") {
+          _this2.settingCollections.splice(event, 1);
+        }
+      });
+    }
+  }
+});
+
+/***/ }),
+/* 192 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "card" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("table", { staticClass: "table card-table" }, [
+            _c(
+              "tbody",
+              _vm._l(_vm.settingCollections, function(collection, index) {
+                return _c("tr", { key: collection.id }, [
+                  _c("td", [_vm._v(_vm._s(collection.settings_name))]),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    { staticClass: "text-right", attrs: { width: "25%" } },
+                    [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-sm-6" }, [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-danger btn-block",
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  return _vm.deleteCollection(
+                                    index,
+                                    collection.id
+                                  )
+                                }
+                              }
+                            },
+                            [_vm._v("Delete")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _vm._m(1, true)
+                      ])
+                    ]
+                  )
+                ])
+              }),
+              0
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h2", { staticClass: "card-title" }, [_vm._v("Setting Collections")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-6" }, [
+      _c("button", { staticClass: "btn btn-warning btn-block" }, [
+        _vm._v("Load")
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-36aaf504", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
