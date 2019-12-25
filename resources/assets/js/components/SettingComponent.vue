@@ -408,6 +408,7 @@
                     name="custom-switch-checkbox"
                     class="custom-switch-input"
                     :checked="configData.baseTradeAmount.usePersentage == true"
+                    v-model="configData.baseTradeAmount.usePersentage"
                   />
                   <span class="custom-switch-indicator"></span>
                 </label>
@@ -681,6 +682,7 @@
                           type="checkbox"
                           class="custom-control-input"
                           :checked="configData.tradeAmount.maxTradeAmount.mathBaseAmount == true"
+                          v-model="configData.tradeAmount.maxTradeAmount.mathBaseAmount"
                         />
                         <span class="custom-control-label">X Base Amount</span>
                       </label>

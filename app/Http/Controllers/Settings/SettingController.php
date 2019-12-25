@@ -49,9 +49,9 @@ class SettingController extends Controller
             "config_data" => $request->config_data
         ]);
         if ($setting) {
-            return $this->message("ok", "Delete Successfuly !");
+            return $this->message("ok", "Setting Saved !");
         }
-        return $this->message("failed", "Delete Failed !");
+        return $this->message("failed", "Setting Failed !");
     }
 
     public function delete($id)

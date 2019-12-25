@@ -19,7 +19,10 @@
                       >Delete</button>
                     </div>
                     <div class="col-sm-6">
-                      <button class="btn btn-warning btn-block" @click.prevent="loadSettings(collection.id)">Load</button>
+                      <button
+                        class="btn btn-warning btn-block"
+                        @click.prevent="loadSettings(collection.id)"
+                      >Load</button>
                     </div>
                   </div>
                 </td>
@@ -65,8 +68,7 @@ export default {
         }
       });
     },
-    loadSettings(id)
-    {
+    loadSettings(id) {
       let baseUrl = "http://localhost:8000/settings/collections/" + id;
 
       let loader = this.$loading.show({
@@ -76,14 +78,14 @@ export default {
       });
 
       this.axios.get(baseUrl).then(response => {
-        if(this.$localStorage.set("configData", response.data.config_data)){
+        if (this.$localStorage.set("configData", response.data.config_data)) {
           loader.hide();
           let toast = this.$toasted.show("Setting Loaded !", {
             theme: "toasted-primary",
             position: "top-left",
             duration: 5000
           });
-         this.$router.push('/settings');
+          this.$router.push("/settings");
         }
       });
     }

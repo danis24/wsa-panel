@@ -152,7 +152,14 @@ export default {
       balanceLoader: false,
       tradeLoader: false,
       isWin: false,
-      tradeStatus: false
+      settings: {},
+      tradeStatus: false,
+      options: {
+        changePercent: 5,
+        low: 0,
+        high: 999999,
+        basePayIn: 0
+      }
     };
   },
   components: {
@@ -190,15 +197,14 @@ export default {
       }
     },
 
-    automateBetsParam()
-    {
+    automateBetsParam() {
       var formBodyData = new FormData();
       formBodyData.set("a", "PlaceAutomatedBets");
       formBodyData.set("s", $cookies.get("SessionCookies"));
-      formBodyData.set("BasePayIn", "");
-      formBodyData.set("Low", "");
-      formBodyData.set("High", "");
-      formBodyData.set("MaxBets", "");
+      formBodyData.set("BasePayIn", this.options.basePayIn);
+      formBodyData.set("Low", this.options.low);
+      formBodyData.set("High", this.options.high);
+      formBodyData.set("MaxBets", this.settings.tradeCount);
       formBodyData.set("ResetOnWin", "");
       formBodyData.set("ResetOnLose", "");
       formBodyData.set("IncreaseOnWinPercent", "");
@@ -213,15 +219,37 @@ export default {
       formBodyData.set("Currency", "doge");
       formBodyData.set("ProtocolVersion", "2");
     },
-    startTrade() {
+    generateLowHigh(low, high) {
+      this.options.low = low;
+      this.options.high = high;
+    },
+    generatePercent(percent, lower = true) {
       var RANGE_MIN = 0;
       var RANGE_MAX = 999999;
-
+      var PERCENT_MIN = 5.0;
+      var PERCENT_MAX = 95.0;
+      if (percent < PERCENT_MIN || PERCENT_MAX > 95) {
+        console.log("Percent must be between 5 and 95");
+      }
+      if (lower) {
+        this.generateLowHigh(RANGE_MIN, RANGE_MAX * (percent / 100));
+      } else {
+        this.generateLowHigh(RANGE_MAX * ((100 - percent) / 100), RANGE_MAX);
+      }
+    },
+    getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      this.options.changePercent =
+        Math.floor(Math.random() * (max - min + 1)) + min;
+    },
+    startTrade() {
       this.tradeStatus = true;
       this.breakTrade = false;
       this.tradeList = [];
       this.tradeLoader = true;
       var counter = 0;
+      this.settings = JSON.parse(this.$localStorage.get("configData"));
       var timer = setInterval(
         function() {
           if (this.breakTrade === true) {
@@ -235,8 +263,26 @@ export default {
               payOut: 2000,
               profit: 1800
             });
-            this.balance += (1/0.00000001);
-            console.log(Math.floor(this.balance));
+
+            this.balance += 1 / 0.00000001;
+
+            let changeBetwen = this.getRandomInt(
+              this.settings.changeBeetwen.first,
+              this.settings.changeBeetwen.last
+            );
+            let percent = this.generatePercent(
+              this.options.changePercent,
+              false
+            );
+
+            if (this.settings.baseTradeAmount.usePersentage == true) {
+              this.basePayIn =
+                (this.settings.baseTradeAmount.value * this.balance) / 100;
+            } else {
+              this.basePayIn = this.settings.baseTradeAmount.value / 0.00000001;
+            }
+            console.log(this.basePayIn);
+
             this.isWin = true;
             counter++;
           }
