@@ -237,6 +237,7 @@
                           name="custom-switch-checkbox"
                           class="custom-switch-input"
                           :checked="configData.martingleSingle.onWin.status == true"
+                          v-model="configData.martingleSingle.onWin.status"
                         />
                         <span class="custom-switch-indicator"></span>
                       </label>
@@ -267,6 +268,7 @@
                           name="custom-switch-checkbox"
                           class="custom-switch-input"
                           :checked="configData.martingleSingle.onLose.status"
+                          v-model="configData.martingleSingle.onLose.status"
                         />
                         <span class="custom-switch-indicator"></span>
                       </label>
@@ -1276,7 +1278,7 @@ export default {
         let toast = this.$toasted.show("Setting Saved !", {
           theme: "toasted-primary",
           position: "top-right",
-          duration: 5000
+          duration: 500
         });
       }
     }

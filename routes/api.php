@@ -36,3 +36,5 @@ Route::post('/v1/create-withdraw', 'Profiles\AccountController@createWithdraw')-
 Route::get('/v1/withdraw-histories', 'Profiles\AccountController@getWithdrawl')->name('profile.getWithdrawl');
 //@getServerSeedHash
 Route::get('/v1/seeds', 'Profiles\AccountController@getServerSeedHash')->name('profile.getServerSeedHash');
+
+Route::get('/v1/bets', 'Profiles\AccountController@placeAutomatedBet')->name('profile.placeAutomatedBet');

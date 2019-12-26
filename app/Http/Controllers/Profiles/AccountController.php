@@ -141,4 +141,31 @@ class AccountController extends Controller
         $response = json_decode($this->postData($data)->getBody());
         return response()->json($response);
     }
+    public function placeAutomatedBet(Request $request)
+    {
+        $data = [
+            'form_params' => [
+                "a" => "PlaceAutomatedBets",
+                "s" => $request->get("sessions"),
+                "BasePayIn" => 1000,
+                "Low" => 0,
+                "High" => 499499,
+                "MaxBets" => 3,
+                "ResetOnWin" => 1,
+                "ResetOnLose" => 0,
+                "IncreaseOnWinPercent" => 0,
+                "IncreaseOnLosePercent" => 1.0,
+                "MaxPayIn" => 2500,
+                "ResetOnLoseMaxBet" => 0,
+                "StopOnLoseMaxBet" => 0,
+                "StopMaxBalance" => 0,
+                "StopMinBalance" => 0,
+                "ClientSeed" => 987654321,
+                "Currency" => "doge",
+                "ProtocolVersion" => 2,
+            ]
+        ];
+        $response = json_decode($this->postData($data)->getBody());
+        return response()->json($response);
+    }
 }
