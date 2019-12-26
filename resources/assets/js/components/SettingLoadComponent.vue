@@ -60,7 +60,7 @@ export default {
         loader.hide();
         let toast = this.$toasted.show(response.data.message, {
           theme: "toasted-primary",
-          position: "top-left",
+          position: "top-right",
           duration: 5000
         });
         if (response.data.status == "ok") {
@@ -82,7 +82,7 @@ export default {
           loader.hide();
           let toast = this.$toasted.show("Setting Loaded !", {
             theme: "toasted-primary",
-            position: "top-left",
+            position: "top-right",
             duration: 5000
           });
           this.$router.push("/settings");

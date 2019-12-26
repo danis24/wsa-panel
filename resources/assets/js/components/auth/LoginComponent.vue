@@ -87,7 +87,7 @@ export default {
             "Register Successed :) Please Login Now !",
             {
               theme: "toasted-primary",
-              position: "top-left",
+              position: "top-right",
               duration: 5000
             }
           );
@@ -96,7 +96,7 @@ export default {
           loader.hide();
           let toast = this.$toasted.show("Username Already Taken !", {
             theme: "toasted-primary",
-            position: "top-left",
+            position: "top-right",
             duration: 5000
           });
         }
@@ -124,7 +124,7 @@ export default {
           loader.hide();
           let toast = this.$toasted.show(response.data.error, {
             theme: "toasted-primary",
-            position: "top-left",
+            position: "top-right",
             duration: 5000
           });
         }
@@ -134,7 +134,7 @@ export default {
             "Username or Password is Incorrect !!",
             {
               theme: "toasted-primary",
-              position: "top-left",
+              position: "top-right",
               duration: 5000
             }
           );
@@ -147,7 +147,7 @@ export default {
 
           let toast = this.$toasted.show("Login Success :)", {
             theme: "toasted-primary",
-            position: "top-left",
+            position: "top-right",
             duration: 5000
           });
         }

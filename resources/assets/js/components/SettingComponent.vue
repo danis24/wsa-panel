@@ -1194,7 +1194,7 @@ export default {
       this.axios.post(baseUrl, bodyFormData).then(response => {
         let toast = this.$toasted.show(response.data.message, {
           theme: "toasted-primary",
-          position: "top-left",
+          position: "top-right",
           duration: 3000
         });
         this.saveSettingLoader = false;
@@ -1209,7 +1209,7 @@ export default {
       ) {
         let toast = this.$toasted.show("Change Beetwen Must Be 5 - 95 !", {
           theme: "toasted-primary",
-          position: "top-left",
+          position: "top-right",
           duration: 3000
         });
         this.configData.changeBeetwen.first = 5;
@@ -1222,7 +1222,7 @@ export default {
           "First change must be less then the last !",
           {
             theme: "toasted-primary",
-            position: "top-left",
+            position: "top-right",
             duration: 3000
           }
         );
@@ -1237,7 +1237,7 @@ export default {
       ) {
         let toast = this.$toasted.show("Change Beetwen Must Be 5 - 95 !", {
           theme: "toasted-primary",
-          position: "top-left",
+          position: "top-right",
           duration: 3000
         });
         this.configData.changeBeetwen.last = 95;
@@ -1249,7 +1249,7 @@ export default {
           "First change must be less then the last !",
           {
             theme: "toasted-primary",
-            position: "top-left",
+            position: "top-right",
             duration: 3000
           }
         );
@@ -1261,7 +1261,7 @@ export default {
       if (this.configData.tradeCount < 1 || this.configData.tradeCount > 200) {
         let toast = this.$toasted.show("Trade Count Must Be 1 - 200 !", {
           theme: "toasted-primary",
-          position: "top-left",
+          position: "top-right",
           duration: 3000
         });
         this.configData.tradeCount = 200;
@@ -1275,7 +1275,7 @@ export default {
         this.saveLoader = false;
         let toast = this.$toasted.show("Setting Saved !", {
           theme: "toasted-primary",
-          position: "top-left",
+          position: "top-right",
           duration: 5000
         });
       }

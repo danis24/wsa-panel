@@ -158,7 +158,10 @@ export default {
         changePercent: 5,
         low: 0,
         high: 999999,
-        basePayIn: 0
+        basePayIn: 0,
+        resetOnWin: 0,
+        resetOnLose: 0,
+        clientSeed: 0
       }
     };
   },
@@ -176,7 +179,7 @@ export default {
           "session not found, Please Login Now !",
           {
             theme: "toasted-primary",
-            position: "top-left",
+            position: "top-right",
             duration: 5000
           }
         );
@@ -205,7 +208,7 @@ export default {
       formBodyData.set("Low", this.options.low);
       formBodyData.set("High", this.options.high);
       formBodyData.set("MaxBets", this.settings.tradeCount);
-      formBodyData.set("ResetOnWin", "");
+      formBodyData.set("ResetOnWin", this.options.resetOnWin);
       formBodyData.set("ResetOnLose", "");
       formBodyData.set("IncreaseOnWinPercent", "");
       formBodyData.set("IncreaseOnLosePercent", "");
@@ -215,9 +218,10 @@ export default {
       formBodyData.set("StopMaxBalance", "");
       formBodyData.set("StopMinBalance", "");
       formBodyData.set("StartingPayIn", "");
-      formBodyData.set("Compact", "");
+      formBodyData.set("Compact", 1);
+      formBodyData.set("ClientSeed", this.options.clientSeed);
       formBodyData.set("Currency", "doge");
-      formBodyData.set("ProtocolVersion", "2");
+      formBodyData.set("ProtocolVersion", 2);
     },
     generateLowHigh(low, high) {
       this.options.low = low;
@@ -243,6 +247,11 @@ export default {
       this.options.changePercent =
         Math.floor(Math.random() * (max - min + 1)) + min;
     },
+    generateClientSeed() {
+      this.options.clientSeed = Math.floor(
+        100000000 + Math.random() * 900000000
+      );
+    },
     startTrade() {
       this.tradeStatus = true;
       this.breakTrade = false;
@@ -266,23 +275,28 @@ export default {
 
             this.balance += 1 / 0.00000001;
 
-            let changeBetwen = this.getRandomInt(
+            // Generate Seed
+            this.generateClientSeed();
+            this.getRandomInt(
               this.settings.changeBeetwen.first,
               this.settings.changeBeetwen.last
             );
-            let percent = this.generatePercent(
-              this.options.changePercent,
-              false
-            );
 
+            // generate change percent high = false or low = true
+            this.generatePercent(this.options.changePercent, false);
+
+            //Setting Percent or not baseTrade value
             if (this.settings.baseTradeAmount.usePersentage == true) {
               this.basePayIn =
                 (this.settings.baseTradeAmount.value * this.balance) / 100;
             } else {
               this.basePayIn = this.settings.baseTradeAmount.value / 0.00000001;
             }
-            console.log(this.basePayIn);
 
+            //Defne resetOnWin true or False
+            if (this.settings.tradeAmount.winStreak.onWinStreak == false) {
+              this.options.resetOnWin = 1;
+            }
             this.isWin = true;
             counter++;
           }
