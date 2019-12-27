@@ -178,7 +178,9 @@ export default {
         StopOnLoseMaxBet: 0,
         StopMaxBalance: 0,
         StopMinBalance: 0,
-        profitTrade: 0
+        profitTrade: 0,
+        countWinStreak: 0,
+        countLoseStreak: 0
       },
       result: {
         isWin: false,
@@ -225,44 +227,51 @@ export default {
       }
     },
 
-    automateBetsParam() {
-      var formBodyData = new FormData();
-      formBodyData.set("a", "PlaceAutomatedBets");
-      formBodyData.set("s", $cookies.get("SessionCookies"));
-      formBodyData.set("BasePayIn", this.options.basePayIn);
-      formBodyData.set("Low", this.options.low);
-      formBodyData.set("High", this.options.high);
-      formBodyData.set("MaxBets", this.settings.tradeCount);
-      formBodyData.set("ResetOnWin", this.options.resetOnWin);
-      formBodyData.set("ResetOnLose", this.options.resetOnLose);
-      formBodyData.set(
-        "IncreaseOnWinPercent",
-        this.options.IncreaseOnWinPercent
-      );
-      formBodyData.set(
-        "IncreaseOnLosePercent",
-        this.options.IncreaseOnLosePercent
-      );
-      formBodyData.set("MaxPayIn", this.options.MaxPayIn);
-      formBodyData.set("ResetOnLoseMaxBet", this.options.ResetOnLoseMaxBet);
-      formBodyData.set("StopOnLoseMaxBet", this.options.StopOnLoseMaxBet);
-      formBodyData.set("StopMaxBalance", this.options.StopMaxBalance);
-      formBodyData.set("StopMinBalance", this.options.StopMinBalance);
-      formBodyData.set("ClientSeed", this.options.clientSeed);
-      formBodyData.set("Currency", "doge");
-      formBodyData.set("ProtocolVersion", 2);
+    async automateBetsParam() {
+      console.log(this.tradeStatus);
+      if (this.tradeStatus == true) {
+        var formBodyData = new FormData();
+        formBodyData.set("a", "PlaceAutomatedBets");
+        formBodyData.set("s", $cookies.get("SessionCookies"));
+        formBodyData.set("BasePayIn", this.options.basePayIn);
+        formBodyData.set("Low", this.options.low);
+        formBodyData.set("High", this.options.high);
+        formBodyData.set("MaxBets", this.settings.tradeCount);
+        formBodyData.set("ResetOnWin", this.options.resetOnWin);
+        formBodyData.set("ResetOnLose", this.options.resetOnLose);
+        formBodyData.set(
+          "IncreaseOnWinPercent",
+          this.options.IncreaseOnWinPercent
+        );
+        formBodyData.set(
+          "IncreaseOnLosePercent",
+          this.options.IncreaseOnLosePercent
+        );
+        formBodyData.set("MaxPayIn", this.options.MaxPayIn);
+        formBodyData.set("ResetOnLoseMaxBet", this.options.ResetOnLoseMaxBet);
+        formBodyData.set("StopOnLoseMaxBet", this.options.StopOnLoseMaxBet);
+        formBodyData.set("StopMaxBalance", this.options.StopMaxBalance);
+        formBodyData.set("StopMinBalance", this.options.StopMinBalance);
+        formBodyData.set("ClientSeed", this.options.clientSeed);
+        formBodyData.set("Currency", "doge");
+        formBodyData.set("ProtocolVersion", 2);
 
-      let baseUrl = "https://www.999doge.com/api/web.aspx";
-      this.axios
-        .post(baseUrl, formBodyData)
-        .then(baseUrl, formBodyData)
-        .then(response => {
-          this.result.payOut = response.data.PayOuts.reduce((a, b) => a + b, 0);
-          this.result.profit =
-            response.data.PayOuts.reduce((a, b) => a + b, 0) +
-            response.data.PayIns.reduce((a, b) => a + b, 0);
-          this.tradeResult();
-        });
+        let baseUrl = "https://www.999doge.com/api/web.aspx";
+        await this.axios
+          .post(baseUrl, formBodyData)
+          .then(baseUrl, formBodyData)
+          .then(response => {
+            this.result.payOut = response.data.PayOuts.reduce(
+              (a, b) => a + b,
+              0
+            );
+            this.result.profit =
+              response.data.PayOuts.reduce((a, b) => a + b, 0) +
+              response.data.PayIns.reduce((a, b) => a + b, 0);
+            this.tradeResult();
+          });
+        await this.delayOnWinLose();
+      }
     },
     generateLowHigh(low, high) {
       this.options.low = Math.floor(low);
@@ -303,6 +312,8 @@ export default {
 
       let htmlResult = "";
       if (profit > 0) {
+        this.options.countWinStreak += 1;
+        this.options.countLoseStreak = 0;
         htmlResult += '<tr class="alert alert-success mb-0">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
@@ -310,6 +321,8 @@ export default {
         htmlResult += "<td>" + profit.toFixed(2) + "</td>";
         htmlResult += "</tr>";
       } else {
+        this.options.countLoseStreak += 1;
+        this.options.countWinStreak = 0;
         htmlResult += '<tr class="alert alert-danger mb-0">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
@@ -384,7 +397,7 @@ export default {
       }
     },
     async sendMessage() {
-      if (this.tradeStatus) {
+      if (this.tradeStatus == true) {
         await this.sendRequest();
         this.sendMessage();
       }
@@ -436,6 +449,82 @@ export default {
         this.options.basePayIn = Math.floor(
           this.settings.baseTradeAmount.value / 0.00000001
         );
+      }
+    },
+    async winLoseStreak() {
+      let htmlResult = "";
+      if (this.settings.tradeAmount.winStreak.status == true) {
+        if (
+          this.settings.tradeAmount.winStreak.value ==
+          this.options.countWinStreak
+        ) {
+          if (this.settings.tradeAmount.winStreak.onWinStreak == "false") {
+            this.options.countWinStreak = 0;
+            this.options.basePayIn = Math.floor(
+              (this.settings.baseTradeAmount.value * this.balance) / 100
+            );
+            htmlResult += "<tr>";
+            htmlResult +=
+              "<td colspan='4' align='center'><b>Reset On Win Streak. Delay " +
+              this.settings.tradeAmount.winStreak.ifResetDelay +
+              " Seconds</b></td>";
+            htmlResult += "</tr>";
+            if (this.settings.tradeAmount.winStreak.ifResetDelay > 0) {
+              this.options.delay = Number.parseInt(
+                this.settings.tradeAmount.winStreak.ifResetDelay * 1000
+              );
+            } else {
+              this.options.delay = 500;
+            }
+            $("#htmlResult").prepend(htmlResult);
+            await this.delay(this.options.delay);
+          } else {
+            this.options.countWinStreak = 0;
+            this.stopTradding();
+            htmlResult += "<tr>";
+            htmlResult +=
+              "<td colspan='4' align='center'><b>STOP TRADE ON WIN COUNT STREAK</b></td>";
+            htmlResult += "</tr>";
+            $("#htmlResult").prepend(htmlResult);
+          }
+        }
+      }
+
+      if (this.settings.tradeAmount.loseStreak.status == true) {
+        if (
+          this.settings.tradeAmount.loseStreak.value ==
+          this.options.countLoseStreak
+        ) {
+          if (this.settings.tradeAmount.loseStreak.onLoseStreak == "false") {
+            this.options.countLoseStreak = 0;
+            this.options.basePayIn = Math.floor(
+              (this.settings.baseTradeAmount.value * this.balance) / 100
+            );
+            htmlResult += "<tr>";
+            htmlResult +=
+              "<td colspan='4' align='center'><b>Reset On Lose Streak. Delay " +
+              this.settings.tradeAmount.loseStreak.ifResetDelay +
+              " Seconds</b></td>";
+            htmlResult += "</tr>";
+            if (this.settings.tradeAmount.loseStreak.ifResetDelay > 0) {
+              this.options.delay = Number.parseInt(
+                this.settings.tradeAmount.loseStreak.ifResetDelay * 1000
+              );
+            } else {
+              this.options.delay = 500;
+            }
+            $("#htmlResult").prepend(htmlResult);
+            await this.delay(this.options.delay);
+          } else {
+            this.options.countLoseStreak = 0;
+            this.stopTradding();
+            htmlResult += "<tr>";
+            htmlResult +=
+              "<td colspan='4' align='center'><b>STOP TRADE ON LOSE COUNT STREAK</b></td>";
+            htmlResult += "</tr>";
+            $("#htmlResult").prepend(htmlResult);
+          }
+        }
       }
     },
     resetOnWinEvent() {
@@ -511,9 +600,8 @@ export default {
       this.ResetOnLoseMaxBetEvent();
 
       this.tradeLogic();
-      this.automateBetsParam();
-
-      await this.delayOnWinLose();
+      await this.winLoseStreak();
+      await this.automateBetsParam();
     }
   }
 };
