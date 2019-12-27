@@ -9,92 +9,108 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'LaraBot') }}</title>
-
-    <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/4.7.95/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="{{ asset('css/themes/vendor.bundle.base.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/themes/vendor.bundle.addons.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/themes/style.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
-        <div class="header py-4">
-                <div class="container">
-                    <div class="d-flex">
-                        <a class="header-brand" href="{{ route('home')}}">
-                            <img
-                                src="https://tabler.github.io/tabler/demo/brand/tabler.svg"
-                                class="header-brand-img"
-                                alt="tabler logo">
-                        </a>
-
-                        <div class="d-flex order-lg-2 ml-auto">
-                            @guest
-                                <div class="nav-item d-none d-md-flex">
-                                    <a class="btn btn-link" href="{{ route('login') }}">@lang('Login')</a>
-                                </div>
-                                <div class="nav-item d-none d-md-flex">
-                                    <a class="btn btn-link" href="{{ route('register') }}">@lang('Register')</a>
-                                </div>
-                            @else
-                            <div class="dropdown">
-                                <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
-                                    <span class="avatar" style="background-image: url()"></span>
-                                    <span class="ml-2 d-none d-lg-block">
-                                    <span class="text-default">{{ auth()->user()->name }}</span>
-                                        <small class="text-muted d-block mt-1">Administrator</small>
-                                    </span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
-                                        <i class="dropdown-icon fe fe-log-out"></i> @lang('Sign out')
-                                    </a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </div>
-                            @endguest
-                        </div>
-
-                        <a href="#" class="header-toggler d-lg-none ml-3 ml-lg-0" data-toggle="collapse" data-target="#headerMenuCollapse">
-                            <span class="header-toggler-icon"></span>
-                        </a>
-                    </div>
-                </div>
+<div id="app">        
+  <div class="container-scroller">
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+        <a class="navbar-brand brand-logo" href="index.html"><img src="../../images/logo.svg" alt="logo"/></a>
+        <a class="navbar-brand brand-logo-mini" href="index.html"><img src="../../images/logo-mini.svg" alt="logo"/></a>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+        <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+          <span class="mdi mdi-menu"></span>
+        </button>
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item nav-profile dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+              <img src="../../images/faces/face5.jpg" alt="profile"/>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+              <a class="dropdown-item">
+                <i class="mdi mdi-settings text-primary"></i>
+                Settings
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item">
+                <i class="mdi mdi-logout text-primary"></i>
+                Logout
+              </a>
             </div>
-
-        @auth
-            <div class="header collapse d-lg-flex p-0" id="headerMenuCollapse">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-3 ml-auto">
-                        </div>
-                        <div class="col-lg order-lg-first">
-                            <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
-                                <li class="nav-item">
-                                    <router-link to="/home" class="nav-link"><i class="fe fe-home"></i> Trade</router-link>
-                                </li>
-
-                                <li class="nav-item">
-                                    <router-link to="/settings" class="nav-link"><i class="fe fe-settings"></i> Setting</router-link>
-                                </li>
-
-                                <li class="nav-item">
-                                    <router-link to="/accounts" class="nav-link"><i class="fe fe-user"></i> account</router-link>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endauth
-
-        <main class="py-4">
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="mdi mdi-menu"></span>
+        </button>
+      </div>
+    </nav>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item">
+            <router-link to="/home" class="nav-link">
+              <i class="mdi mdi-view-dashboard-outline menu-icon"></i>
+              <span class="menu-title">Dashboard</span>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/trade" class="nav-link">
+              <i class="mdi mdi-finance menu-icon"></i>
+              <span class="menu-title">Trading Bot</span>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/settings" class="nav-link">
+              <i class="mdi mdi-codepen menu-icon"></i>
+              <span class="menu-title">Settings</span>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/accounts" class="nav-link">
+              <i class="mdi mdi-account-outline menu-icon"></i>
+              <span class="menu-title">Account</span>
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+              <i class="mdi mdi-logout menu-icon"></i>
+              <span class="menu-title">Logout</span>
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
             <router-view></router-view>
-        </main>
+        </div>
+      </div>
+      <!-- main-panel ends -->
     </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+</div>
+
+<script src="{{ asset('js/themes/vendor.bundle.base.js') }}"></script>
+<script src="{{ asset('js/themes/vendor.bundle.addons.js') }}"></script>
+<script src="{{ asset('js/themes/off-canvas.js') }}"></script>
+<script src="{{ asset('js/themes/hoverable-collapse.js') }}"></script>
+<script src="{{ asset('js/themes/template.js') }}"></script>
+<script src="{{ asset('js/themes/settings.js') }}"></script>
+<script src="{{ asset('js/themes/todolist.js') }}"></script>
+<script src="{{ asset('js/themes/dashboard.js') }}"></script>
+  
 </body>
 </html>

@@ -15,7 +15,7 @@ import axios from 'axios';
 import VueCookies from 'vue-cookies';
 import VueLoading from 'vue-loading-overlay';
 import Toasted from 'vue-toasted';
-import VueLocalStorage from 'vue-localstorage'
+import VueLocalStorage from 'vue-localstorage';
 
 import 'vue-loading-overlay/dist/vue-loading.css';
 
@@ -33,8 +33,8 @@ import SettingLoadComponent from './components/SettingLoadComponent.vue';
 
 const routes = [
     {
-        name: 'home',
-        path: '/home',
+        name: 'trade',
+        path: '/trade',
         component: TradeComponent
     },
     {

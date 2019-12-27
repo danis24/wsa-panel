@@ -12206,8 +12206,8 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_6_vue_localstorage___default.a);
 
 
 var routes = [{
-    name: 'home',
-    path: '/home',
+    name: 'trade',
+    path: '/trade',
     component: __WEBPACK_IMPORTED_MODULE_8__components_TradeComponent_vue___default.a
 }, {
     name: 'setting',
@@ -64032,7 +64032,7 @@ var index = {
       (
         process.server ||
         process.SERVER_BUILD ||
-        (Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).VUE_ENV === 'server')
+        (Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).VUE_ENV === 'server')
       )
     ) {
       return
@@ -64784,17 +64784,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -64873,10 +64862,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                console.log(this.tradeStatus);
-
                 if (!(this.tradeStatus == true)) {
-                  _context.next = 26;
+                  _context.next = 25;
                   break;
                 }
 
@@ -64902,24 +64889,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 formBodyData.set("ProtocolVersion", 2);
 
                 baseUrl = "https://www.999doge.com/api/web.aspx";
-                _context.next = 24;
+                _context.next = 23;
                 return this.axios.post(baseUrl, formBodyData).then(baseUrl, formBodyData).then(function (response) {
-                  _this2.result.payOut = response.data.PayOuts.reduce(function (a, b) {
-                    return a + b;
-                  }, 0);
-                  _this2.result.profit = response.data.PayOuts.reduce(function (a, b) {
-                    return a + b;
-                  }, 0) + response.data.PayIns.reduce(function (a, b) {
-                    return a + b;
-                  }, 0);
-                  _this2.tradeResult();
+                  if (response.data.InsufficientFunds) {
+                    var htmlResult = "<tr>";
+                    htmlResult += "<td colspan='4' align='center'><b>Balance Insufficient</b></td>";
+                    htmlResult += "</tr>";
+                    __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(htmlResult);
+                  } else if (response.data.TooFast) {
+                    var _htmlResult = "<tr>";
+                    _htmlResult += "<td colspan='4' align='center'><b>To Faset Delay 10 Seconds</b></td>";
+                    _htmlResult += "</tr>";
+                    __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(_htmlResult);
+                  } else {
+                    _this2.result.payOut = response.data.PayOuts.reduce(function (a, b) {
+                      return a + b;
+                    }, 0);
+                    _this2.result.profit = response.data.PayOuts.reduce(function (a, b) {
+                      return a + b;
+                    }, 0) + response.data.PayIns.reduce(function (a, b) {
+                      return a + b;
+                    }, 0);
+                    _this2.tradeResult();
+                  }
                 });
 
-              case 24:
-                _context.next = 26;
+              case 23:
+                _context.next = 25;
                 return this.delayOnWinLose();
 
-              case 26:
+              case 25:
               case "end":
                 return _context.stop();
             }
@@ -64975,7 +64974,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (profit > 0) {
         this.options.countWinStreak += 1;
         this.options.countLoseStreak = 0;
-        htmlResult += '<tr class="alert alert-success mb-0">';
+        htmlResult += '<tr class="alert alert-fill-success mb-0" align="center">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
         htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
@@ -64984,7 +64983,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       } else {
         this.options.countLoseStreak += 1;
         this.options.countWinStreak = 0;
-        htmlResult += '<tr class="alert alert-danger mb-0">';
+        htmlResult += '<tr class="alert alert-fill-danger mb-0" align="center">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
         htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
@@ -65023,6 +65022,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.tradeList = [];
       this.result.profitSession = 0;
       this.result.profitGlobal = 0;
+      this.baseTradeAmount();
       this.sendMessage();
     },
     stopTradding: function stopTradding() {
@@ -65106,13 +65106,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     martingleSingle: function martingleSingle() {
       if (this.settings.martingleSingle.onWin.status == true) {
         if (this.result.profit > 0) {
-          this.options.basePayIn = this.options.basePayIn + this.options.basePayIn * 100 / 100;
+          if (this.settings.tradeAmount.loseStreak.ifResetRecoverLose == "true") {
+            if (this.settings.baseTradeAmount.usePersentage == true) {
+              this.options.basePayIn = Math.floor(this.settings.baseTradeAmount.value * this.balance / 100) + this.options.basePayIn * this.settings.martingleSingle.onWin.value / 100;
+            } else {
+              this.options.basePayIn = Math.floor(this.settings.baseTradeAmount.value / 0.00000001) + this.options.basePayIn * this.settings.martingleSingle.onWin.value / 100;
+            }
+          } else {
+            this.baseTradeAmount();
+          }
         }
+      } else {
+        this.baseTradeAmount();
       }
       if (this.settings.martingleSingle.onLose.status == true) {
         if (this.result.profit < 0) {
-          this.options.basePayIn = this.options.basePayIn + this.options.basePayIn * 100 / 100;
+          if (this.settings.baseTradeAmount.usePersentage == true) {
+            this.options.basePayIn = Math.floor(this.settings.baseTradeAmount.value * this.balance / 100) + this.options.basePayIn * this.settings.martingleSingle.onLose.value / 100;
+          } else {
+            this.options.basePayIn = Math.floor(this.settings.baseTradeAmount.value / 0.00000001) + this.options.basePayIn * this.settings.martingleSingle.onLose.value / 100;
+          }
         }
+      } else {
+        this.baseTradeAmount();
       }
     },
     martingleMulti: function martingleMulti() {
@@ -65167,7 +65183,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 }
 
                 this.options.countWinStreak = 0;
-                this.options.basePayIn = Math.floor(this.settings.baseTradeAmount.value * this.balance / 100);
+                this.baseTradeAmount();
                 htmlResult += "<tr>";
                 htmlResult += "<td colspan='4' align='center'><b>Reset On Win Streak. Delay " + this.settings.tradeAmount.winStreak.ifResetDelay + " Seconds</b></td>";
                 htmlResult += "</tr>";
@@ -65209,7 +65225,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 }
 
                 this.options.countLoseStreak = 0;
-                this.options.basePayIn = Math.floor(this.settings.baseTradeAmount.value * this.balance / 100);
+                this.baseTradeAmount();
                 htmlResult += "<tr>";
                 htmlResult += "<td colspan='4' align='center'><b>Reset On Lose Streak. Delay " + this.settings.tradeAmount.loseStreak.ifResetDelay + " Seconds</b></td>";
                 htmlResult += "</tr>";
@@ -65301,7 +65317,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 // generate change percent high = false or low = true
                 this.generatePercent(this.options.changePercent, this.options.tradeLogic);
 
-                this.baseTradeAmount();
+                this.martingleSingle();
 
                 this.resetOnWinEvent();
 
@@ -66181,7 +66197,7 @@ var content = __webpack_require__(63);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("2d5cd52e", content, false, {});
+var update = __webpack_require__(2)("d2e60e4a", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -66405,7 +66421,7 @@ var content = __webpack_require__(69);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("badd3b24", content, false, {});
+var update = __webpack_require__(2)("3c8a32be", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -66611,7 +66627,7 @@ var content = __webpack_require__(74);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("177db916", content, false, {});
+var update = __webpack_require__(2)("cb6fb4bc", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -66843,7 +66859,7 @@ var content = __webpack_require__(79);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("48b6f238", content, false, {});
+var update = __webpack_require__(2)("559fa12b", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -67034,7 +67050,7 @@ var content = __webpack_require__(84);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("32c33e0e", content, false, {});
+var update = __webpack_require__(2)("71ecc241", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -67200,7 +67216,7 @@ var content = __webpack_require__(89);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("e8b75dde", content, false, {});
+var update = __webpack_require__(2)("4878a304", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -67393,7 +67409,7 @@ var content = __webpack_require__(94);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("15f84ff2", content, false, {});
+var update = __webpack_require__(2)("5a8c7718", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -67592,7 +67608,7 @@ var content = __webpack_require__(99);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("40fbd042", content, false, {});
+var update = __webpack_require__(2)("433bf468", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -67754,7 +67770,7 @@ var content = __webpack_require__(104);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("7edb65f9", content, false, {});
+var update = __webpack_require__(2)("45778ca6", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -67947,7 +67963,7 @@ var content = __webpack_require__(109);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("e0f7a060", content, false, {});
+var update = __webpack_require__(2)("591a6283", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -68143,7 +68159,7 @@ var content = __webpack_require__(114);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("5ef85c18", content, false, {});
+var update = __webpack_require__(2)("f3b01b32", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -68353,7 +68369,7 @@ var content = __webpack_require__(119);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("501e75ca", content, false, {});
+var update = __webpack_require__(2)("05c2963d", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -68551,7 +68567,7 @@ var content = __webpack_require__(124);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("308a7c30", content, false, {});
+var update = __webpack_require__(2)("7877015d", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -68746,7 +68762,7 @@ var content = __webpack_require__(129);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("44bff981", content, false, {});
+var update = __webpack_require__(2)("da84ab24", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -68930,7 +68946,7 @@ var content = __webpack_require__(134);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("5124cf76", content, false, {});
+var update = __webpack_require__(2)("df6358ae", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -69147,7 +69163,7 @@ var content = __webpack_require__(139);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("debe0f58", content, false, {});
+var update = __webpack_require__(2)("573d1f01", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -69355,7 +69371,7 @@ var content = __webpack_require__(144);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("4ef960ca", content, false, {});
+var update = __webpack_require__(2)("15ff3a12", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -69593,7 +69609,7 @@ var content = __webpack_require__(149);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("ef04d12c", content, false, {});
+var update = __webpack_require__(2)("f144f552", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -69790,7 +69806,7 @@ var content = __webpack_require__(154);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("0b6cd0dc", content, false, {});
+var update = __webpack_require__(2)("749cf489", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -69967,7 +69983,7 @@ var content = __webpack_require__(159);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("3249436f", content, false, {});
+var update = __webpack_require__(2)("3c94ecdc", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -70100,136 +70116,124 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-6 col-lg-6" }, [
-        _c("div", { staticClass: "row" }, [
+  return _c("div", [
+    _c("div", { staticClass: "row" }, [
+      _c(
+        "div",
+        { staticClass: "col-lg-6 grid-margin" },
+        [
           _vm._m(0),
           _vm._v(" "),
-          _c("div", { staticClass: "col-12" }, [
-            _c("div", { staticClass: "card" }, [
-              _c(
-                "div",
-                { staticClass: "card-alert alert alert-success mb-0" },
-                [
-                  _vm._v("\n              Balance :\n              "),
+          _c("div", { staticClass: "card" }, [
+            _c("div", { staticClass: "card-body" }, [
+              _vm._v("\n          Balance :\n          "),
+              _c("br"),
+              _vm._v(" "),
+              _c("b", [
+                _vm._v(_vm._s(Number.parseFloat(this.balance).toFixed(2)))
+              ]),
+              _vm._v(" Doge\n          "),
+              _c("div", { staticClass: "float-right" }, [
+                this.balanceLoader === true
+                  ? _c("div", [
+                      _c(
+                        "button",
+                        {
+                          staticClass:
+                            "btn btn-primary btn-rounded btn-icon d-flex justify-content-center"
+                        },
+                        [
+                          _c("fulfilling-bouncing-circle-spinner", {
+                            attrs: {
+                              "animation-duration": 4000,
+                              size: 25,
+                              color: "#fff"
+                            }
+                          })
+                        ],
+                        1
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                this.balanceLoader === false
+                  ? _c("div", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary btn-rounded btn-icon",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.getBalance()
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "mdi mdi-reload" })]
+                      )
+                    ])
+                  : _vm._e()
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _vm.tradeStatus === false
+            ? [
+                _c("div", { staticClass: "mt-3 alert alert-warning" }, [
+                  _vm._v("\n          TRADE STATUS : OFF\n        ")
+                ])
+              ]
+            : _vm._e(),
+          _vm._v(" "),
+          _vm.tradeStatus === true
+            ? [
+                _c("div", { staticClass: "mt-3 alert alert-success" }, [
+                  _vm._v("\n          TRADE STATUS : RUNNING\n        ")
+                ])
+              ]
+            : _vm._e(),
+          _vm._v(" "),
+          _c("div", { staticClass: "card p-3" }, [
+            _c("h5", { staticClass: "text-center" }, [_vm._v("Profit Trade")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-6" }, [
+                _c("p", { staticClass: "text-center" }, [
+                  _vm._v("\n              Sessions\n              "),
                   _c("br"),
-                  _vm._v(" "),
-                  _c("b", [
-                    _vm._v(_vm._s(Number.parseFloat(this.balance).toFixed(2)))
-                  ]),
-                  _vm._v(" Doge\n              "),
-                  _c("div", { staticClass: "float-right" }, [
-                    this.balanceLoader === true
-                      ? _c("div", [
-                          _c(
-                            "button",
-                            {
-                              staticClass:
-                                "btn btn-pill btn-success d-flex justify-content-center"
-                            },
-                            [
-                              _c("fulfilling-bouncing-circle-spinner", {
-                                attrs: {
-                                  "animation-duration": 4000,
-                                  size: 25,
-                                  color: "#fff"
-                                }
-                              })
-                            ],
-                            1
-                          )
-                        ])
-                      : _vm._e(),
-                    _vm._v(" "),
-                    this.balanceLoader === false
-                      ? _c("div", [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-pill btn-success",
-                              attrs: { type: "button" },
-                              on: {
-                                click: function($event) {
-                                  $event.preventDefault()
-                                  return _vm.getBalance()
-                                }
-                              }
-                            },
-                            [_c("i", { staticClass: "fe fe-refresh-cw" })]
-                          )
-                        ])
-                      : _vm._e()
-                  ])
-                ]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-12" }, [
-            _c("div", { staticClass: "card" }, [
-              _c(
-                "div",
-                { staticClass: "card-alert alert alert-primary mb-0" },
-                [
-                  _vm._v("\n              TRADE STATUS :\n              "),
-                  _vm.tradeStatus === false
-                    ? _c("label", [_vm._v("OFF")])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.tradeStatus === true
-                    ? _c("label", [_vm._v("ON")])
-                    : _vm._e()
-                ]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-12" }, [
-            _c("div", { staticClass: "card p-3" }, [
-              _c("h5", { staticClass: "text-center" }, [
-                _vm._v("Profit Trade")
+                  _vm._v(
+                    "\n              " +
+                      _vm._s(
+                        Number.parseFloat(this.result.profitSession).toFixed(2)
+                      ) +
+                      "\n            "
+                  )
+                ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-6" }, [
-                  _c("p", { staticClass: "text-center" }, [
-                    _vm._v("\n                  Sessions\n                  "),
-                    _c("br"),
-                    _vm._v(
-                      "\n                  " +
-                        _vm._s(
-                          Number.parseFloat(this.result.profitSession).toFixed(
-                            2
-                          )
-                        ) +
-                        "\n                "
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-6" }, [
-                  _c("p", { staticClass: "text-center" }, [
-                    _vm._v("\n                  Global\n                  "),
-                    _c("br"),
-                    _vm._v(
-                      "\n                  " +
-                        _vm._s(
-                          Number.parseFloat(this.result.profitGlobal).toFixed(2)
-                        ) +
-                        "\n                "
-                    )
-                  ])
+              _c("div", { staticClass: "col-6" }, [
+                _c("p", { staticClass: "text-center" }, [
+                  _vm._v("\n              Global\n              "),
+                  _c("br"),
+                  _vm._v(
+                    "\n              " +
+                      _vm._s(
+                        Number.parseFloat(this.result.profitGlobal).toFixed(2)
+                      ) +
+                      "\n            "
+                  )
                 ])
               ])
             ])
           ])
-        ])
-      ]),
+        ],
+        2
+      ),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-6 col-lg-6" }, [
-        _c("div", { staticClass: "card p-3" }, [
-          _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-lg-6" }, [
+        _c("div", { staticClass: "col-md-12" }, [
+          _c("div", { staticClass: "row mt-1" }, [
             _c("div", { staticClass: "col-6" }, [
               this.tradeLoader === true
                 ? _c("div", [
@@ -70237,13 +70241,13 @@ var render = function() {
                       "button",
                       {
                         staticClass:
-                          "btn btn-success btn-block d-flex justify-content-center"
+                          "btn btn-primary btn-block d-flex justify-content-center"
                       },
                       [
                         _c("fulfilling-bouncing-circle-spinner", {
                           attrs: {
                             "animation-duration": 4000,
-                            size: 25,
+                            size: 17,
                             color: "#fff"
                           }
                         })
@@ -70258,7 +70262,7 @@ var render = function() {
                     _c(
                       "button",
                       {
-                        staticClass: "btn btn-success btn-block",
+                        staticClass: "btn btn-primary btn-block",
                         on: {
                           click: function($event) {
                             $event.preventDefault()
@@ -70290,7 +70294,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "card p-3" }, [
+        _c("div", { staticClass: "col-md-12 mt-4" }, [
           this.stopOnWinLoader === true
             ? _c("div", [
                 _c(
@@ -70303,7 +70307,7 @@ var render = function() {
                     _c("fulfilling-bouncing-circle-spinner", {
                       attrs: {
                         "animation-duration": 4000,
-                        size: 25,
+                        size: 18,
                         color: "#fff"
                       }
                     })
@@ -70342,58 +70346,52 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12" }, [
-      _c("div", { staticClass: "card p-3" }, [
-        _c("div", { staticClass: "d-flex align-items-center" }, [
-          _c("div", { staticClass: "col-sm-11" }, [
-            _c("small", { staticClass: "text-muted" }, [
-              _c("i", [_vm._v("LastRain")])
-            ]),
-            _vm._v(" "),
-            _c("br"),
-            _vm._v(" "),
-            _c("h4", { staticClass: "m-0" }, [_vm._v("120")])
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "mt-1 alert alert-fill-danger" }, [
+      _vm._v("\n          LastRain : "),
+      _c("br"),
+      _vm._v(" "),
+      _c("h4", [_vm._v("120")])
     ])
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-header" }, [
-        _c("h3", { staticClass: "card-title" }, [
-          _vm._v("Recent Transaction Last 50")
-        ])
-      ]),
+    return _c("div", { staticClass: "col-lg-12 mt-5" }, [
+      _c("br"),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "card-body o-auto", staticStyle: { height: "28rem" } },
-        [
-          _c("table", { staticClass: "table" }, [
-            _c(
-              "thead",
-              { staticClass: "card-alert alert alert-primary mb-0" },
-              [
-                _c("tr", [
-                  _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
-                  _vm._v(" "),
-                  _c("th", { attrs: { scope: "col" } }, [_vm._v("Trade")]),
-                  _vm._v(" "),
-                  _c("th", { attrs: { scope: "col" } }, [_vm._v("Payout")]),
-                  _vm._v(" "),
-                  _c("th", { attrs: { scope: "col" } }, [_vm._v("Profit")])
-                ])
-              ]
-            ),
-            _vm._v(" "),
-            _c("tbody", { attrs: { id: "htmlResult" } })
+      _c("div", { staticClass: "card" }, [
+        _c("div", { staticClass: "card-body" }, [
+          _c("h4", { staticClass: "card-title" }, [
+            _vm._v("Recent Last 50 Transaction")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "table-responsive" }, [
+            _c("table", { staticClass: "table" }, [
+              _c(
+                "thead",
+                {
+                  staticClass: "card-alert alert alert-primary mb-0",
+                  attrs: { align: "center" }
+                },
+                [
+                  _c("tr", [
+                    _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+                    _vm._v(" "),
+                    _c("th", { attrs: { scope: "col" } }, [_vm._v("Trade")]),
+                    _vm._v(" "),
+                    _c("th", { attrs: { scope: "col" } }, [_vm._v("Payout")]),
+                    _vm._v(" "),
+                    _c("th", { attrs: { scope: "col" } }, [_vm._v("Profit")])
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c("tbody", { attrs: { id: "htmlResult" } })
+            ])
           ])
-        ]
-      )
+        ])
+      ])
     ])
   }
 ]
@@ -70462,13 +70460,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_epic_spinners__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -74801,71 +74792,6 @@ var render = function() {
               ])
             : _vm._e()
         ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-4" }, [
-        this.saveLoader === true
-          ? _c("div", { staticClass: "card p-3" }, [
-              _c(
-                "button",
-                {
-                  staticClass:
-                    "btn btn-success btn-block d-flex justify-content-center"
-                },
-                [
-                  _c("hollow-dots-spinner", {
-                    attrs: {
-                      "animation-duration": 1000,
-                      "dot-size": 20,
-                      "dots-num": 3,
-                      color: "#fff"
-                    }
-                  })
-                ],
-                1
-              )
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        this.saveLoader === false
-          ? _c("div", { staticClass: "card p-3" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-success btn-block float-right",
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.saveConfig($event)
-                    }
-                  }
-                },
-                [_vm._v("Save")]
-              )
-            ])
-          : _vm._e(),
-        _vm._v(" "),
-        _c("div", { staticClass: "card p-3" }, [
-          _c("div", { staticClass: "row" }, [
-            _vm._m(28),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "col-6" },
-              [
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "btn btn-warning btn-block float-right",
-                    attrs: { to: "/settings/loads" }
-                  },
-                  [_vm._v("Load")]
-                )
-              ],
-              1
-            )
-          ])
-        ])
       ])
     ]),
     _vm._v(" "),
@@ -74887,7 +74813,7 @@ var render = function() {
           { staticClass: "modal-dialog", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(29),
+              _vm._m(28),
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [
                 _c("form", [
@@ -74975,6 +74901,87 @@ var render = function() {
             ])
           ]
         )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "nav",
+      {
+        staticClass:
+          "navbar fixed-bottom navbar-menu-wrapper d-flex align-items-center justify-content-end"
+      },
+      [
+        _c("div", { staticClass: "float-sm-right" }, [
+          _c(
+            "div",
+            { staticClass: "card alert alert-primary" },
+            [
+              this.saveLoader === true
+                ? [
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "btn btn-outline-success btn-icon-text d-flex justify-content-center"
+                      },
+                      [
+                        _c("hollow-dots-spinner", {
+                          attrs: {
+                            "animation-duration": 1000,
+                            "dot-size": 20,
+                            "dots-num": 3,
+                            color: "#fff"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ]
+                : _vm._e(),
+              _vm._v(" "),
+              this.saveLoader === false
+                ? _c("div", [
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "btn btn-outline-success btn-icon-text mt-2",
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.saveConfig($event)
+                          }
+                        }
+                      },
+                      [
+                        _c("i", {
+                          staticClass: "mdi mdi-content-save btn-icon-prepend"
+                        }),
+                        _vm._v(" Save")
+                      ]
+                    )
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm._m(29),
+              _vm._v(" "),
+              _c(
+                "router-link",
+                {
+                  staticClass: "btn btn-outline-warning btn-icon-text mt-2",
+                  attrs: { to: "/settings/loads" }
+                },
+                [
+                  _c("i", {
+                    staticClass: "mdi mdi-folder-download btn-icon-prepend"
+                  }),
+                  _vm._v(" Load")
+                ]
+              )
+            ],
+            2
+          )
+        ])
       ]
     )
   ])
@@ -75272,23 +75279,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-6" }, [
-      _c("div", [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-danger btn-block",
-            attrs: { "data-toggle": "modal", "data-target": "#saveAsModal" }
-          },
-          [_vm._v("Save As")]
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-header" }, [
       _c(
         "h5",
@@ -75305,6 +75295,22 @@ var staticRenderFns = [
         }
       })
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-outline-danger btn-icon-text mt-2",
+        attrs: { "data-toggle": "modal", "data-target": "#saveAsModal" }
+      },
+      [
+        _c("i", { staticClass: "mdi mdi-content-save-all btn-icon-prepend" }),
+        _vm._v(" Save As")
+      ]
+    )
   }
 ]
 render._withStripped = true

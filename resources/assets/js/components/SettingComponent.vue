@@ -980,39 +980,6 @@
           </div>
         </div>
       </div>
-
-      <div class="col-md-4">
-        <div class="card p-3" v-if="this.saveLoader === true">
-          <button class="btn btn-success btn-block d-flex justify-content-center">
-            <!-- <fulfilling-bouncing-circle-spinner :animation-duration="4000" :size="25" color="#fff" /> -->
-            <hollow-dots-spinner
-              :animation-duration="1000"
-              :dot-size="20"
-              :dots-num="3"
-              color="#fff"
-            />
-          </button>
-        </div>
-        <div class="card p-3" v-if="this.saveLoader === false">
-          <button class="btn btn-success btn-block float-right" @click.prevent="saveConfig">Save</button>
-        </div>
-        <div class="card p-3">
-          <div class="row">
-            <div class="col-6">
-              <div>
-                <button
-                  class="btn btn-danger btn-block"
-                  data-toggle="modal"
-                  data-target="#saveAsModal"
-                >Save As</button>
-              </div>
-            </div>
-            <div class="col-6">
-              <router-link to="/settings/loads" class="btn btn-warning btn-block float-right">Load</router-link>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- Modal -->
@@ -1065,6 +1032,32 @@
         </div>
       </div>
     </div>
+    <nav class="navbar fixed-bottom navbar-menu-wrapper d-flex align-items-center justify-content-end">
+      <div class="float-sm-right">
+        <div class="card alert alert-primary">
+          <template v-if="this.saveLoader === true">
+            <button class="btn btn-outline-success btn-icon-text d-flex justify-content-center">
+              <!-- <fulfilling-bouncing-circle-spinner :animation-duration="4000" :size="25" color="#fff" /> -->
+              <hollow-dots-spinner
+                :animation-duration="1000"
+                :dot-size="20"
+                :dots-num="3"
+                color="#fff"
+              />
+            </button>
+          </template>
+          <div v-if="this.saveLoader === false">
+            <button class="btn btn-outline-success btn-icon-text mt-2" @click.prevent="saveConfig"><i class="mdi mdi-content-save btn-icon-prepend"></i> Save</button>
+          </div>
+          <button
+              class="btn btn-outline-danger btn-icon-text mt-2"
+              data-toggle="modal"
+              data-target="#saveAsModal"
+            ><i class="mdi mdi-content-save-all btn-icon-prepend"></i> Save As</button>
+          <router-link to="/settings/loads" class="btn btn-outline-warning btn-icon-text mt-2"><i class="mdi mdi-folder-download btn-icon-prepend"></i> Load</router-link>  
+        </div>
+      </div>
+    </nav>
   </div>
 </template>
 

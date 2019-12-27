@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "epic-spinners": "^1.1.0",
+        "jquery-toast-plugin": "^1.3.2",
         "qrcode.vue": "^1.7.0",
         "vue-axios": "^2.1.5",
         "vue-cookies": "^1.5.13",

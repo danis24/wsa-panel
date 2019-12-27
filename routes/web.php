@@ -19,6 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/accounts', 'HomeController@index')->name('home.accounts');
+Route::get('/trade', 'HomeController@index')->name('home.trade');
 Route::get('/settings', 'HomeController@index')->name('setting.view');
 Route::get('/settings/loads', 'HomeController@index')->name('setting.load');
 Route::get('/settings/collections', 'Settings\SettingController@browse')->name('setting.browse');

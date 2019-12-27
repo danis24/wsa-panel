@@ -1,90 +1,19 @@
 <template>
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-6 col-lg-6">
-        <div class="row">
-          <div class="col-12">
-            <div class="card p-3">
-              <div class="d-flex align-items-center">
-                <div class="col-sm-11">
-                  <small class="text-muted">
-                    <i>LastRain</i>
-                  </small>
-                  <br />
-                  <h4 class="m-0">120</h4>
-                </div>
-              </div>
-            </div>
+  <div>
+    <div class="row">
+      <div class="col-lg-6 grid-margin">
+        <div class="mt-1 alert alert-fill-danger">
+            LastRain : <br>
+            <h4>120</h4>
           </div>
-          <div class="col-12">
-            <div class="card">
-              <div class="card-alert alert alert-success mb-0">
-                Balance :
-                <br />
-                <b>{{ Number.parseFloat(this.balance).toFixed(2) }}</b> Doge
-                <div class="float-right">
-                  <div v-if="this.balanceLoader === true">
-                    <button class="btn btn-pill btn-success d-flex justify-content-center">
-                      <fulfilling-bouncing-circle-spinner
-                        :animation-duration="4000"
-                        :size="25"
-                        color="#fff"
-                      />
-                    </button>
-                  </div>
-                  <div v-if="this.balanceLoader === false">
-                    <button
-                      class="btn btn-pill btn-success"
-                      type="button"
-                      @click.prevent="getBalance()"
-                    >
-                      <i class="fe fe-refresh-cw"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12">
-            <div class="card">
-              <div class="card-alert alert alert-primary mb-0">
-                TRADE STATUS :
-                <label v-if="tradeStatus === false">OFF</label>
-                <label v-if="tradeStatus === true">ON</label>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-12">
-            <div class="card p-3">
-              <h5 class="text-center">Profit Trade</h5>
-              <div class="row">
-                <div class="col-6">
-                  <p class="text-center">
-                    Sessions
-                    <br />
-                    {{ Number.parseFloat(this.result.profitSession).toFixed(2) }}
-                  </p>
-                </div>
-                <div class="col-6">
-                  <p class="text-center">
-                    Global
-                    <br />
-                    {{ Number.parseFloat(this.result.profitGlobal).toFixed(2) }}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-6">
-        <div class="card p-3">
-          <div class="row">
-            <div class="col-6">
-              <div v-if="this.tradeLoader === true">
-                <button class="btn btn-success btn-block d-flex justify-content-center">
+        <div class="card">
+          <div class="card-body">
+            Balance :
+            <br />
+            <b>{{ Number.parseFloat(this.balance).toFixed(2) }}</b> Doge
+            <div class="float-right">
+              <div v-if="this.balanceLoader === true">
+                <button class="btn btn-primary btn-rounded btn-icon d-flex justify-content-center">
                   <fulfilling-bouncing-circle-spinner
                     :animation-duration="4000"
                     :size="25"
@@ -92,8 +21,63 @@
                   />
                 </button>
               </div>
+              <div v-if="this.balanceLoader === false">
+                <button
+                  class="btn btn-primary btn-rounded btn-icon"
+                  type="button"
+                  @click.prevent="getBalance()"
+                >
+                  <i class="mdi mdi-reload"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <template v-if="tradeStatus === false">
+          <div class="mt-3 alert alert-warning">
+            TRADE STATUS : OFF
+          </div>
+        </template>
+        <template v-if="tradeStatus === true">
+          <div class="mt-3 alert alert-success">
+            TRADE STATUS : RUNNING
+          </div>
+        </template>
+        <div class="card p-3">
+          <h5 class="text-center">Profit Trade</h5>
+          <div class="row">
+            <div class="col-6">
+              <p class="text-center">
+                Sessions
+                <br />
+                {{ Number.parseFloat(this.result.profitSession).toFixed(2) }}
+              </p>
+            </div>
+            <div class="col-6">
+              <p class="text-center">
+                Global
+                <br />
+                {{ Number.parseFloat(this.result.profitGlobal).toFixed(2) }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="col-md-12">
+          <div class="row mt-1">
+            <div class="col-6">
+              <div v-if="this.tradeLoader === true">
+                <button class="btn btn-primary btn-block d-flex justify-content-center">
+                  <fulfilling-bouncing-circle-spinner
+                    :animation-duration="4000"
+                    :size="17"
+                    color="#fff"
+                  />
+                </button>
+              </div>
               <div v-if="this.tradeLoader === false">
-                <button class="btn btn-success btn-block" @click.prevent="startTradding()">Start</button>
+                <button class="btn btn-primary btn-block" @click.prevent="startTradding()">Start</button>
               </div>
             </div>
             <div class="col-6">
@@ -104,12 +88,12 @@
             </div>
           </div>
         </div>
-        <div class="card p-3">
+        <div class="col-md-12 mt-4">
           <div v-if="this.stopOnWinLoader === true">
             <button class="btn btn-warning btn-block d-flex justify-content-center">
               <fulfilling-bouncing-circle-spinner
                 :animation-duration="4000"
-                :size="25"
+                :size="18"
                 color="#fff"
               />
             </button>
@@ -121,27 +105,32 @@
             >Stop On WIN</button>
           </div>
         </div>
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Recent Transaction Last 50</h3>
-          </div>
-          <div class="card-body o-auto" style="height: 28rem">
-            <table class="table">
-              <thead class="card-alert alert alert-primary mb-0">
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Trade</th>
-                  <th scope="col">Payout</th>
-                  <th scope="col">Profit</th>
-                </tr>
-              </thead>
-              <tbody id="htmlResult"></tbody>
-            </table>
+        <div class="col-lg-12 mt-5">
+          <br>
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Recent Last 50 Transaction</h4>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead class="card-alert alert alert-primary mb-0" align="center">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Trade</th>
+                      <th scope="col">Payout</th>
+                      <th scope="col">Profit</th>
+                    </tr>
+                  </thead>
+                  <tbody id="htmlResult"></tbody>
+                </table>
+              </div>
+              
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  
 </template>
 
 <script>
@@ -228,7 +217,6 @@ export default {
     },
 
     async automateBetsParam() {
-      console.log(this.tradeStatus);
       if (this.tradeStatus == true) {
         var formBodyData = new FormData();
         formBodyData.set("a", "PlaceAutomatedBets");
@@ -261,14 +249,28 @@ export default {
           .post(baseUrl, formBodyData)
           .then(baseUrl, formBodyData)
           .then(response => {
-            this.result.payOut = response.data.PayOuts.reduce(
-              (a, b) => a + b,
-              0
-            );
-            this.result.profit =
-              response.data.PayOuts.reduce((a, b) => a + b, 0) +
-              response.data.PayIns.reduce((a, b) => a + b, 0);
-            this.tradeResult();
+            if(response.data.InsufficientFunds){
+              let htmlResult = "<tr>";
+              htmlResult +=
+                "<td colspan='4' align='center'><b>Balance Insufficient</b></td>";
+              htmlResult += "</tr>";
+              $("#htmlResult").prepend(htmlResult);
+            }else if(response.data.TooFast){
+              let htmlResult = "<tr>";
+              htmlResult +=
+                "<td colspan='4' align='center'><b>To Faset Delay 10 Seconds</b></td>";
+              htmlResult += "</tr>";
+              $("#htmlResult").prepend(htmlResult);
+            }else{
+              this.result.payOut = response.data.PayOuts.reduce(
+                (a, b) => a + b,
+                0
+              );
+              this.result.profit =
+                response.data.PayOuts.reduce((a, b) => a + b, 0) +
+                response.data.PayIns.reduce((a, b) => a + b, 0);
+              this.tradeResult();
+            }
           });
         await this.delayOnWinLose();
       }
@@ -314,7 +316,7 @@ export default {
       if (profit > 0) {
         this.options.countWinStreak += 1;
         this.options.countLoseStreak = 0;
-        htmlResult += '<tr class="alert alert-success mb-0">';
+        htmlResult += '<tr class="alert alert-fill-success mb-0" align="center">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
         htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
@@ -323,7 +325,7 @@ export default {
       } else {
         this.options.countLoseStreak += 1;
         this.options.countWinStreak = 0;
-        htmlResult += '<tr class="alert alert-danger mb-0">';
+        htmlResult += '<tr class="alert alert-fill-danger mb-0" align="center">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
         htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
@@ -363,6 +365,7 @@ export default {
       this.tradeList = [];
       this.result.profitSession = 0;
       this.result.profitGlobal = 0;
+      this.baseTradeAmount();
       this.sendMessage();
     },
     stopTradding() {
@@ -405,15 +408,37 @@ export default {
     martingleSingle() {
       if (this.settings.martingleSingle.onWin.status == true) {
         if (this.result.profit > 0) {
-          this.options.basePayIn =
-            this.options.basePayIn + (this.options.basePayIn * 100) / 100;
+          if(this.settings.tradeAmount.loseStreak.ifResetRecoverLose == "true"){
+            if (this.settings.baseTradeAmount.usePersentage == true) {
+            this.options.basePayIn = Math.floor(
+              (this.settings.baseTradeAmount.value * this.balance) / 100
+            ) + (this.options.basePayIn * this.settings.martingleSingle.onWin.value) / 100;
+          } else {
+              this.options.basePayIn = Math.floor(
+                this.settings.baseTradeAmount.value / 0.00000001
+              ) + (this.options.basePayIn * this.settings.martingleSingle.onWin.value) / 100;
+            }
+          }else{
+            this.baseTradeAmount();
+          }
         }
+      }else{
+        this.baseTradeAmount();
       }
       if (this.settings.martingleSingle.onLose.status == true) {
         if (this.result.profit < 0) {
-          this.options.basePayIn =
-            this.options.basePayIn + (this.options.basePayIn * 100) / 100;
+          if (this.settings.baseTradeAmount.usePersentage == true) {
+            this.options.basePayIn = Math.floor(
+              (this.settings.baseTradeAmount.value * this.balance) / 100
+            ) + (this.options.basePayIn * this.settings.martingleSingle.onLose.value) / 100;
+          } else {
+            this.options.basePayIn = Math.floor(
+              this.settings.baseTradeAmount.value / 0.00000001
+            ) + (this.options.basePayIn * this.settings.martingleSingle.onLose.value) / 100;
+          }
         }
+      }else{
+        this.baseTradeAmount();
       }
     },
     martingleMulti() {
@@ -460,9 +485,7 @@ export default {
         ) {
           if (this.settings.tradeAmount.winStreak.onWinStreak == "false") {
             this.options.countWinStreak = 0;
-            this.options.basePayIn = Math.floor(
-              (this.settings.baseTradeAmount.value * this.balance) / 100
-            );
+            this.baseTradeAmount();
             htmlResult += "<tr>";
             htmlResult +=
               "<td colspan='4' align='center'><b>Reset On Win Streak. Delay " +
@@ -497,9 +520,7 @@ export default {
         ) {
           if (this.settings.tradeAmount.loseStreak.onLoseStreak == "false") {
             this.options.countLoseStreak = 0;
-            this.options.basePayIn = Math.floor(
-              (this.settings.baseTradeAmount.value * this.balance) / 100
-            );
+            this.baseTradeAmount();
             htmlResult += "<tr>";
             htmlResult +=
               "<td colspan='4' align='center'><b>Reset On Lose Streak. Delay " +
@@ -587,7 +608,7 @@ export default {
       // generate change percent high = false or low = true
       this.generatePercent(this.options.changePercent, this.options.tradeLogic);
 
-      this.baseTradeAmount();
+      this.martingleSingle();
 
       this.resetOnWinEvent();
 
