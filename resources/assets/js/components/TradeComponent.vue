@@ -21,7 +21,7 @@
               <div class="card-alert alert alert-success mb-0">
                 Balance :
                 <br />
-                <b>{{ this.balance }}</b> Doge
+                <b>{{  Number.parseFloat(this.balance).toFixed(2) }}</b> Doge
                 <div class="float-right">
                   <div v-if="this.balanceLoader === true">
                     <button class="btn btn-pill btn-success d-flex justify-content-center">
@@ -63,13 +63,13 @@
                 <div class="col-6">
                   <p class="text-center">
                     Sessions
-                    <br />{{ this.profitSession }}
+                    <br />{{ Number.parseFloat(this.result.profitSession).toFixed(2) }}
                   </p>
                 </div>
                 <div class="col-6">
                   <p class="text-center">
                     Global
-                    <br />{{ this.profitGlobal }}
+                    <br />{{ Number.parseFloat(this.result.profitGlobal).toFixed(2) }}
                   </p>
                 </div>
               </div>
@@ -100,7 +100,18 @@
           </div>
         </div>
         <div class="card p-3">
-          <button class="btn btn-warning btn-block float-right">Stop On WIN</button>
+          <div v-if="this.stopOnWinLoader === true">
+            <button class="btn btn-warning btn-block d-flex justify-content-center">
+              <fulfilling-bouncing-circle-spinner
+                :animation-duration="4000"
+                :size="25"
+                color="#fff"
+              />
+            </button>
+          </div>
+          <div v-if="this.stopOnWinLoader === false">
+            <button class="btn btn-warning btn-block float-right" @click.prevent="stopOnWin()">Stop On WIN</button>
+          </div>
         </div>
         <div class="card">
           <div class="card-header">
@@ -137,12 +148,15 @@ export default {
       tradeList: [],
       breakTrade: false,
       balanceLoader: false,
+      stopOnWinLoader: false,
       tradeLoader: false,
       settings: {},
       tradeStatus: false,
-      profitGlobal: 0,
-      profitSession: 0,
       options: {
+        tradeLogic: true,
+        highLow: "",
+        low: true,
+        high: true,
         changePercent: 5,
         low: 0,
         high: 999999,
@@ -162,7 +176,9 @@ export default {
       result: {
         isWin: false,
         payOut: 0,
-        profit: 0
+        profit: 0,
+        profitSession: 0,
+        profitGlobal: 0,
       }
     };
   },
@@ -196,7 +212,7 @@ export default {
         bodyFormData.set("Stats", 0);
         this.axios.post(baseUrl, bodyFormData).then(response => {
           let balance = response.data.Balance*0.00000001;
-          this.balance = balance.toFixed(2);
+          this.balance = balance;
           this.balanceLoader = false;
         });
       }
@@ -228,28 +244,28 @@ export default {
         console.log(response.data);
         this.result.payOut = response.data.PayOuts.reduce((a, b) => a + b, 0);
         this.result.profit = response.data.PayOuts.reduce((a, b) => a + b, 0) + response.data.PayIns.reduce((a, b) => a + b, 0);
-        console.log(this.result.payOut);
-        console.log(this.result.profit);
         let trade = this.options.basePayIn * 0.00000001;
         let payOut = this.result.payOut * 0.00000001;
         let profit = this.result.profit * 0.00000001;
         let htmlResult = '';
         if(profit > 0){
           htmlResult +=  '<tr class="alert alert-success mb-0">';
-          htmlResult += '<th scope="row">H</th>';
+          htmlResult += '<th scope="row">'+this.options.highLow+'</th>';
           htmlResult += '<td>'+trade.toFixed(2)+'</td>';
           htmlResult += '<td>'+payOut.toFixed(2)+'</td>';
           htmlResult += '<td>'+profit.toFixed(2)+'</td>';
           htmlResult += '</tr>';
         }else{
           htmlResult +=  '<tr class="alert alert-danger mb-0">';
-          htmlResult += '<th scope="row">H</th>';
+          htmlResult += '<th scope="row">'+this.options.highLow+'</th>';
           htmlResult += '<td>'+trade.toFixed(2)+'</td>';
           htmlResult += '<td>'+payOut.toFixed(2)+'</td>';
           htmlResult += '<td>'+profit.toFixed(2)+'</td>';
           htmlResult += '</tr>';
         }
-        // this.tradeList.push({ htmlResult });
+        this.result.profitSession += Number.parseFloat(profit);
+        this.result.profitGlobal += Number.parseFloat(profit);
+        this.balance += profit;
         $("#htmlResult").prepend(htmlResult);
       });
     },
@@ -285,16 +301,54 @@ export default {
     delay(ms) {
       return new Promise((resolve) => setTimeout(resolve, ms));
     },
+    tradeLogic(){
+      if(this.settings.tradeLogicSelected.selectedValue == 1){
+        
+      }
+      if(this.settings.tradeLogicSelected.selectedValue == 2){
+        this.options.tradeLogic = false;
+        this.options.highLow = "H"
+      }
+      if(this.settings.tradeLogicSelected.selectedValue == 3){
+        this.options.tradeLogic = true;
+        this.options.highLow = "L"
+      }
+      if(this.settings.tradeLogicSelected.selectedValue == 4){
+        this.options.tradeLogic = Math.random() >= 0.5;
+        if(this.options.tradeLogic == true){
+          this.options.highLow = "L";
+        }else{
+          this.options.highLow = "H";
+        }
+      }
+    },
+    delayOnWinLose(){
+      if(this.result.profit > 0){
+        this.delay(this.settings.delay.onWin * 1000);
+      }else{
+        this.delay(this.settings.delay.onLose * 1000);
+      }
+    },
     startTradding(){
-      $("table#htmlResult tr").remove();
+      $("tbody#htmlResult tr").remove();
       this.tradeStatus = true;
       this.settings = JSON.parse(this.$localStorage.get("configData"));
       this.tradeList = [];
+      this.result.profitSession = 0;
+      this.result.profitGlobal = 0;
       this.sendMessage();
     },
     stopTradding(){
       this.tradeStatus = false;
       this.tradeLoader = false;
+    },
+    stopOnWin(){
+      this.stopOnWinLoader = true;
+      console.log(this.result.profit);
+      if(this.result.profit > 0){
+        this.stopTradding();
+        this.stopOnWinLoader = false;
+      }
     },
     async sendMessage() {
       if(this.tradeStatus){
@@ -313,7 +367,7 @@ export default {
       );
 
       // generate change percent high = false or low = true
-      this.generatePercent(this.options.changePercent, false);
+      this.generatePercent(this.options.changePercent, this.options.tradeLogic);
 
       //Setting Percent or not baseTrade value
       if (this.settings.baseTradeAmount.usePersentage == true) {
@@ -373,9 +427,9 @@ export default {
       if(this.settings.tradeAmount.maxTradeAmount.maxTradeOnLose == "true"){
         this.options.StopOnLoseMaxBet = 1;
       }
-
+      this.tradeLogic();
       await this.automateBetsParam();
-      await this.delay(5000);
+      await this.delayOnWinLose();
     }
   }
 };
