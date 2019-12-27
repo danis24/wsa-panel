@@ -64032,7 +64032,7 @@ var index = {
       (
         process.server ||
         process.SERVER_BUILD ||
-        (Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_CLUSTER":"mt1","MIX_PUSHER_APP_KEY":"","NODE_ENV":"development"}).VUE_ENV === 'server')
+        (Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}) && Object({"MIX_PUSHER_APP_KEY":"","MIX_PUSHER_APP_CLUSTER":"mt1","NODE_ENV":"development"}).VUE_ENV === 'server')
       )
     ) {
       return
@@ -64789,6 +64789,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -64807,6 +64813,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       tradeStatus: false,
       options: (_options = {
         tradeLogic: true,
+        delay: 1000,
         highLow: "",
         low: true,
         high: true,
@@ -64857,87 +64864,42 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
       }
     },
-    automateBetsParam: function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
-        var _this2 = this;
+    automateBetsParam: function automateBetsParam() {
+      var _this2 = this;
 
-        var formBodyData, baseUrl;
-        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                formBodyData = new FormData();
+      var formBodyData = new FormData();
+      formBodyData.set("a", "PlaceAutomatedBets");
+      formBodyData.set("s", $cookies.get("SessionCookies"));
+      formBodyData.set("BasePayIn", this.options.basePayIn);
+      formBodyData.set("Low", this.options.low);
+      formBodyData.set("High", this.options.high);
+      formBodyData.set("MaxBets", this.settings.tradeCount);
+      formBodyData.set("ResetOnWin", this.options.resetOnWin);
+      formBodyData.set("ResetOnLose", this.options.resetOnLose);
+      formBodyData.set("IncreaseOnWinPercent", this.options.IncreaseOnWinPercent);
+      formBodyData.set("IncreaseOnLosePercent", this.options.IncreaseOnLosePercent);
+      formBodyData.set("MaxPayIn", this.options.MaxPayIn);
+      formBodyData.set("ResetOnLoseMaxBet", this.options.ResetOnLoseMaxBet);
+      formBodyData.set("StopOnLoseMaxBet", this.options.StopOnLoseMaxBet);
+      formBodyData.set("StopMaxBalance", this.options.StopMaxBalance);
+      formBodyData.set("StopMinBalance", this.options.StopMinBalance);
+      formBodyData.set("ClientSeed", this.options.clientSeed);
+      formBodyData.set("Currency", "doge");
+      formBodyData.set("ProtocolVersion", 2);
 
-                formBodyData.set("a", "PlaceAutomatedBets");
-                formBodyData.set("s", $cookies.get("SessionCookies"));
-                formBodyData.set("BasePayIn", this.options.basePayIn);
-                formBodyData.set("Low", this.options.low);
-                formBodyData.set("High", this.options.high);
-                formBodyData.set("MaxBets", this.settings.tradeCount);
-                formBodyData.set("ResetOnWin", this.options.resetOnWin);
-                formBodyData.set("ResetOnLose", this.options.resetOnLose);
-                formBodyData.set("IncreaseOnWinPercent", this.options.IncreaseOnWinPercent);
-                formBodyData.set("IncreaseOnLosePercent", this.options.IncreaseOnLosePercent);
-                formBodyData.set("MaxPayIn", this.options.MaxPayIn);
-                formBodyData.set("ResetOnLoseMaxBet", this.options.ResetOnLoseMaxBet);
-                formBodyData.set("StopOnLoseMaxBet", this.options.StopOnLoseMaxBet);
-                formBodyData.set("StopMaxBalance", this.options.StopMaxBalance);
-                formBodyData.set("StopMinBalance", this.options.StopMinBalance);
-                formBodyData.set("ClientSeed", this.options.clientSeed);
-                formBodyData.set("Currency", "doge");
-                formBodyData.set("ProtocolVersion", 2);
-
-                baseUrl = "https://www.999doge.com/api/web.aspx";
-
-                this.axios.post(baseUrl, formBodyData).then(baseUrl, formBodyData).then(function (response) {
-                  console.log(response.data);
-                  _this2.result.payOut = response.data.PayOuts.reduce(function (a, b) {
-                    return a + b;
-                  }, 0);
-                  _this2.result.profit = response.data.PayOuts.reduce(function (a, b) {
-                    return a + b;
-                  }, 0) + response.data.PayIns.reduce(function (a, b) {
-                    return a + b;
-                  }, 0);
-                  var trade = _this2.options.basePayIn * 0.00000001;
-                  var payOut = _this2.result.payOut * 0.00000001;
-                  var profit = _this2.result.profit * 0.00000001;
-                  var htmlResult = '';
-                  if (profit > 0) {
-                    htmlResult += '<tr class="alert alert-success mb-0">';
-                    htmlResult += '<th scope="row">' + _this2.options.highLow + '</th>';
-                    htmlResult += '<td>' + trade.toFixed(2) + '</td>';
-                    htmlResult += '<td>' + payOut.toFixed(2) + '</td>';
-                    htmlResult += '<td>' + profit.toFixed(2) + '</td>';
-                    htmlResult += '</tr>';
-                  } else {
-                    htmlResult += '<tr class="alert alert-danger mb-0">';
-                    htmlResult += '<th scope="row">' + _this2.options.highLow + '</th>';
-                    htmlResult += '<td>' + trade.toFixed(2) + '</td>';
-                    htmlResult += '<td>' + payOut.toFixed(2) + '</td>';
-                    htmlResult += '<td>' + profit.toFixed(2) + '</td>';
-                    htmlResult += '</tr>';
-                  }
-                  _this2.result.profitSession += Number.parseFloat(profit);
-                  _this2.result.profitGlobal += Number.parseFloat(profit);
-                  _this2.balance += profit;
-                  __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(htmlResult);
-                });
-
-              case 21:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function automateBetsParam() {
-        return _ref.apply(this, arguments);
-      }
-
-      return automateBetsParam;
-    }(),
+      var baseUrl = "https://www.999doge.com/api/web.aspx";
+      this.axios.post(baseUrl, formBodyData).then(baseUrl, formBodyData).then(function (response) {
+        _this2.result.payOut = response.data.PayOuts.reduce(function (a, b) {
+          return a + b;
+        }, 0);
+        _this2.result.profit = response.data.PayOuts.reduce(function (a, b) {
+          return a + b;
+        }, 0) + response.data.PayIns.reduce(function (a, b) {
+          return a + b;
+        }, 0);
+        _this2.tradeResult();
+      });
+    },
     generateLowHigh: function generateLowHigh(low, high) {
       this.options.low = Math.floor(low);
       this.options.high = Math.floor(high);
@@ -64971,6 +64933,33 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return setTimeout(resolve, ms);
       });
     },
+    tradeResult: function tradeResult() {
+      var trade = this.options.basePayIn * 0.00000001;
+      var payOut = this.result.payOut * 0.00000001;
+      var profit = this.result.profit * 0.00000001;
+
+      var htmlResult = "";
+      if (profit > 0) {
+        htmlResult += '<tr class="alert alert-success mb-0">';
+        htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
+        htmlResult += "<td>" + trade.toFixed(2) + "</td>";
+        htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
+        htmlResult += "<td>" + profit.toFixed(2) + "</td>";
+        htmlResult += "</tr>";
+      } else {
+        htmlResult += '<tr class="alert alert-danger mb-0">';
+        htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
+        htmlResult += "<td>" + trade.toFixed(2) + "</td>";
+        htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
+        htmlResult += "<td>" + profit.toFixed(2) + "</td>";
+        htmlResult += "</tr>";
+      }
+
+      this.result.profitSession += Number.parseFloat(profit);
+      this.result.profitGlobal += Number.parseFloat(profit);
+      this.balance += profit;
+      __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(htmlResult);
+    },
     tradeLogic: function tradeLogic() {
       if (this.settings.tradeLogicSelected.selectedValue == 1) {}
       if (this.settings.tradeLogicSelected.selectedValue == 2) {
@@ -64990,13 +64979,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }
     },
-    delayOnWinLose: function delayOnWinLose() {
-      if (this.result.profit > 0) {
-        this.delay(this.settings.delay.onWin * 1000);
-      } else {
-        this.delay(this.settings.delay.onLose * 1000);
-      }
-    },
     startTradding: function startTradding() {
       __WEBPACK_IMPORTED_MODULE_2_jquery___default()("tbody#htmlResult tr").remove();
       this.tradeStatus = true;
@@ -65010,9 +64992,44 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.tradeStatus = false;
       this.tradeLoader = false;
     },
+    delayOnWinLose: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (this.result.profit > 0) {
+                  if (this.settings.delay.onWin < 1) {
+                    this.options.delay = 500;
+                  } else {
+                    this.options.delay = Number.parseInt(this.settings.delay.onWin * 1000);
+                  }
+                } else {
+                  if (this.settings.delay.onLose < 1) {
+                    this.options.delay = 500;
+                  } else {
+                    this.options.delay = Number.parseInt(this.settings.delay.onLose * 1000);
+                  }
+                }
+                _context.next = 3;
+                return this.delay(this.options.delay);
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function delayOnWinLose() {
+        return _ref.apply(this, arguments);
+      }
+
+      return delayOnWinLose;
+    }(),
     stopOnWin: function stopOnWin() {
       this.stopOnWinLoader = true;
-      console.log(this.result.profit);
       if (this.result.profit > 0) {
         this.stopTradding();
         this.stopOnWinLoader = false;
@@ -65049,6 +65066,83 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       return sendMessage;
     }(),
+    martingleSingle: function martingleSingle() {
+      if (this.settings.martingleSingle.onWin.status == true) {
+        if (this.result.profit > 0) {
+          this.options.basePayIn = this.options.basePayIn + this.options.basePayIn * 100 / 100;
+        }
+      }
+      if (this.settings.martingleSingle.onLose.status == true) {
+        if (this.result.profit < 0) {
+          this.options.basePayIn = this.options.basePayIn + this.options.basePayIn * 100 / 100;
+        }
+      }
+    },
+    martingleMulti: function martingleMulti() {
+      //Settings Martingle
+      if (this.settings.martingleMulti.sameSingle == false) {
+        if (this.settings.martingleMulti.onWin.status == true) {
+          this.options.IncreaseOnWinPercent = this.settings.martingleMulti.onWin.value / 100;
+        }
+        if (this.settings.martingleMulti.onLose.status == true) {
+          this.options.IncreaseOnLosePercent = this.settings.martingleMulti.onLose.value / 100;
+        }
+      }
+      if (this.settings.martingleMulti.sameSingle == true) {
+        if (this.settings.martingleSingle.onWin.status == true) {
+          this.options.IncreaseOnWinPercent = this.settings.martingleSingle.onWin.value / 100;
+        }
+        if (this.settings.martingleSingle.onLose.status == true) {
+          this.options.IncreaseOnLosePercent = this.settings.martingleSingle.onLose.value / 100;
+        }
+      }
+    },
+    baseTradeAmount: function baseTradeAmount() {
+      //Setting Percent or not baseTrade value
+      if (this.settings.baseTradeAmount.usePersentage == true) {
+        this.options.basePayIn = Math.floor(this.settings.baseTradeAmount.value * this.balance / 100);
+      } else {
+        this.options.basePayIn = Math.floor(this.settings.baseTradeAmount.value / 0.00000001);
+      }
+    },
+    resetOnWinEvent: function resetOnWinEvent() {
+      //Define resetOnWin true or False
+      if (this.settings.tradeAmount.winStreak.onWinStreak == false) {
+        this.options.resetOnWin = 1;
+      }
+
+      //Define resetOnLose true or False
+      if (this.settings.tradeAmount.loseStreak.onLoseStreak == true) {
+        this.options.resetOnLose = 1;
+      }
+    },
+    profitTradeAmount: function profitTradeAmount() {
+      //Trade Amount
+      //Profit
+      if (this.settings.tradeAmount.profit.mathBaseAmount == true) {
+        this.options.profitTrade = Math.floor(this.settings.tradeAmount.profit.value * this.options.basePayIn);
+      } else {
+        this.options.profitTrade = Math.floor(this.settings.tradeAmount.profit.value / 0.00000001);
+      }
+    },
+    maxTradeAmountEvent: function maxTradeAmountEvent() {
+      //Max Trade Amount
+      if (this.settings.tradeAmount.maxTradeAmount.mathBaseAmount == true) {
+        this.options.MaxPayIn = Math.floor(this.settings.tradeAmount.maxTradeAmount.value * this.options.basePayIn);
+      } else {
+        this.options.MaxPayIn = Math.floor(this.settings.tradeAmount.maxTradeAmount.value / 0.00000001);
+      }
+    },
+    ResetOnLoseMaxBetEvent: function ResetOnLoseMaxBetEvent() {
+      //Reset OnLose MaxBet
+      if (this.settings.tradeAmount.maxTradeAmount.maxTradeOnLose == "false") {
+        this.options.ResetOnLoseMaxBet = 1;
+      }
+
+      if (this.settings.tradeAmount.maxTradeAmount.maxTradeOnLose == "true") {
+        this.options.StopOnLoseMaxBet = 1;
+      }
+    },
     sendRequest: function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3() {
         return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
@@ -65064,73 +65158,25 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 // generate change percent high = false or low = true
                 this.generatePercent(this.options.changePercent, this.options.tradeLogic);
 
-                //Setting Percent or not baseTrade value
-                if (this.settings.baseTradeAmount.usePersentage == true) {
-                  this.options.basePayIn = Math.floor(this.settings.baseTradeAmount.value * this.balance / 100);
-                } else {
-                  this.options.basePayIn = Math.floor(this.settings.baseTradeAmount.value / 0.00000001);
-                }
+                this.baseTradeAmount();
 
-                //Define resetOnWin true or False
-                if (this.settings.tradeAmount.winStreak.onWinStreak == false) {
-                  this.options.resetOnWin = 1;
-                }
+                this.resetOnWinEvent();
 
-                //Define resetOnLose true or False
-                if (this.settings.tradeAmount.loseStreak.onLoseStreak == true) {
-                  this.options.resetOnLose = 1;
-                }
+                this.martingleMulti();
 
-                //Settings Martingle
-                if (this.settings.martingleMulti.sameSingle == false) {
-                  if (this.settings.martingleMulti.onWin.status == true) {
-                    this.options.IncreaseOnWinPercent = this.settings.martingleMulti.onWin.value / 100;
-                  }
-                  if (this.settings.martingleMulti.onLose.status == true) {
-                    this.options.IncreaseOnLosePercent = this.settings.martingleMulti.onLose.value / 100;
-                  }
-                }
-                if (this.settings.martingleMulti.sameSingle == true) {
-                  if (this.settings.martingleSingle.onWin.status == true) {
-                    this.options.IncreaseOnWinPercent = this.settings.martingleSingle.onWin.value / 100;
-                  }
-                  if (this.settings.martingleSingle.onLose.status == true) {
-                    this.options.IncreaseOnLosePercent = this.settings.martingleSingle.onLose.value / 100;
-                  }
-                }
+                this.profitTradeAmount();
 
-                //Trade Amount
-                //Profit
-                if (this.settings.tradeAmount.profit.mathBaseAmount == true) {
-                  this.options.profitTrade = Math.floor(this.settings.tradeAmount.profit.value * this.options.basePayIn);
-                } else {
-                  this.options.profitTrade = Math.floor(this.settings.tradeAmount.profit.value / 0.00000001);
-                }
+                this.maxTradeAmountEvent();
 
-                //Max Trade Amount
-                if (this.settings.tradeAmount.maxTradeAmount.mathBaseAmount == true) {
-                  this.options.MaxPayIn = Math.floor(this.settings.tradeAmount.maxTradeAmount.value * this.options.basePayIn);
-                } else {
-                  this.options.MaxPayIn = Math.floor(this.settings.tradeAmount.maxTradeAmount.value / 0.00000001);
-                }
+                this.ResetOnLoseMaxBetEvent();
 
-                //Reset OnLose MaxBet
-                if (this.settings.tradeAmount.maxTradeAmount.maxTradeOnLose == "false") {
-                  this.options.ResetOnLoseMaxBet = 1;
-                }
-
-                if (this.settings.tradeAmount.maxTradeAmount.maxTradeOnLose == "true") {
-                  this.options.StopOnLoseMaxBet = 1;
-                }
                 this.tradeLogic();
-                _context3.next = 16;
-                return this.automateBetsParam();
+                this.automateBetsParam();
 
-              case 16:
-                _context3.next = 18;
+                _context3.next = 14;
                 return this.delayOnWinLose();
 
-              case 18:
+              case 14:
               case "end":
                 return _context3.stop();
             }
@@ -65990,7 +66036,7 @@ var content = __webpack_require__(63);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("d2e60e4a", content, false, {});
+var update = __webpack_require__(2)("2d5cd52e", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -66214,7 +66260,7 @@ var content = __webpack_require__(69);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("3c8a32be", content, false, {});
+var update = __webpack_require__(2)("badd3b24", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -66420,7 +66466,7 @@ var content = __webpack_require__(74);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("cb6fb4bc", content, false, {});
+var update = __webpack_require__(2)("177db916", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -66652,7 +66698,7 @@ var content = __webpack_require__(79);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("559fa12b", content, false, {});
+var update = __webpack_require__(2)("48b6f238", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -66843,7 +66889,7 @@ var content = __webpack_require__(84);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("71ecc241", content, false, {});
+var update = __webpack_require__(2)("32c33e0e", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -67009,7 +67055,7 @@ var content = __webpack_require__(89);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("4878a304", content, false, {});
+var update = __webpack_require__(2)("e8b75dde", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -67202,7 +67248,7 @@ var content = __webpack_require__(94);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("5a8c7718", content, false, {});
+var update = __webpack_require__(2)("15f84ff2", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -67401,7 +67447,7 @@ var content = __webpack_require__(99);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("433bf468", content, false, {});
+var update = __webpack_require__(2)("40fbd042", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -67563,7 +67609,7 @@ var content = __webpack_require__(104);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("45778ca6", content, false, {});
+var update = __webpack_require__(2)("7edb65f9", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -67756,7 +67802,7 @@ var content = __webpack_require__(109);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("591a6283", content, false, {});
+var update = __webpack_require__(2)("e0f7a060", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -67952,7 +67998,7 @@ var content = __webpack_require__(114);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("f3b01b32", content, false, {});
+var update = __webpack_require__(2)("5ef85c18", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -68162,7 +68208,7 @@ var content = __webpack_require__(119);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("05c2963d", content, false, {});
+var update = __webpack_require__(2)("501e75ca", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -68360,7 +68406,7 @@ var content = __webpack_require__(124);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("7877015d", content, false, {});
+var update = __webpack_require__(2)("308a7c30", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -68555,7 +68601,7 @@ var content = __webpack_require__(129);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("da84ab24", content, false, {});
+var update = __webpack_require__(2)("44bff981", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -68739,7 +68785,7 @@ var content = __webpack_require__(134);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("df6358ae", content, false, {});
+var update = __webpack_require__(2)("5124cf76", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -68956,7 +69002,7 @@ var content = __webpack_require__(139);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("573d1f01", content, false, {});
+var update = __webpack_require__(2)("debe0f58", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -69164,7 +69210,7 @@ var content = __webpack_require__(144);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("15ff3a12", content, false, {});
+var update = __webpack_require__(2)("4ef960ca", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -69402,7 +69448,7 @@ var content = __webpack_require__(149);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("f144f552", content, false, {});
+var update = __webpack_require__(2)("ef04d12c", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -69599,7 +69645,7 @@ var content = __webpack_require__(154);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("749cf489", content, false, {});
+var update = __webpack_require__(2)("0b6cd0dc", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -69776,7 +69822,7 @@ var content = __webpack_require__(159);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(2)("3c94ecdc", content, false, {});
+var update = __webpack_require__(2)("3249436f", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -70006,9 +70052,13 @@ var render = function() {
                     _vm._v("\n                  Sessions\n                  "),
                     _c("br"),
                     _vm._v(
-                      _vm._s(
-                        Number.parseFloat(this.result.profitSession).toFixed(2)
-                      ) + "\n                "
+                      "\n                  " +
+                        _vm._s(
+                          Number.parseFloat(this.result.profitSession).toFixed(
+                            2
+                          )
+                        ) +
+                        "\n                "
                     )
                   ])
                 ]),
@@ -70018,9 +70068,11 @@ var render = function() {
                     _vm._v("\n                  Global\n                  "),
                     _c("br"),
                     _vm._v(
-                      _vm._s(
-                        Number.parseFloat(this.result.profitGlobal).toFixed(2)
-                      ) + "\n                "
+                      "\n                  " +
+                        _vm._s(
+                          Number.parseFloat(this.result.profitGlobal).toFixed(2)
+                        ) +
+                        "\n                "
                     )
                   ])
                 ])

@@ -21,7 +21,7 @@
               <div class="card-alert alert alert-success mb-0">
                 Balance :
                 <br />
-                <b>{{  Number.parseFloat(this.balance).toFixed(2) }}</b> Doge
+                <b>{{ Number.parseFloat(this.balance).toFixed(2) }}</b> Doge
                 <div class="float-right">
                   <div v-if="this.balanceLoader === true">
                     <button class="btn btn-pill btn-success d-flex justify-content-center">
@@ -63,13 +63,15 @@
                 <div class="col-6">
                   <p class="text-center">
                     Sessions
-                    <br />{{ Number.parseFloat(this.result.profitSession).toFixed(2) }}
+                    <br />
+                    {{ Number.parseFloat(this.result.profitSession).toFixed(2) }}
                   </p>
                 </div>
                 <div class="col-6">
                   <p class="text-center">
                     Global
-                    <br />{{ Number.parseFloat(this.result.profitGlobal).toFixed(2) }}
+                    <br />
+                    {{ Number.parseFloat(this.result.profitGlobal).toFixed(2) }}
                   </p>
                 </div>
               </div>
@@ -95,7 +97,10 @@
               </div>
             </div>
             <div class="col-6">
-              <button class="btn btn-danger btn-block float-right" @click.prevent="stopTradding()">Stop</button>
+              <button
+                class="btn btn-danger btn-block float-right"
+                @click.prevent="stopTradding()"
+              >Stop</button>
             </div>
           </div>
         </div>
@@ -110,7 +115,10 @@
             </button>
           </div>
           <div v-if="this.stopOnWinLoader === false">
-            <button class="btn btn-warning btn-block float-right" @click.prevent="stopOnWin()">Stop On WIN</button>
+            <button
+              class="btn btn-warning btn-block float-right"
+              @click.prevent="stopOnWin()"
+            >Stop On WIN</button>
           </div>
         </div>
         <div class="card">
@@ -127,9 +135,7 @@
                   <th scope="col">Profit</th>
                 </tr>
               </thead>
-              <tbody id="htmlResult">
-                
-              </tbody>
+              <tbody id="htmlResult"></tbody>
             </table>
           </div>
         </div>
@@ -154,6 +160,7 @@ export default {
       tradeStatus: false,
       options: {
         tradeLogic: true,
+        delay: 1000,
         highLow: "",
         low: true,
         high: true,
@@ -178,7 +185,7 @@ export default {
         payOut: 0,
         profit: 0,
         profitSession: 0,
-        profitGlobal: 0,
+        profitGlobal: 0
       }
     };
   },
@@ -211,14 +218,14 @@ export default {
         bodyFormData.set("Referrals", 0);
         bodyFormData.set("Stats", 0);
         this.axios.post(baseUrl, bodyFormData).then(response => {
-          let balance = response.data.Balance*0.00000001;
+          let balance = response.data.Balance * 0.00000001;
           this.balance = balance;
           this.balanceLoader = false;
         });
       }
     },
 
-    async automateBetsParam() {
+    automateBetsParam() {
       var formBodyData = new FormData();
       formBodyData.set("a", "PlaceAutomatedBets");
       formBodyData.set("s", $cookies.get("SessionCookies"));
@@ -228,8 +235,14 @@ export default {
       formBodyData.set("MaxBets", this.settings.tradeCount);
       formBodyData.set("ResetOnWin", this.options.resetOnWin);
       formBodyData.set("ResetOnLose", this.options.resetOnLose);
-      formBodyData.set("IncreaseOnWinPercent", this.options.IncreaseOnWinPercent);
-      formBodyData.set("IncreaseOnLosePercent", this.options.IncreaseOnLosePercent);
+      formBodyData.set(
+        "IncreaseOnWinPercent",
+        this.options.IncreaseOnWinPercent
+      );
+      formBodyData.set(
+        "IncreaseOnLosePercent",
+        this.options.IncreaseOnLosePercent
+      );
       formBodyData.set("MaxPayIn", this.options.MaxPayIn);
       formBodyData.set("ResetOnLoseMaxBet", this.options.ResetOnLoseMaxBet);
       formBodyData.set("StopOnLoseMaxBet", this.options.StopOnLoseMaxBet);
@@ -238,36 +251,18 @@ export default {
       formBodyData.set("ClientSeed", this.options.clientSeed);
       formBodyData.set("Currency", "doge");
       formBodyData.set("ProtocolVersion", 2);
-      
-      let baseUrl = "https://www.999doge.com/api/web.aspx"
-      this.axios.post(baseUrl, formBodyData).then(baseUrl, formBodyData).then(response => {
-        console.log(response.data);
-        this.result.payOut = response.data.PayOuts.reduce((a, b) => a + b, 0);
-        this.result.profit = response.data.PayOuts.reduce((a, b) => a + b, 0) + response.data.PayIns.reduce((a, b) => a + b, 0);
-        let trade = this.options.basePayIn * 0.00000001;
-        let payOut = this.result.payOut * 0.00000001;
-        let profit = this.result.profit * 0.00000001;
-        let htmlResult = '';
-        if(profit > 0){
-          htmlResult +=  '<tr class="alert alert-success mb-0">';
-          htmlResult += '<th scope="row">'+this.options.highLow+'</th>';
-          htmlResult += '<td>'+trade.toFixed(2)+'</td>';
-          htmlResult += '<td>'+payOut.toFixed(2)+'</td>';
-          htmlResult += '<td>'+profit.toFixed(2)+'</td>';
-          htmlResult += '</tr>';
-        }else{
-          htmlResult +=  '<tr class="alert alert-danger mb-0">';
-          htmlResult += '<th scope="row">'+this.options.highLow+'</th>';
-          htmlResult += '<td>'+trade.toFixed(2)+'</td>';
-          htmlResult += '<td>'+payOut.toFixed(2)+'</td>';
-          htmlResult += '<td>'+profit.toFixed(2)+'</td>';
-          htmlResult += '</tr>';
-        }
-        this.result.profitSession += Number.parseFloat(profit);
-        this.result.profitGlobal += Number.parseFloat(profit);
-        this.balance += profit;
-        $("#htmlResult").prepend(htmlResult);
-      });
+
+      let baseUrl = "https://www.999doge.com/api/web.aspx";
+      this.axios
+        .post(baseUrl, formBodyData)
+        .then(baseUrl, formBodyData)
+        .then(response => {
+          this.result.payOut = response.data.PayOuts.reduce((a, b) => a + b, 0);
+          this.result.profit =
+            response.data.PayOuts.reduce((a, b) => a + b, 0) +
+            response.data.PayIns.reduce((a, b) => a + b, 0);
+          this.tradeResult();
+        });
     },
     generateLowHigh(low, high) {
       this.options.low = Math.floor(low);
@@ -299,37 +294,56 @@ export default {
       );
     },
     delay(ms) {
-      return new Promise((resolve) => setTimeout(resolve, ms));
+      return new Promise(resolve => setTimeout(resolve, ms));
     },
-    tradeLogic(){
-      if(this.settings.tradeLogicSelected.selectedValue == 1){
-        
+    tradeResult() {
+      let trade = this.options.basePayIn * 0.00000001;
+      let payOut = this.result.payOut * 0.00000001;
+      let profit = this.result.profit * 0.00000001;
+
+      let htmlResult = "";
+      if (profit > 0) {
+        htmlResult += '<tr class="alert alert-success mb-0">';
+        htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
+        htmlResult += "<td>" + trade.toFixed(2) + "</td>";
+        htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
+        htmlResult += "<td>" + profit.toFixed(2) + "</td>";
+        htmlResult += "</tr>";
+      } else {
+        htmlResult += '<tr class="alert alert-danger mb-0">';
+        htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
+        htmlResult += "<td>" + trade.toFixed(2) + "</td>";
+        htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
+        htmlResult += "<td>" + profit.toFixed(2) + "</td>";
+        htmlResult += "</tr>";
       }
-      if(this.settings.tradeLogicSelected.selectedValue == 2){
+
+      this.result.profitSession += Number.parseFloat(profit);
+      this.result.profitGlobal += Number.parseFloat(profit);
+      this.balance += profit;
+      $("#htmlResult").prepend(htmlResult);
+    },
+    tradeLogic() {
+      if (this.settings.tradeLogicSelected.selectedValue == 1) {
+      }
+      if (this.settings.tradeLogicSelected.selectedValue == 2) {
         this.options.tradeLogic = false;
-        this.options.highLow = "H"
+        this.options.highLow = "H";
       }
-      if(this.settings.tradeLogicSelected.selectedValue == 3){
+      if (this.settings.tradeLogicSelected.selectedValue == 3) {
         this.options.tradeLogic = true;
-        this.options.highLow = "L"
+        this.options.highLow = "L";
       }
-      if(this.settings.tradeLogicSelected.selectedValue == 4){
+      if (this.settings.tradeLogicSelected.selectedValue == 4) {
         this.options.tradeLogic = Math.random() >= 0.5;
-        if(this.options.tradeLogic == true){
+        if (this.options.tradeLogic == true) {
           this.options.highLow = "L";
-        }else{
+        } else {
           this.options.highLow = "H";
         }
       }
     },
-    delayOnWinLose(){
-      if(this.result.profit > 0){
-        this.delay(this.settings.delay.onWin * 1000);
-      }else{
-        this.delay(this.settings.delay.onLose * 1000);
-      }
-    },
-    startTradding(){
+    startTradding() {
       $("tbody#htmlResult tr").remove();
       this.tradeStatus = true;
       this.settings = JSON.parse(this.$localStorage.get("configData"));
@@ -338,25 +352,140 @@ export default {
       this.result.profitGlobal = 0;
       this.sendMessage();
     },
-    stopTradding(){
+    stopTradding() {
       this.tradeStatus = false;
       this.tradeLoader = false;
     },
-    stopOnWin(){
+    async delayOnWinLose() {
+      if (this.result.profit > 0) {
+        if (this.settings.delay.onWin < 1) {
+          this.options.delay = 500;
+        } else {
+          this.options.delay = Number.parseInt(
+            this.settings.delay.onWin * 1000
+          );
+        }
+      } else {
+        if (this.settings.delay.onLose < 1) {
+          this.options.delay = 500;
+        } else {
+          this.options.delay = Number.parseInt(
+            this.settings.delay.onLose * 1000
+          );
+        }
+      }
+      await this.delay(this.options.delay);
+    },
+    stopOnWin() {
       this.stopOnWinLoader = true;
-      console.log(this.result.profit);
-      if(this.result.profit > 0){
+      if (this.result.profit > 0) {
         this.stopTradding();
         this.stopOnWinLoader = false;
       }
     },
     async sendMessage() {
-      if(this.tradeStatus){
-       await this.sendRequest();
-       this.sendMessage();
+      if (this.tradeStatus) {
+        await this.sendRequest();
+        this.sendMessage();
       }
     },
-    async sendRequest(){
+    martingleSingle() {
+      if (this.settings.martingleSingle.onWin.status == true) {
+        if (this.result.profit > 0) {
+          this.options.basePayIn =
+            this.options.basePayIn + (this.options.basePayIn * 100) / 100;
+        }
+      }
+      if (this.settings.martingleSingle.onLose.status == true) {
+        if (this.result.profit < 0) {
+          this.options.basePayIn =
+            this.options.basePayIn + (this.options.basePayIn * 100) / 100;
+        }
+      }
+    },
+    martingleMulti() {
+      //Settings Martingle
+      if (this.settings.martingleMulti.sameSingle == false) {
+        if (this.settings.martingleMulti.onWin.status == true) {
+          this.options.IncreaseOnWinPercent =
+            this.settings.martingleMulti.onWin.value / 100;
+        }
+        if (this.settings.martingleMulti.onLose.status == true) {
+          this.options.IncreaseOnLosePercent =
+            this.settings.martingleMulti.onLose.value / 100;
+        }
+      }
+      if (this.settings.martingleMulti.sameSingle == true) {
+        if (this.settings.martingleSingle.onWin.status == true) {
+          this.options.IncreaseOnWinPercent =
+            this.settings.martingleSingle.onWin.value / 100;
+        }
+        if (this.settings.martingleSingle.onLose.status == true) {
+          this.options.IncreaseOnLosePercent =
+            this.settings.martingleSingle.onLose.value / 100;
+        }
+      }
+    },
+    baseTradeAmount() {
+      //Setting Percent or not baseTrade value
+      if (this.settings.baseTradeAmount.usePersentage == true) {
+        this.options.basePayIn = Math.floor(
+          (this.settings.baseTradeAmount.value * this.balance) / 100
+        );
+      } else {
+        this.options.basePayIn = Math.floor(
+          this.settings.baseTradeAmount.value / 0.00000001
+        );
+      }
+    },
+    resetOnWinEvent() {
+      //Define resetOnWin true or False
+      if (this.settings.tradeAmount.winStreak.onWinStreak == false) {
+        this.options.resetOnWin = 1;
+      }
+
+      //Define resetOnLose true or False
+      if (this.settings.tradeAmount.loseStreak.onLoseStreak == true) {
+        this.options.resetOnLose = 1;
+      }
+    },
+    profitTradeAmount() {
+      //Trade Amount
+      //Profit
+      if (this.settings.tradeAmount.profit.mathBaseAmount == true) {
+        this.options.profitTrade = Math.floor(
+          this.settings.tradeAmount.profit.value * this.options.basePayIn
+        );
+      } else {
+        this.options.profitTrade = Math.floor(
+          this.settings.tradeAmount.profit.value / 0.00000001
+        );
+      }
+    },
+    maxTradeAmountEvent() {
+      //Max Trade Amount
+      if (this.settings.tradeAmount.maxTradeAmount.mathBaseAmount == true) {
+        this.options.MaxPayIn = Math.floor(
+          this.settings.tradeAmount.maxTradeAmount.value *
+            this.options.basePayIn
+        );
+      } else {
+        this.options.MaxPayIn = Math.floor(
+          this.settings.tradeAmount.maxTradeAmount.value / 0.00000001
+        );
+      }
+    },
+    ResetOnLoseMaxBetEvent() {
+      //Reset OnLose MaxBet
+      if (this.settings.tradeAmount.maxTradeAmount.maxTradeOnLose == "false") {
+        this.options.ResetOnLoseMaxBet = 1;
+      }
+
+      if (this.settings.tradeAmount.maxTradeAmount.maxTradeOnLose == "true") {
+        this.options.StopOnLoseMaxBet = 1;
+      }
+    },
+    async sendRequest() {
       this.tradeLoader = true;
 
       // Generate Seed
@@ -369,66 +498,21 @@ export default {
       // generate change percent high = false or low = true
       this.generatePercent(this.options.changePercent, this.options.tradeLogic);
 
-      //Setting Percent or not baseTrade value
-      if (this.settings.baseTradeAmount.usePersentage == true) {
-        this.options.basePayIn = Math.floor((this.settings.baseTradeAmount.value * this.balance) / 100);
-      } else {
-        this.options.basePayIn = Math.floor(this.settings.baseTradeAmount.value / 0.00000001);
-      }
+      this.baseTradeAmount();
 
-      //Define resetOnWin true or False
-      if (this.settings.tradeAmount.winStreak.onWinStreak == false) {
-        this.options.resetOnWin = 1;
-      }
+      this.resetOnWinEvent();
 
-      //Define resetOnLose true or False
-      if(this.settings.tradeAmount.loseStreak.onLoseStreak == true) {
-        this.options.resetOnLose = 1;
-      }
+      this.martingleMulti();
 
-      //Settings Martingle
-      if(this.settings.martingleMulti.sameSingle == false){
-        if(this.settings.martingleMulti.onWin.status == true){
-          this.options.IncreaseOnWinPercent = this.settings.martingleMulti.onWin.value / 100;
-        }
-        if(this.settings.martingleMulti.onLose.status == true){
-          this.options.IncreaseOnLosePercent = this.settings.martingleMulti.onLose.value / 100;
-        }
-      }
-      if(this.settings.martingleMulti.sameSingle == true) {
-        if(this.settings.martingleSingle.onWin.status == true){
-          this.options.IncreaseOnWinPercent = this.settings.martingleSingle.onWin.value / 100;
-        }
-        if(this.settings.martingleSingle.onLose.status == true){
-          this.options.IncreaseOnLosePercent = this.settings.martingleSingle.onLose.value / 100;
-        }
-      }
-      
-      //Trade Amount
-      //Profit
-      if(this.settings.tradeAmount.profit.mathBaseAmount == true){
-        this.options.profitTrade = Math.floor(this.settings.tradeAmount.profit.value * this.options.basePayIn);
-      }else{
-        this.options.profitTrade = Math.floor(this.settings.tradeAmount.profit.value / 0.00000001);
-      }
+      this.profitTradeAmount();
 
-      //Max Trade Amount
-      if(this.settings.tradeAmount.maxTradeAmount.mathBaseAmount == true){
-        this.options.MaxPayIn = Math.floor(this.settings.tradeAmount.maxTradeAmount.value * this.options.basePayIn);
-      }else{
-        this.options.MaxPayIn = Math.floor(this.settings.tradeAmount.maxTradeAmount.value / 0.00000001); 
-      }
+      this.maxTradeAmountEvent();
 
-      //Reset OnLose MaxBet
-      if(this.settings.tradeAmount.maxTradeAmount.maxTradeOnLose == "false"){
-        this.options.ResetOnLoseMaxBet = 1;
-      }
+      this.ResetOnLoseMaxBetEvent();
 
-      if(this.settings.tradeAmount.maxTradeAmount.maxTradeOnLose == "true"){
-        this.options.StopOnLoseMaxBet = 1;
-      }
       this.tradeLogic();
-      await this.automateBetsParam();
+      this.automateBetsParam();
+
       await this.delayOnWinLose();
     }
   }
