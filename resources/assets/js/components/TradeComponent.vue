@@ -109,8 +109,12 @@
           <br>
           <div class="card">
             <div class="card-body">
-              <h4 class="card-title">Recent Last 50 Transaction</h4>
-              <div class="table-responsive">
+              <h4 class="card-title d-inline">Recent Last 50 Transaction</h4>
+              <button type="button" class="btn btn-dark btn-rounded btn-icon d-inline float-right">
+                <i class="mdi mdi-finance"></i>
+              </button>
+              <div class="clearfix"></div>
+              <div class="table-responsive mt-3">
                 <table class="table">
                   <thead class="card-alert alert alert-primary mb-0" align="center">
                     <tr>

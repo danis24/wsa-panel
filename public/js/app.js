@@ -64784,6 +64784,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -70362,11 +70366,23 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("div", { staticClass: "card" }, [
         _c("div", { staticClass: "card-body" }, [
-          _c("h4", { staticClass: "card-title" }, [
+          _c("h4", { staticClass: "card-title d-inline" }, [
             _vm._v("Recent Last 50 Transaction")
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "table-responsive" }, [
+          _c(
+            "button",
+            {
+              staticClass:
+                "btn btn-dark btn-rounded btn-icon d-inline float-right",
+              attrs: { type: "button" }
+            },
+            [_c("i", { staticClass: "mdi mdi-finance" })]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "clearfix" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "table-responsive mt-3" }, [
             _c("table", { staticClass: "table" }, [
               _c(
                 "thead",
