@@ -41,7 +41,7 @@
 
         <div class="row">
           <div class="col">
-            <button class="btn btn-pill btn-success" type="submit">
+            <button class="btn btn-pill btn-primary" type="submit">
               <i class="fe fe-lock"></i> Login
             </button>
             <button class="btn btn-pill btn-warning" type="button" @click.prevent="actionRegister">

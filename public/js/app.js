@@ -75551,6 +75551,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -75932,7 +75941,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "button",
-      { staticClass: "btn btn-pill btn-success", attrs: { type: "submit" } },
+      { staticClass: "btn btn-pill btn-primary", attrs: { type: "submit" } },
       [_c("i", { staticClass: "fe fe-lock" }), _vm._v(" Login\n          ")]
     )
   }
@@ -76046,6 +76055,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -76111,7 +76127,7 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _c("div", { staticClass: "card-header" }, [
+      _c("div", { staticClass: "card-header mt-2" }, [
         _c("h3", { staticClass: "card-title" }, [
           _vm._v("Account ID : " + _vm._s(this.accountId))
         ])
@@ -76120,11 +76136,11 @@ var render = function() {
       _c("div", { staticClass: "card-header" }, [
         _vm._m(0),
         _vm._v(" "),
-        _c("div", { staticClass: "col-sm-6 text-right" }, [
+        _c("div", { staticClass: "col-sm-6 float-right text-right" }, [
           _c(
             "button",
             {
-              staticClass: "btn btn-pill btn-success",
+              staticClass: "btn btn-primary btn-rounded btn-icon",
               attrs: { type: "button" },
               on: {
                 click: function($event) {
@@ -76133,16 +76149,16 @@ var render = function() {
                 }
               }
             },
-            [_c("i", { staticClass: "fe fe-refresh-cw" })]
+            [_c("i", { staticClass: "mdi mdi-reload" })]
           )
-        ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "clearfix" })
       ]),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "card-body o-auto", staticStyle: { height: "17rem" } },
-        [
-          _c("table", { staticClass: "table" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "table-responsive" }, [
+          _c("table", { staticClass: "table responsive" }, [
             _vm._m(1),
             _vm._v(" "),
             _c(
@@ -76171,8 +76187,8 @@ var render = function() {
               0
             )
           ])
-        ]
-      )
+        ])
+      ])
     ],
     1
   )
@@ -76182,7 +76198,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "text-left col-sm-6" }, [
+    return _c("div", { staticClass: "text-left col-sm-6 float-left" }, [
       _c("h3", { staticClass: "card-title" }, [_vm._v("Withdraw Histories")])
     ])
   },
@@ -77821,6 +77837,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -77883,15 +77905,15 @@ var render = function() {
       }),
       _vm._v(" "),
       _c("div", { staticClass: "card-header" }, [
-        _c("div", { staticClass: "text-left col-sm-6" }, [
+        _c("div", { staticClass: "text-left col-sm-6 float-left" }, [
           _vm._v("Deposit Histories")
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "col-sm-6 text-right" }, [
+        _c("div", { staticClass: "col-sm-6 text-right float-right" }, [
           _c(
             "button",
             {
-              staticClass: "btn btn-pill btn-success",
+              staticClass: "btn btn-primary btn-rounded btn-icon",
               attrs: { type: "button" },
               on: {
                 click: function($event) {
@@ -77900,16 +77922,16 @@ var render = function() {
                 }
               }
             },
-            [_c("i", { staticClass: "fe fe-refresh-cw" })]
+            [_c("i", { staticClass: "mdi mdi-reload" })]
           )
-        ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "clearfix" })
       ]),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "card-body o-auto", staticStyle: { height: "11rem" } },
-        [
-          _c("table", { staticClass: "table" }, [
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "table-responsive" }, [
+          _c("table", { staticClass: "table table-hover" }, [
             _vm._m(0),
             _vm._v(" "),
             _c(
@@ -77936,8 +77958,8 @@ var render = function() {
               0
             )
           ])
-        ]
-      )
+        ])
+      ])
     ],
     1
   )
@@ -77979,18 +78001,23 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8" }, [_c("account-info")], 1),
+      _c("div", { staticClass: "col-md-4" }, [
+        _c("div", { staticClass: "mt-2" }, [_c("login")], 1)
+      ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-4" }, [_c("login")], 1),
+      _c("div", { staticClass: "col-md-8" }, [
+        _c("div", { staticClass: "mt-2" }, [_c("withdraw")], 1)
+      ]),
       _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col-md-6" },
-        [_c("deposit"), _vm._v(" "), _c("deposit-histories")],
-        1
-      ),
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "mt-4" }, [_c("deposit")], 1),
+        _vm._v(" "),
+        _c("div", { staticClass: "mt-4" }, [_c("deposit-histories")], 1)
+      ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-6" }, [_c("withdraw")], 1)
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "mt-4" }, [_c("account-info")], 1)
+      ])
     ])
   ])
 }
