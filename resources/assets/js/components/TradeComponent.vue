@@ -3,9 +3,10 @@
     <div class="row">
       <div class="col-lg-6 grid-margin">
         <div class="mt-1 alert alert-fill-danger">
-            LastRain : <br>
-            <h4>120</h4>
-          </div>
+          LastRain :
+          <br />
+          <h4>120</h4>
+        </div>
         <div class="card">
           <div class="card-body">
             Balance :
@@ -34,14 +35,10 @@
           </div>
         </div>
         <template v-if="tradeStatus === false">
-          <div class="mt-3 alert alert-warning">
-            TRADE STATUS : OFF
-          </div>
+          <div class="mt-3 alert alert-warning">TRADE STATUS : OFF</div>
         </template>
         <template v-if="tradeStatus === true">
-          <div class="mt-3 alert alert-success">
-            TRADE STATUS : RUNNING
-          </div>
+          <div class="mt-3 alert alert-success">TRADE STATUS : RUNNING</div>
         </template>
         <div class="card p-3">
           <h5 class="text-center">Profit Trade</h5>
@@ -106,7 +103,7 @@
           </div>
         </div>
         <div class="col-lg-12 mt-5">
-          <br>
+          <br />
           <div class="card">
             <div class="card-body">
               <h4 class="card-title d-inline">Recent Last 50 Transaction</h4>
@@ -127,14 +124,12 @@
                   <tbody id="htmlResult"></tbody>
                 </table>
               </div>
-              
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
 </template>
 
 <script>
@@ -169,7 +164,6 @@ export default {
         MaxPayIn: 0,
         ResetOnLoseMaxBet: 0,
         StopOnLoseMaxBet: 0,
-        StopMaxBalance: 0,
         StopMinBalance: 0,
         profitTrade: 0,
         countWinStreak: 0,
@@ -242,7 +236,7 @@ export default {
         formBodyData.set("MaxPayIn", this.options.MaxPayIn);
         formBodyData.set("ResetOnLoseMaxBet", this.options.ResetOnLoseMaxBet);
         formBodyData.set("StopOnLoseMaxBet", this.options.StopOnLoseMaxBet);
-        formBodyData.set("StopMaxBalance", this.options.StopMaxBalance);
+        formBodyData.set("StopMaxBalance", this.options.profitTrade);
         formBodyData.set("StopMinBalance", this.options.StopMinBalance);
         formBodyData.set("ClientSeed", this.options.clientSeed);
         formBodyData.set("Currency", "doge");
@@ -253,19 +247,19 @@ export default {
           .post(baseUrl, formBodyData)
           .then(baseUrl, formBodyData)
           .then(response => {
-            if(response.data.InsufficientFunds){
+            if (response.data.InsufficientFunds) {
               let htmlResult = "<tr>";
               htmlResult +=
                 "<td colspan='4' align='center'><b>Balance Insufficient</b></td>";
               htmlResult += "</tr>";
               $("#htmlResult").prepend(htmlResult);
-            }else if(response.data.TooFast){
+            } else if (response.data.TooFast) {
               let htmlResult = "<tr>";
               htmlResult +=
                 "<td colspan='4' align='center'><b>To Faset Delay 10 Seconds</b></td>";
               htmlResult += "</tr>";
               $("#htmlResult").prepend(htmlResult);
-            }else{
+            } else {
               this.result.payOut = response.data.PayOuts.reduce(
                 (a, b) => a + b,
                 0
@@ -320,7 +314,8 @@ export default {
       if (profit > 0) {
         this.options.countWinStreak += 1;
         this.options.countLoseStreak = 0;
-        htmlResult += '<tr class="alert alert-fill-success mb-0" align="center">';
+        htmlResult +=
+          '<tr class="alert alert-fill-success mb-0" align="center">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
         htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
@@ -329,7 +324,8 @@ export default {
       } else {
         this.options.countLoseStreak += 1;
         this.options.countWinStreak = 0;
-        htmlResult += '<tr class="alert alert-fill-danger mb-0" align="center">';
+        htmlResult +=
+          '<tr class="alert alert-fill-danger mb-0" align="center">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
         htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
@@ -412,36 +408,50 @@ export default {
     martingleSingle() {
       if (this.settings.martingleSingle.onWin.status == true) {
         if (this.result.profit > 0) {
-          if(this.settings.tradeAmount.loseStreak.ifResetRecoverLose == "true"){
+          if (
+            this.settings.tradeAmount.loseStreak.ifResetRecoverLose == "true"
+          ) {
             if (this.settings.baseTradeAmount.usePersentage == true) {
-            this.options.basePayIn = Math.floor(
-              (this.settings.baseTradeAmount.value * this.balance) / 100
-            ) + (this.options.basePayIn * this.settings.martingleSingle.onWin.value) / 100;
-          } else {
-              this.options.basePayIn = Math.floor(
-                this.settings.baseTradeAmount.value / 0.00000001
-              ) + (this.options.basePayIn * this.settings.martingleSingle.onWin.value) / 100;
+              this.options.basePayIn =
+                Math.floor(
+                  (this.settings.baseTradeAmount.value * this.balance) / 100
+                ) +
+                (this.options.basePayIn *
+                  this.settings.martingleSingle.onWin.value) /
+                  100;
+            } else {
+              this.options.basePayIn =
+                Math.floor(this.settings.baseTradeAmount.value / 0.00000001) +
+                (this.options.basePayIn *
+                  this.settings.martingleSingle.onWin.value) /
+                  100;
             }
-          }else{
+          } else {
             this.baseTradeAmount();
           }
         }
-      }else{
+      } else {
         this.baseTradeAmount();
       }
       if (this.settings.martingleSingle.onLose.status == true) {
         if (this.result.profit < 0) {
           if (this.settings.baseTradeAmount.usePersentage == true) {
-            this.options.basePayIn = Math.floor(
-              (this.settings.baseTradeAmount.value * this.balance) / 100
-            ) + (this.options.basePayIn * this.settings.martingleSingle.onLose.value) / 100;
+            this.options.basePayIn =
+              Math.floor(
+                (this.settings.baseTradeAmount.value * this.balance) / 100
+              ) +
+              (this.options.basePayIn *
+                this.settings.martingleSingle.onLose.value) /
+                100;
           } else {
-            this.options.basePayIn = Math.floor(
-              this.settings.baseTradeAmount.value / 0.00000001
-            ) + (this.options.basePayIn * this.settings.martingleSingle.onLose.value) / 100;
+            this.options.basePayIn =
+              Math.floor(this.settings.baseTradeAmount.value / 0.00000001) +
+              (this.options.basePayIn *
+                this.settings.martingleSingle.onLose.value) /
+                100;
           }
         }
-      }else{
+      } else {
         this.baseTradeAmount();
       }
     },
@@ -566,13 +576,20 @@ export default {
     profitTradeAmount() {
       //Trade Amount
       //Profit
+      let balance = this.balance / 0.00000001;
       if (this.settings.tradeAmount.profit.mathBaseAmount == true) {
         this.options.profitTrade = Math.floor(
           this.settings.tradeAmount.profit.value * this.options.basePayIn
         );
+        this.options.profitTrade = Number.parseInt(
+          this.options.profitTrade + balance
+        );
       } else {
         this.options.profitTrade = Math.floor(
           this.settings.tradeAmount.profit.value / 0.00000001
+        );
+        this.options.profitTrade = Number.parseInt(
+          this.options.profitTrade + balance
         );
       }
     },

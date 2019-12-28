@@ -64783,11 +64783,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 
@@ -64811,7 +64806,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         low: true,
         high: true,
         changePercent: 5
-      }, _defineProperty(_options, "low", 0), _defineProperty(_options, "high", 999999), _defineProperty(_options, "basePayIn", 0), _defineProperty(_options, "resetOnWin", 0), _defineProperty(_options, "resetOnLose", 0), _defineProperty(_options, "clientSeed", 0), _defineProperty(_options, "IncreaseOnWinPercent", 0), _defineProperty(_options, "IncreaseOnLosePercent", 0), _defineProperty(_options, "MaxPayIn", 0), _defineProperty(_options, "ResetOnLoseMaxBet", 0), _defineProperty(_options, "StopOnLoseMaxBet", 0), _defineProperty(_options, "StopMaxBalance", 0), _defineProperty(_options, "StopMinBalance", 0), _defineProperty(_options, "profitTrade", 0), _defineProperty(_options, "countWinStreak", 0), _defineProperty(_options, "countLoseStreak", 0), _options),
+      }, _defineProperty(_options, "low", 0), _defineProperty(_options, "high", 999999), _defineProperty(_options, "basePayIn", 0), _defineProperty(_options, "resetOnWin", 0), _defineProperty(_options, "resetOnLose", 0), _defineProperty(_options, "clientSeed", 0), _defineProperty(_options, "IncreaseOnWinPercent", 0), _defineProperty(_options, "IncreaseOnLosePercent", 0), _defineProperty(_options, "MaxPayIn", 0), _defineProperty(_options, "ResetOnLoseMaxBet", 0), _defineProperty(_options, "StopOnLoseMaxBet", 0), _defineProperty(_options, "StopMinBalance", 0), _defineProperty(_options, "profitTrade", 0), _defineProperty(_options, "countWinStreak", 0), _defineProperty(_options, "countLoseStreak", 0), _options),
       result: {
         isWin: false,
         payOut: 0,
@@ -64886,7 +64881,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 formBodyData.set("MaxPayIn", this.options.MaxPayIn);
                 formBodyData.set("ResetOnLoseMaxBet", this.options.ResetOnLoseMaxBet);
                 formBodyData.set("StopOnLoseMaxBet", this.options.StopOnLoseMaxBet);
-                formBodyData.set("StopMaxBalance", this.options.StopMaxBalance);
+                formBodyData.set("StopMaxBalance", this.options.profitTrade);
                 formBodyData.set("StopMinBalance", this.options.StopMinBalance);
                 formBodyData.set("ClientSeed", this.options.clientSeed);
                 formBodyData.set("Currency", "doge");
@@ -65282,10 +65277,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     profitTradeAmount: function profitTradeAmount() {
       //Trade Amount
       //Profit
+      var balance = this.balance / 0.00000001;
       if (this.settings.tradeAmount.profit.mathBaseAmount == true) {
         this.options.profitTrade = Math.floor(this.settings.tradeAmount.profit.value * this.options.basePayIn);
+        this.options.profitTrade = Number.parseInt(this.options.profitTrade + balance);
       } else {
         this.options.profitTrade = Math.floor(this.settings.tradeAmount.profit.value / 0.00000001);
+        this.options.profitTrade = Number.parseInt(this.options.profitTrade + balance);
       }
     },
     maxTradeAmountEvent: function maxTradeAmountEvent() {
@@ -70185,7 +70183,7 @@ var render = function() {
           _vm.tradeStatus === false
             ? [
                 _c("div", { staticClass: "mt-3 alert alert-warning" }, [
-                  _vm._v("\n          TRADE STATUS : OFF\n        ")
+                  _vm._v("TRADE STATUS : OFF")
                 ])
               ]
             : _vm._e(),
@@ -70193,7 +70191,7 @@ var render = function() {
           _vm.tradeStatus === true
             ? [
                 _c("div", { staticClass: "mt-3 alert alert-success" }, [
-                  _vm._v("\n          TRADE STATUS : RUNNING\n        ")
+                  _vm._v("TRADE STATUS : RUNNING")
                 ])
               ]
             : _vm._e(),
@@ -70351,7 +70349,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "mt-1 alert alert-fill-danger" }, [
-      _vm._v("\n          LastRain : "),
+      _vm._v("\n        LastRain :\n        "),
       _c("br"),
       _vm._v(" "),
       _c("h4", [_vm._v("120")])
