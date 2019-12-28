@@ -64806,7 +64806,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         low: true,
         high: true,
         changePercent: 5
-      }, _defineProperty(_options, "low", 0), _defineProperty(_options, "high", 999999), _defineProperty(_options, "basePayIn", 0), _defineProperty(_options, "resetOnWin", 0), _defineProperty(_options, "resetOnLose", 0), _defineProperty(_options, "clientSeed", 0), _defineProperty(_options, "IncreaseOnWinPercent", 0), _defineProperty(_options, "IncreaseOnLosePercent", 0), _defineProperty(_options, "MaxPayIn", 0), _defineProperty(_options, "ResetOnLoseMaxBet", 0), _defineProperty(_options, "StopOnLoseMaxBet", 0), _defineProperty(_options, "StopMinBalance", 0), _defineProperty(_options, "profitTrade", 0), _defineProperty(_options, "countWinStreak", 0), _defineProperty(_options, "countLoseStreak", 0), _options),
+      }, _defineProperty(_options, "low", 0), _defineProperty(_options, "high", 999999), _defineProperty(_options, "basePayIn", 0), _defineProperty(_options, "resetOnWin", 0), _defineProperty(_options, "resetOnLose", 0), _defineProperty(_options, "clientSeed", 0), _defineProperty(_options, "IncreaseOnWinPercent", 0), _defineProperty(_options, "IncreaseOnLosePercent", 0), _defineProperty(_options, "MaxPayIn", 0), _defineProperty(_options, "ResetOnLoseMaxBet", 0), _defineProperty(_options, "StopOnLoseMaxBet", 0), _defineProperty(_options, "StopMinBalance", 0), _defineProperty(_options, "profitTrade", 0), _defineProperty(_options, "countWinStreak", 0), _defineProperty(_options, "countLoseStreak", 0), _defineProperty(_options, "takeProfitGlobal", 0), _defineProperty(_options, "takeProfitSession", 0), _options),
       result: {
         isWin: false,
         payOut: 0,
@@ -64901,14 +64901,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                     _htmlResult += "</tr>";
                     __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(_htmlResult);
                   } else {
-                    _this2.result.payOut = response.data.PayOuts.reduce(function (a, b) {
-                      return a + b;
-                    }, 0);
                     _this2.result.profit = response.data.PayOuts.reduce(function (a, b) {
                       return a + b;
                     }, 0) + response.data.PayIns.reduce(function (a, b) {
                       return a + b;
                     }, 0);
+                    _this2.result.payOut = _this2.result.profit - _this2.options.basePayIn;
                     _this2.tradeResult();
                   }
                 });
@@ -65021,6 +65019,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.tradeList = [];
       this.result.profitSession = 0;
       this.result.profitGlobal = 0;
+      this.result.payOut = 0;
+      this.result.profit = 0;
+      this.result.profitSession = 0;
+      this.result.profitGlobal = 0;
+      this.options.countWinStreak = 0;
+      this.options.countLoseStreak = 0;
+      this.options.takeProfitGlobal = 0;
+      this.options.takeProfitSession = 0;
       this.baseTradeAmount();
       this.sendMessage();
     },
@@ -65152,32 +65158,122 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     baseTradeAmount: function baseTradeAmount() {
       //Setting Percent or not baseTrade value
       if (this.settings.baseTradeAmount.usePersentage == true) {
-        this.options.basePayIn = Math.floor(this.settings.baseTradeAmount.value * this.balance / 100);
+        var basePersentage = Number.parseFloat(this.settings.baseTradeAmount.value) * this.balance / 100;
+        this.options.basePayIn = Math.floor(basePersentage / 0.00000001);
       } else {
         this.options.basePayIn = Math.floor(this.settings.baseTradeAmount.value / 0.00000001);
       }
     },
-    winLoseStreak: function () {
+    takeProfitGlobal: function () {
       var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4() {
-        var htmlResult;
+        var balance, htmlResult;
         return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
+                if (this.settings.takeProfitGlobal.profitGlobalValue > 0) {
+                  balance = this.balance;
+
+                  if (this.settings.takeProfitGlobal.usePersentage == true) {
+                    this.options.takeProfitGlobal = balance * this.settings.takeProfitGlobal.profitGlobalValue / 100;
+                  } else {
+                    this.options.takeProfitGlobal = this.settings.takeProfitGlobal.profitGlobalValue;
+                  }
+                  if (this.settings.takeProfitGlobal.stop == true) {
+                    if (Number.parseFloat(this.result.profitGlobal) > Number.parseFloat(this.options.takeProfitGlobal)) {
+                      this.stopTradding();
+                      htmlResult = "<tr>";
+
+                      htmlResult += "<td colspan='4' align='center'><b>STOP ON TAKE PROFIT GLOBAL</b></td>";
+                      htmlResult += "</tr>";
+                      __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(htmlResult);
+                    }
+                  }
+                }
+
+              case 1:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function takeProfitGlobal() {
+        return _ref4.apply(this, arguments);
+      }
+
+      return takeProfitGlobal;
+    }(),
+    takeProfitSession: function () {
+      var _ref5 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee5() {
+        var balance, htmlResult;
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                if (!(this.settings.takeProfitSession.profitSessionValue > 0)) {
+                  _context5.next = 11;
+                  break;
+                }
+
+                balance = this.balance;
+
+                if (this.settings.takeProfitSession.usePersentage == true) {
+                  this.options.takeProfitSession = balance * this.settings.takeProfitSession.profitSessionValue / 100;
+                } else {
+                  this.options.takeProfitSession = this.settings.takeProfitSession.profitSessionValue;
+                }
+
+                if (!(Number.parseFloat(this.result.profitSession) > Number.parseFloat(this.options.takeProfitSession))) {
+                  _context5.next = 11;
+                  break;
+                }
+
+                htmlResult = "<tr>";
+
+                htmlResult += "<td colspan='4' align='center'><b>Delay " + this.settings.takeProfitSession.delay + " Seconds On Take Profit Sessions</b></td>";
+                htmlResult += "</tr>";
+                __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(htmlResult);
+                this.result.profitSession = 0;
+                _context5.next = 11;
+                return this.delay(this.settings.takeProfitSession.delay * 1000);
+
+              case 11:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this);
+      }));
+
+      function takeProfitSession() {
+        return _ref5.apply(this, arguments);
+      }
+
+      return takeProfitSession;
+    }(),
+    winLoseStreak: function () {
+      var _ref6 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee6() {
+        var htmlResult;
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
                 htmlResult = "";
 
                 if (!(this.settings.tradeAmount.winStreak.status == true)) {
-                  _context4.next = 21;
+                  _context6.next = 21;
                   break;
                 }
 
                 if (!(this.settings.tradeAmount.winStreak.value == this.options.countWinStreak)) {
-                  _context4.next = 21;
+                  _context6.next = 21;
                   break;
                 }
 
                 if (!(this.settings.tradeAmount.winStreak.onWinStreak == "false")) {
-                  _context4.next = 15;
+                  _context6.next = 15;
                   break;
                 }
 
@@ -65192,11 +65288,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   this.options.delay = 500;
                 }
                 __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(htmlResult);
-                _context4.next = 13;
+                _context6.next = 13;
                 return this.delay(this.options.delay);
 
               case 13:
-                _context4.next = 21;
+                _context6.next = 21;
                 break;
 
               case 15:
@@ -65209,17 +65305,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
               case 21:
                 if (!(this.settings.tradeAmount.loseStreak.status == true)) {
-                  _context4.next = 41;
+                  _context6.next = 41;
                   break;
                 }
 
                 if (!(this.settings.tradeAmount.loseStreak.value == this.options.countLoseStreak)) {
-                  _context4.next = 41;
+                  _context6.next = 41;
                   break;
                 }
 
                 if (!(this.settings.tradeAmount.loseStreak.onLoseStreak == "false")) {
-                  _context4.next = 35;
+                  _context6.next = 35;
                   break;
                 }
 
@@ -65234,11 +65330,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   this.options.delay = 500;
                 }
                 __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(htmlResult);
-                _context4.next = 33;
+                _context6.next = 33;
                 return this.delay(this.options.delay);
 
               case 33:
-                _context4.next = 41;
+                _context6.next = 41;
                 break;
 
               case 35:
@@ -65251,17 +65347,71 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
               case 41:
               case "end":
-                return _context4.stop();
+                return _context6.stop();
             }
           }
-        }, _callee4, this);
+        }, _callee6, this);
       }));
 
       function winLoseStreak() {
-        return _ref4.apply(this, arguments);
+        return _ref6.apply(this, arguments);
       }
 
       return winLoseStreak;
+    }(),
+    autoWithdraw: function () {
+      var _ref7 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee7() {
+        var _this3 = this;
+
+        var amount, formBodyData;
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                if (!(this.settings.autoWithdraw.status == true)) {
+                  _context7.next = 13;
+                  break;
+                }
+
+                if (!(this.balance >= this.settings.autoWithdraw.triggeredBalance)) {
+                  _context7.next = 13;
+                  break;
+                }
+
+                amount = this.balance - this.settings.autoWithdraw.initialBalance;
+                formBodyData = new FormData();
+
+                formBodyData.set("a", "Withdraw");
+                formBodyData.set("s", $cookies.get("SessionCookies"));
+                formBodyData.set("Amount", Number.parseInt(amount / 0.00000001));
+                formBodyData.set("Address", this.settings.autoWithdraw.destinationAddress);
+                formBodyData.set("Totp", "");
+                formBodyData.set("Currency", "doge");
+                this.axios.post("https://www.999doge.com/api/web.aspx", formBodyData).then(function (response) {
+                  console.log(_this3.balance - _this3.settings.autoWithdraw.initialBalance);
+                  var htmlResult = "<tr>";
+                  var wdAmount = _this3.balance - _this3.settings.autoWithdraw.initialBalance;
+                  htmlResult += "<td colspan='4' align='center'><b>Withdraw " + wdAmount.toFixed(2) + " Doge</b></td>";
+                  htmlResult += "</tr>";
+                  __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(htmlResult);
+                  _this3.balance = _this3.balance - (_this3.balance - _this3.settings.autoWithdraw.initialBalance);
+                });
+                _context7.next = 13;
+                return this.delay(1000);
+
+              case 13:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7, this);
+      }));
+
+      function autoWithdraw() {
+        return _ref7.apply(this, arguments);
+      }
+
+      return autoWithdraw;
     }(),
     resetOnWinEvent: function resetOnWinEvent() {
       //Define resetOnWin true or False
@@ -65305,10 +65455,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     sendRequest: function () {
-      var _ref5 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee5() {
-        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee5$(_context5) {
+      var _ref8 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee8() {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee8$(_context8) {
           while (1) {
-            switch (_context5.prev = _context5.next) {
+            switch (_context8.prev = _context8.next) {
               case 0:
                 this.tradeLoader = true;
 
@@ -65332,23 +65482,35 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 this.ResetOnLoseMaxBetEvent();
 
                 this.tradeLogic();
-                _context5.next = 13;
-                return this.winLoseStreak();
-
-              case 13:
-                _context5.next = 15;
+                _context8.next = 13;
                 return this.automateBetsParam();
 
+              case 13:
+                _context8.next = 15;
+                return this.takeProfitGlobal();
+
               case 15:
+                _context8.next = 17;
+                return this.takeProfitSession();
+
+              case 17:
+                _context8.next = 19;
+                return this.winLoseStreak();
+
+              case 19:
+                _context8.next = 21;
+                return this.autoWithdraw();
+
+              case 21:
               case "end":
-                return _context5.stop();
+                return _context8.stop();
             }
           }
-        }, _callee5, this);
+        }, _callee8, this);
       }));
 
       function sendRequest() {
-        return _ref5.apply(this, arguments);
+        return _ref8.apply(this, arguments);
       }
 
       return sendRequest;
@@ -70381,7 +70543,7 @@ var staticRenderFns = [
           _c("div", { staticClass: "clearfix" }),
           _vm._v(" "),
           _c("div", { staticClass: "table-responsive mt-3" }, [
-            _c("table", { staticClass: "table" }, [
+            _c("table", { staticClass: "table table-hover" }, [
               _c(
                 "thead",
                 {

@@ -112,7 +112,7 @@
               </button>
               <div class="clearfix"></div>
               <div class="table-responsive mt-3">
-                <table class="table">
+                <table class="table table-hover">
                   <thead class="card-alert alert alert-primary mb-0" align="center">
                     <tr>
                       <th scope="col">#</th>
@@ -167,7 +167,9 @@ export default {
         StopMinBalance: 0,
         profitTrade: 0,
         countWinStreak: 0,
-        countLoseStreak: 0
+        countLoseStreak: 0,
+        takeProfitGlobal: 0,
+        takeProfitSession: 0
       },
       result: {
         isWin: false,
@@ -260,13 +262,10 @@ export default {
               htmlResult += "</tr>";
               $("#htmlResult").prepend(htmlResult);
             } else {
-              this.result.payOut = response.data.PayOuts.reduce(
-                (a, b) => a + b,
-                0
-              );
               this.result.profit =
                 response.data.PayOuts.reduce((a, b) => a + b, 0) +
                 response.data.PayIns.reduce((a, b) => a + b, 0);
+              this.result.payOut = this.result.profit - this.options.basePayIn;
               this.tradeResult();
             }
           });
@@ -365,6 +364,14 @@ export default {
       this.tradeList = [];
       this.result.profitSession = 0;
       this.result.profitGlobal = 0;
+      this.result.payOut = 0;
+      this.result.profit = 0;
+      this.result.profitSession = 0;
+      this.result.profitGlobal = 0;
+      this.options.countWinStreak = 0;
+      this.options.countLoseStreak = 0;
+      this.options.takeProfitGlobal = 0;
+      this.options.takeProfitSession = 0;
       this.baseTradeAmount();
       this.sendMessage();
     },
@@ -481,13 +488,65 @@ export default {
     baseTradeAmount() {
       //Setting Percent or not baseTrade value
       if (this.settings.baseTradeAmount.usePersentage == true) {
-        this.options.basePayIn = Math.floor(
-          (this.settings.baseTradeAmount.value * this.balance) / 100
-        );
+        let basePersentage =
+          (Number.parseFloat(this.settings.baseTradeAmount.value) *
+            this.balance) /
+          100;
+        this.options.basePayIn = Math.floor(basePersentage / 0.00000001);
       } else {
         this.options.basePayIn = Math.floor(
           this.settings.baseTradeAmount.value / 0.00000001
         );
+      }
+    },
+    async takeProfitGlobal() {
+      if (this.settings.takeProfitGlobal.profitGlobalValue > 0) {
+        let balance = this.balance;
+        if (this.settings.takeProfitGlobal.usePersentage == true) {
+          this.options.takeProfitGlobal =
+            (balance * this.settings.takeProfitGlobal.profitGlobalValue) / 100;
+        } else {
+          this.options.takeProfitGlobal = this.settings.takeProfitGlobal.profitGlobalValue;
+        }
+        if (this.settings.takeProfitGlobal.stop == true) {
+          if (
+            Number.parseFloat(this.result.profitGlobal) >
+            Number.parseFloat(this.options.takeProfitGlobal)
+          ) {
+            this.stopTradding();
+            let htmlResult = "<tr>";
+            htmlResult +=
+              "<td colspan='4' align='center'><b>STOP ON TAKE PROFIT GLOBAL</b></td>";
+            htmlResult += "</tr>";
+            $("#htmlResult").prepend(htmlResult);
+          }
+        }
+      }
+    },
+    async takeProfitSession() {
+      if (this.settings.takeProfitSession.profitSessionValue > 0) {
+        let balance = this.balance;
+        if (this.settings.takeProfitSession.usePersentage == true) {
+          this.options.takeProfitSession =
+            (balance * this.settings.takeProfitSession.profitSessionValue) /
+            100;
+        } else {
+          this.options.takeProfitSession = this.settings.takeProfitSession.profitSessionValue;
+        }
+        if (
+          Number.parseFloat(this.result.profitSession) >
+          Number.parseFloat(this.options.takeProfitSession)
+        ) {
+          let htmlResult = "<tr>";
+          htmlResult +=
+            "<td colspan='4' align='center'><b>Delay " +
+            this.settings.takeProfitSession.delay +
+            " Seconds On Take Profit Sessions</b></td>";
+          htmlResult += "</tr>";
+          $("#htmlResult").prepend(htmlResult);
+          this.result.profitSession = 0;
+          await this.delay(this.settings.takeProfitSession.delay * 1000);
+        }
       }
     },
     async winLoseStreak() {
@@ -559,6 +618,43 @@ export default {
             htmlResult += "</tr>";
             $("#htmlResult").prepend(htmlResult);
           }
+        }
+      }
+    },
+    async autoWithdraw() {
+      if (this.settings.autoWithdraw.status == true) {
+        if (this.balance >= this.settings.autoWithdraw.triggeredBalance) {
+          let amount = this.balance - this.settings.autoWithdraw.initialBalance;
+          var formBodyData = new FormData();
+          formBodyData.set("a", "Withdraw");
+          formBodyData.set("s", $cookies.get("SessionCookies"));
+          formBodyData.set("Amount", Number.parseInt(amount / 0.00000001));
+          formBodyData.set(
+            "Address",
+            this.settings.autoWithdraw.destinationAddress
+          );
+          formBodyData.set("Totp", "");
+          formBodyData.set("Currency", "doge");
+          this.axios
+            .post("https://www.999doge.com/api/web.aspx", formBodyData)
+            .then(response => {
+              console.log(
+                this.balance - this.settings.autoWithdraw.initialBalance
+              );
+              let htmlResult = "<tr>";
+              let wdAmount =
+                this.balance - this.settings.autoWithdraw.initialBalance;
+              htmlResult +=
+                "<td colspan='4' align='center'><b>Withdraw " +
+                wdAmount.toFixed(2) +
+                " Doge</b></td>";
+              htmlResult += "</tr>";
+              $("#htmlResult").prepend(htmlResult);
+              this.balance =
+                this.balance -
+                (this.balance - this.settings.autoWithdraw.initialBalance);
+            });
+          await this.delay(1000);
         }
       }
     },
@@ -642,8 +738,11 @@ export default {
       this.ResetOnLoseMaxBetEvent();
 
       this.tradeLogic();
-      await this.winLoseStreak();
       await this.automateBetsParam();
+      await this.takeProfitGlobal();
+      await this.takeProfitSession();
+      await this.winLoseStreak();
+      await this.autoWithdraw();
     }
   }
 };
