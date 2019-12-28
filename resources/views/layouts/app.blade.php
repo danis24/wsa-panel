@@ -16,7 +16,7 @@
     <link href="{{ asset('css/themes/style.css') }}" rel="stylesheet">
 </head>
 <body>
-<div id="app">        
+<div id="app">
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -111,6 +111,6 @@
 <script src="{{ asset('js/themes/settings.js') }}"></script>
 <script src="{{ asset('js/themes/todolist.js') }}"></script>
 <script src="{{ asset('js/themes/dashboard.js') }}"></script>
-  
+
 </body>
 </html>

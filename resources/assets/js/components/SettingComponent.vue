@@ -38,11 +38,11 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-12 col-lg-6">
+              <div class="col-md-6">
                 <div class="form-group">
                   <label class="form-label">Trade Count</label>
                   <div class="row">
-                    <div class="col-sm-5">
+                    <div class="col-sm-12">
                       <input
                         type="number"
                         class="form-control"
@@ -99,7 +99,7 @@
           </div>
         </div>
         <!-- Timeout -->
-        <div class="card card-default p-3">
+        <div class="card card-default p-3 mt-4">
           <div class="row">
             <div class="col-sm-6">
               <div class="form-group">
@@ -107,24 +107,25 @@
               </div>
             </div>
             <div class="col-sm-6">
-              <div class="text-right">
-                <label class="custom-switch">
-                  <input
-                    type="checkbox"
-                    name="custom-switch-checkbox"
-                    class="custom-switch-input"
-                    :checked="configData.timeOutRequest.timeOutRequest == true"
-                    v-model="configData.timeOutRequest.timeOutRequest"
-                  />
-                  <span class="custom-switch-indicator"></span>
-                </label>
+              <div class="float-sm-right text-right">
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      :checked="configData.timeOutRequest.timeOutRequest == true"
+                      v-model="configData.timeOutRequest.timeOutRequest"
+                    />
+                    <i class="input-helper"></i>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
           <hr style="margin-top: 0.4rem; margin-bottom: 0.6rem;" />
           <div class="col-sm-12" v-if="configData.timeOutRequest.timeOutRequest == true">
             <div class="row">
-              <div class="col-md-12 col-lg-6">
+              <div class="col-md-12">
                 <div class="form-group">
                   <label class="form-label">Timeout</label>
                   <div class="row">
@@ -135,45 +136,54 @@
                         placeholder="0"
                         v-model="configData.timeOutRequest.timeOutRequestValue"
                       />
+                      <label>
+                        <i>Seconds</i>
+                      </label>
                     </div>
-                    <div class="col-sm-6">Seconds</div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <div class="form-label">
+                          <label>Timeout</label>
+                        </div>
+                        <div class="form-check" style="display: inline-flex;">
+                          <label class="form-check-label">
+                            <input
+                              type="radio"
+                              class="form-check-input"
+                              name="ifTimeOut"
+                              value="stop"
+                              :checked="configData.timeOutRequest.ifTimeOut == 'stop'"
+                              v-model="configData.timeOutRequest.ifTimeOut"
+                            />
+                            Stop
+                            <i class="input-helper"></i>
+                          </label>
+                        </div>
+                        <div class="form-check" style="display: inline-flex;">
+                          <label class="form-check-label">
+                            <input
+                              type="radio"
+                              class="form-check-input"
+                              name="ifTimeOut"
+                              value="delay"
+                              :checked="configData.timeOutRequest.ifTimeOut == 'delay'"
+                              v-model="configData.timeOutRequest.ifTimeOut"
+                            />
+                            Reset
+                            <i class="input-helper"></i>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="col-md-12 col-lg-6">
-                <div class="form-group">
-                  <div class="form-label">If Timeout</div>
-                  <div class="custom-controls-stacked">
-                    <label class="custom-control custom-radio custom-control-inline">
-                      <input
-                        type="radio"
-                        class="custom-control-input"
-                        name="ifTimeOut"
-                        value="stop"
-                        :checked="configData.timeOutRequest.ifTimeOut == 'stop'"
-                        v-model="configData.timeOutRequest.ifTimeOut"
-                      />
-                      <span class="custom-control-label">Stop</span>
-                    </label>
-                    <label class="custom-control custom-radio custom-control-inline">
-                      <input
-                        type="radio"
-                        class="custom-control-input"
-                        name="ifTimeOut"
-                        value="delay"
-                        :checked="configData.timeOutRequest.ifTimeOut == 'delay'"
-                        v-model="configData.timeOutRequest.ifTimeOut"
-                      />
-                      <span class="custom-control-label">Delay</span>
-                    </label>
-                  </div>
-                </div>
-              </div>
+              <div class="col-md-12 col-lg-6"></div>
             </div>
           </div>
         </div>
         <!-- Delay -->
-        <div class="card card-default p-3">
+        <div class="card card-default p-3 mt-4">
           <div class="col-sm-12">
             <div class="form-group">
               <label class="form-label">Delay</label>
@@ -182,35 +192,39 @@
           </div>
           <div class="col-sm-12">
             <div class="row">
-              <div class="col-md-12 col-lg-6">
+              <div class="col-lg-6">
                 <div class="form-group">
                   <label class="form-label">On Win</label>
                   <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                       <input
                         type="number"
                         class="form-control"
                         placeholder="0"
                         v-model="configData.delay.onWin"
                       />
+                      <label>
+                        <i>Seconds</i>
+                      </label>
                     </div>
-                    <div class="col-sm-6">Seconds</div>
                   </div>
                 </div>
               </div>
-              <div class="col-md-12 col-lg-6">
+              <div class="col-lg-6">
                 <div class="form-group">
                   <label class="form-label">On Lose</label>
                   <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                       <input
                         type="number"
                         class="form-control"
                         placeholder="0"
                         v-model="configData.delay.onLose"
                       />
+                      <label>
+                        <i>Seconds</i>
+                      </label>
                     </div>
-                    <div class="col-sm-6">Seconds</div>
                   </div>
                 </div>
               </div>
@@ -218,7 +232,7 @@
           </div>
         </div>
         <!-- Martingle Single Tradecount -->
-        <div class="card card-default p-3">
+        <div class="card card-default p-3 mt-4">
           <div class="col-sm-12">
             <div class="form-group">
               <label class="form-label">Martingle Single Tradecount</label>
@@ -231,21 +245,22 @@
                 <div class="form-group">
                   <div class="row">
                     <div class="col-sm-2">
-                      <label class="custom-switch pt-2" style="padding-left: 0.25rem;">
-                        <input
-                          type="checkbox"
-                          name="custom-switch-checkbox"
-                          class="custom-switch-input"
-                          :checked="configData.martingleSingle.onWin.status == true"
-                          v-model="configData.martingleSingle.onWin.status"
-                        />
-                        <span class="custom-switch-indicator"></span>
-                      </label>
+                      <div class="form-check" style="margin-top: 2rem">
+                        <label class="form-check-label">
+                          <input
+                            type="checkbox"
+                            class="form-check-input"
+                            :checked="configData.martingleSingle.onWin.status == true"
+                            v-model="configData.martingleSingle.onWin.status"
+                          />
+                          <i class="input-helper"></i>
+                        </label>
+                      </div>
                     </div>
                     <div class="col-sm-9">
                       <label class="form-label">On Win</label>
                       <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                           <input
                             type="number"
                             class="form-control"
@@ -262,21 +277,22 @@
                 <div class="form-group">
                   <div class="row">
                     <div class="col-sm-2">
-                      <label class="custom-switch pt-2" style="padding-left: 0.25rem;">
-                        <input
-                          type="checkbox"
-                          name="custom-switch-checkbox"
-                          class="custom-switch-input"
-                          :checked="configData.martingleSingle.onLose.status"
-                          v-model="configData.martingleSingle.onLose.status"
-                        />
-                        <span class="custom-switch-indicator"></span>
-                      </label>
+                      <div class="form-check" style="margin-top: 2rem">
+                        <label class="form-check-label">
+                          <input
+                            type="checkbox"
+                            class="form-check-input"
+                            :checked="configData.martingleSingle.onLose.status"
+                            v-model="configData.martingleSingle.onLose.status"
+                          />
+                          <i class="input-helper"></i>
+                        </label>
+                      </div>
                     </div>
                     <div class="col-sm-9">
                       <label class="form-label">On Lose</label>
                       <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                           <input
                             type="number"
                             class="form-control"
@@ -293,7 +309,7 @@
           </div>
         </div>
         <!-- Martingle Multi Tradecount -->
-        <div class="card card-default p-3">
+        <div class="card card-default p-3 mt-4">
           <div class="row">
             <div class="col-sm-12">
               <div class="form-group">
@@ -306,16 +322,17 @@
                 <label class="label">Same as Martingle Single</label>
               </div>
               <div class="float-sm-right text-right">
-                <label class="custom-switch">
-                  <input
-                    type="checkbox"
-                    name="custom-switch-checkbox"
-                    class="custom-switch-input"
-                    :checked="configData.martingleMulti.sameSingle == true"
-                    v-model="configData.martingleMulti.sameSingle"
-                  />
-                  <span class="custom-switch-indicator"></span>
-                </label>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      :checked="configData.martingleMulti.sameSingle == true"
+                      v-model="configData.martingleMulti.sameSingle"
+                    />
+                    <i class="input-helper"></i>
+                  </label>
+                </div>
               </div>
 
               <div class="clearfix"></div>
@@ -328,18 +345,19 @@
                 <div class="form-group">
                   <div class="row">
                     <div class="col-sm-2">
-                      <label class="custom-switch pt-2" style="padding-left: 0.25rem;">
-                        <input
-                          type="checkbox"
-                          name="custom-switch-checkbox"
-                          class="custom-switch-input"
-                          :checked="configData.martingleMulti.onWin.status == true"
-                          v-model="configData.martingleMulti.onWin.status"
-                        />
-                        <span class="custom-switch-indicator"></span>
-                      </label>
+                      <div class="form-check" style="margin-top: 2rem">
+                        <label class="form-check-label">
+                          <input
+                            type="checkbox"
+                            class="form-check-input"
+                            :checked="configData.martingleMulti.onWin.status == true"
+                            v-model="configData.martingleMulti.onWin.status"
+                          />
+                          <i class="input-helper"></i>
+                        </label>
+                      </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-10">
                       <label class="form-label">On Win</label>
                       <div class="row">
                         <div class="col-sm-12">
@@ -359,18 +377,19 @@
                 <div class="form-group">
                   <div class="row">
                     <div class="col-sm-2">
-                      <label class="custom-switch pt-2" style="padding-left: 0.25rem;">
-                        <input
-                          type="checkbox"
-                          name="custom-switch-checkbox"
-                          class="custom-switch-input"
-                          :checked="configData.martingleMulti.onLose.status"
-                          v-model="configData.martingleMulti.onLose.status"
-                        />
-                        <span class="custom-switch-indicator"></span>
-                      </label>
+                      <div class="form-check" style="margin-top: 2rem">
+                        <label class="form-check-label">
+                          <input
+                            type="checkbox"
+                            class="form-check-input"
+                            :checked="configData.martingleMulti.onLose.status"
+                            v-model="configData.martingleMulti.onLose.status"
+                          />
+                          <i class="input-helper"></i>
+                        </label>
+                      </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-10">
                       <label class="form-label">On Lose</label>
                       <div class="row">
                         <div class="col-sm-12">
@@ -391,7 +410,7 @@
         </div>
 
         <!-- Base Trade Amount -->
-        <div class="card card-default p-3">
+        <div class="card card-default p-3 mt-4">
           <div class="row">
             <div class="col-sm-12">
               <div class="form-group">
@@ -401,19 +420,20 @@
             </div>
             <div class="col-sm-12">
               <div class="float-sm-left">
-                <label class="label">Use Persentage</label>
+                <label class="form-label">Use Persentage</label>
               </div>
               <div class="float-sm-right text-right">
-                <label class="custom-switch">
-                  <input
-                    type="checkbox"
-                    name="custom-switch-checkbox"
-                    class="custom-switch-input"
-                    :checked="configData.baseTradeAmount.usePersentage == true"
-                    v-model="configData.baseTradeAmount.usePersentage"
-                  />
-                  <span class="custom-switch-indicator"></span>
-                </label>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      :checked="configData.baseTradeAmount.usePersentage == true"
+                      v-model="configData.baseTradeAmount.usePersentage"
+                    />
+                    <i class="input-helper"></i>
+                  </label>
+                </div>
               </div>
 
               <div class="clearfix"></div>
@@ -428,7 +448,7 @@
                     <div class="col-sm-3">
                       <label class="form-label">Base Trade</label>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-9">
                       <div class="row">
                         <div class="col-sm-12">
                           <input
@@ -448,7 +468,7 @@
         </div>
 
         <!-- Trade Amount -->
-        <div class="card card-default p-3">
+        <div class="card card-default p-3 mt-4">
           <div class="row">
             <div class="col-sm-6">
               <div class="form-group">
@@ -465,22 +485,24 @@
                     <div class="col-sm-3">
                       <label class="form-label">Profit</label>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-9">
                       <input
                         type="number"
                         class="form-control"
                         placeholder="0"
                         v-model="configData.tradeAmount.profit.value"
                       />
-                      <label class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          class="custom-control-input"
-                          :checked="configData.tradeAmount.profit.mathBaseAmount == true"
-                          v-model="configData.tradeAmount.profit.mathBaseAmount"
-                        />
-                        <span class="custom-control-label">X Base Amount</span>
-                      </label>
+                      <div class="form-check">
+                        <label class="form-check-label">
+                          <input
+                            type="checkbox"
+                            class="form-check-input"
+                            :checked="configData.tradeAmount.profit.mathBaseAmount == true"
+                            v-model="configData.tradeAmount.profit.mathBaseAmount"
+                          />
+                          <i class="input-helper">X Base Amount</i>
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -489,17 +511,19 @@
                 <div class="form-group">
                   <div class="row">
                     <div class="col-sm-3">
-                      <label class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          class="custom-control-input"
-                          :checked="configData.tradeAmount.winStreak.status"
-                          v-model="configData.tradeAmount.winStreak.status"
-                        />
-                        <span class="custom-control-label">Win Streak</span>
-                      </label>
+                      <div class="form-check" style="margin-top: 0.3rem">
+                        <label class="form-check-label">
+                          <input
+                            type="checkbox"
+                            class="form-check-input"
+                            :checked="configData.tradeAmount.winStreak.status"
+                            v-model="configData.tradeAmount.winStreak.status"
+                          />
+                          <i class="input-helper">Win Streak</i>
+                        </label>
+                      </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-9">
                       <input
                         type="number"
                         class="form-control"
@@ -515,28 +539,33 @@
                       <label class="form-label">On Win Streak</label>
                     </div>
                     <div class="col-sm-6">
-                      <div class="custom-controls-stacked">
-                        <label class="custom-control custom-radio custom-control-inline">
+                      <div class="form-check" style="display: inline-flex;">
+                        <label class="form-check-label">
                           <input
                             type="radio"
-                            class="custom-control-input"
+                            class="form-check-input"
                             name="tradeAmountOnWinStreak"
                             value="true"
                             :checked="configData.tradeAmount.winStreak.onWinStreak == true"
                             v-model="configData.tradeAmount.winStreak.onWinStreak"
                           />
-                          <span class="custom-control-label">Stop</span>
+                          Stop
+                          <i class="input-helper"></i>
                         </label>
-                        <label class="custom-control custom-radio custom-control-inline">
+                      </div>
+
+                      <div class="form-check" style="display: inline-flex;">
+                        <label class="form-check-label">
                           <input
                             type="radio"
-                            class="custom-control-input"
+                            class="form-check-input"
                             name="tradeAmountOnWinStreak"
                             value="false"
                             :checked="configData.tradeAmount.winStreak.onWinStreak == false"
                             v-model="configData.tradeAmount.winStreak.onWinStreak"
                           />
-                          <span class="custom-control-label">Reset</span>
+                          Reset
+                          <i class="input-helper"></i>
                         </label>
                       </div>
                     </div>
@@ -547,7 +576,7 @@
                     <div class="col-sm-3">
                       <label class="form-label">If Reset Delay</label>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-9">
                       <input
                         type="number"
                         class="form-control"
@@ -563,17 +592,19 @@
                 <div class="form-group">
                   <div class="row">
                     <div class="col-sm-3">
-                      <label class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          class="custom-control-input"
-                          :checked="configData.tradeAmount.loseStreak.status == true"
-                          v-model="configData.tradeAmount.loseStreak.status"
-                        />
-                        <span class="custom-control-label">Lose Streak</span>
-                      </label>
+                      <div class="form-check" style="margin-top: 0.3rem">
+                        <label class="form-check-label">
+                          <input
+                            type="checkbox"
+                            class="form-check-input"
+                            :checked="configData.tradeAmount.loseStreak.status == true"
+                            v-model="configData.tradeAmount.loseStreak.status"
+                          />
+                          <i class="input-helper">Lose Streak</i>
+                        </label>
+                      </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-9">
                       <input
                         type="number"
                         class="form-control"
@@ -589,28 +620,32 @@
                       <label class="form-label">On Lose Streak</label>
                     </div>
                     <div class="col-sm-6">
-                      <div class="custom-controls-stacked">
-                        <label class="custom-control custom-radio custom-control-inline">
+                      <div class="form-check" style="display: inline-flex;">
+                        <label class="form-check-label">
                           <input
                             type="radio"
-                            class="custom-control-input"
+                            class="form-check-input"
                             name="tradeAmountOnLoseStreak"
                             value="true"
                             :checked="configData.tradeAmount.loseStreak.onLoseStreak == true"
                             v-model="configData.tradeAmount.loseStreak.onLoseStreak"
                           />
-                          <span class="custom-control-label">Stop</span>
+                          Stop
+                          <i class="input-helper"></i>
                         </label>
-                        <label class="custom-control custom-radio custom-control-inline">
+                      </div>
+                      <div class="form-check" style="display: inline-flex;">
+                        <label class="form-check-label">
                           <input
                             type="radio"
-                            class="custom-control-input"
+                            class="form-check-input"
                             name="tradeAmountOnLoseStreak"
                             value="false"
                             :checked="configData.tradeAmount.loseStreak.onLoseStreak == false"
                             v-model="configData.tradeAmount.loseStreak.onLoseStreak"
                           />
-                          <span class="custom-control-label">Reset</span>
+                          Reset
+                          <i class="input-helper"></i>
                         </label>
                       </div>
                     </div>
@@ -621,7 +656,7 @@
                     <div class="col-sm-3">
                       <label class="form-label">If Reset Delay</label>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-9">
                       <input
                         type="number"
                         class="form-control"
@@ -638,28 +673,32 @@
                       <label class="form-label">If Reset Recover Lose</label>
                     </div>
                     <div class="col-sm-6">
-                      <div class="custom-controls-stacked">
-                        <label class="custom-control custom-radio custom-control-inline">
+                      <div class="form-check" style="display: inline-flex;">
+                        <label class="form-check-label">
                           <input
                             type="radio"
-                            class="custom-control-input"
+                            class="form-check-input"
                             name="ifResetRecoverLose"
                             value="true"
                             :checked="configData.tradeAmount.loseStreak.ifResetRecoverLose == true"
                             v-model="configData.tradeAmount.loseStreak.ifResetRecoverLose"
                           />
-                          <span class="custom-control-label">Yes</span>
+                          Yes
+                          <i class="input-helper"></i>
                         </label>
-                        <label class="custom-control custom-radio custom-control-inline">
+                      </div>
+                      <div class="form-check" style="display: inline-flex;">
+                        <label class="form-check-label">
                           <input
                             type="radio"
-                            class="custom-control-input"
+                            class="form-check-input"
                             name="ifResetRecoverLose"
                             value="false"
                             :checked="configData.tradeAmount.loseStreak.ifResetRecoverLose == false"
                             v-model="configData.tradeAmount.loseStreak.ifResetRecoverLose"
                           />
-                          <span class="custom-control-label">No</span>
+                          No
+                          <i class="input-helper"></i>
                         </label>
                       </div>
                     </div>
@@ -672,22 +711,24 @@
                     <div class="col-sm-3">
                       <label class="form-label">Max Trade Amount</label>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-9">
                       <input
                         type="number"
                         class="form-control"
                         placeholder="0"
                         v-model="configData.tradeAmount.maxTradeAmount.value"
                       />
-                      <label class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          class="custom-control-input"
-                          :checked="configData.tradeAmount.maxTradeAmount.mathBaseAmount == true"
-                          v-model="configData.tradeAmount.maxTradeAmount.mathBaseAmount"
-                        />
-                        <span class="custom-control-label">X Base Amount</span>
-                      </label>
+                      <div class="form-check" style="margin-top: 2rem">
+                        <label class="form-check-label">
+                          <input
+                            type="checkbox"
+                            class="form-check-input"
+                            :checked="configData.tradeAmount.maxTradeAmount.mathBaseAmount == true"
+                            v-model="configData.tradeAmount.maxTradeAmount.mathBaseAmount"
+                          />
+                          <i class="input-helper">X Base Amount</i>
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -697,28 +738,32 @@
                       <label class="form-label">Max Trade On Win</label>
                     </div>
                     <div class="col-sm-6">
-                      <div class="custom-controls-stacked">
-                        <label class="custom-control custom-radio custom-control-inline">
+                      <div class="form-check" style="display: inline-flex;">
+                        <label class="form-check-label">
                           <input
                             type="radio"
-                            class="custom-control-input"
+                            class="form-check-input"
                             name="maxTradeOnWin"
                             value="true"
                             :checked="configData.tradeAmount.maxTradeAmount.maxTradeOnWin == true"
                             v-model="configData.tradeAmount.maxTradeAmount.maxTradeOnWin"
                           />
-                          <span class="custom-control-label">Stop</span>
+                          Stop
+                          <i class="input-helper"></i>
                         </label>
-                        <label class="custom-control custom-radio custom-control-inline">
+                      </div>
+                      <div class="form-check" style="display: inline-flex;">
+                        <label class="form-check-label">
                           <input
                             type="radio"
-                            class="custom-control-input"
+                            class="form-check-input"
                             name="maxTradeOnWin"
                             value="false"
                             :checked="configData.tradeAmount.maxTradeAmount.maxTradeOnWin == false"
                             v-model="configData.tradeAmount.maxTradeAmount.maxTradeOnWin"
                           />
-                          <span class="custom-control-label">Reset</span>
+                          Reset
+                          <i class="input-helper"></i>
                         </label>
                       </div>
                     </div>
@@ -728,28 +773,32 @@
                       <label class="form-label">Max Trade On Lose</label>
                     </div>
                     <div class="col-sm-6">
-                      <div class="custom-controls-stacked">
-                        <label class="custom-control custom-radio custom-control-inline">
+                      <div class="form-check" style="display: inline-flex;">
+                        <label class="form-check-label">
                           <input
                             type="radio"
-                            class="custom-control-input"
+                            class="form-check-input"
                             name="maxTradeOnLose"
                             value="true"
                             :checked="configData.tradeAmount.maxTradeAmount.maxTradeOnLose == true"
                             v-model="configData.tradeAmount.maxTradeAmount.maxTradeOnLose"
                           />
-                          <span class="custom-control-label">Stop</span>
+                          Stop
+                          <i class="input-helper"></i>
                         </label>
-                        <label class="custom-control custom-radio custom-control-inline">
+                      </div>
+                      <div class="form-check" style="display: inline-flex;">
+                        <label class="form-check-label">
                           <input
                             type="radio"
-                            class="custom-control-input"
+                            class="form-check-input"
                             name="maxTradeOnLose"
                             value="false"
                             :checked="configData.tradeAmount.maxTradeAmount.maxTradeOnLose == false"
                             v-model="configData.tradeAmount.maxTradeAmount.maxTradeOnLose"
                           />
-                          <span class="custom-control-label">Reset</span>
+                          Reset
+                          <i class="input-helper"></i>
                         </label>
                       </div>
                     </div>
@@ -761,7 +810,7 @@
         </div>
 
         <!-- Take Profit Global -->
-        <div class="card card-default p-3">
+        <div class="card card-default p-3 mt-4">
           <div class="row">
             <div class="col-sm-12">
               <div class="form-group">
@@ -774,16 +823,17 @@
                 <label class="label">Use Persentage</label>
               </div>
               <div class="float-sm-right text-right">
-                <label class="custom-switch">
-                  <input
-                    type="checkbox"
-                    name="usePersentageTakeProfitGlobal"
-                    class="custom-switch-input"
-                    :checked="configData.takeProfitGlobal.usePersentage == true"
-                    v-model="configData.takeProfitGlobal.usePersentage"
-                  />
-                  <span class="custom-switch-indicator"></span>
-                </label>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      :checked="configData.takeProfitGlobal.usePersentage == true"
+                      v-model="configData.takeProfitGlobal.usePersentage"
+                    />
+                    <i class="input-helper"></i>
+                  </label>
+                </div>
               </div>
 
               <div class="clearfix"></div>
@@ -798,7 +848,7 @@
                     <div class="col-sm-3">
                       <label class="form-label">Profit Global</label>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-9">
                       <div class="row">
                         <div class="col-sm-12">
                           <input
@@ -818,16 +868,17 @@
                   <label class="label">Stop After Take Profit</label>
                 </div>
                 <div class="float-sm-right text-right">
-                  <label class="custom-switch">
-                    <input
-                      type="checkbox"
-                      name="stopAfterTakeProfit"
-                      class="custom-switch-input"
-                      :checked="configData.takeProfitGlobal.stop == true"
-                      v-model="configData.takeProfitGlobal.stop"
-                    />
-                    <span class="custom-switch-indicator"></span>
-                  </label>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        :checked="configData.takeProfitGlobal.stop == true"
+                        v-model="configData.takeProfitGlobal.stop"
+                      />
+                      <i class="input-helper"></i>
+                    </label>
+                  </div>
                 </div>
 
                 <div class="clearfix"></div>
@@ -837,7 +888,7 @@
         </div>
 
         <!-- Take Profit Sessions -->
-        <div class="card card-default p-3">
+        <div class="card card-default p-3 mt-4">
           <div class="row">
             <div class="col-sm-12">
               <div class="form-group">
@@ -850,16 +901,17 @@
                 <label class="label">Use Persentage</label>
               </div>
               <div class="float-sm-right text-right">
-                <label class="custom-switch">
-                  <input
-                    type="checkbox"
-                    name="custom-switch-checkbox"
-                    class="custom-switch-input"
-                    :checked="configData.takeProfitSession.usePersentage == true"
-                    v-model="configData.takeProfitSession.usePersentage"
-                  />
-                  <span class="custom-switch-indicator"></span>
-                </label>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      :checked="configData.takeProfitSession.usePersentage == true"
+                      v-model="configData.takeProfitSession.usePersentage"
+                    />
+                    <i class="input-helper"></i>
+                  </label>
+                </div>
               </div>
 
               <div class="clearfix"></div>
@@ -874,7 +926,7 @@
                     <div class="col-sm-3">
                       <label class="form-label">Profit Sessions</label>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-9">
                       <div class="row">
                         <div class="col-sm-12">
                           <input
@@ -894,14 +946,16 @@
                   <div class="col-sm-3">
                     <label class="form-label">Delay</label>
                   </div>
-                  <div class="col-sm-6">
+                  <div class="col-sm-9">
                     <input
                       type="number"
                       class="form-control"
                       placeholder="0"
                       v-model="configData.takeProfitSession.delay"
                     />
-                    <label>Seconds</label>
+                    <label class="form-label">
+                      <i>Seconds</i>
+                    </label>
                   </div>
                 </div>
               </div>
@@ -910,25 +964,24 @@
         </div>
 
         <!-- Auto Withdraw -->
-        <div class="card card-default p-3">
+        <div class="card p-3 mt-4">
           <div class="row">
-            <div class="col-sm-6">
-              <div class="form-group">
+            <div class="col-sm-12">
+              <div class="float-sm-left">
                 <label class="form-label">Auto Withdraw</label>
               </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="text-right">
-                <label class="custom-switch">
-                  <input
-                    type="checkbox"
-                    name="autoWithdraw"
-                    class="custom-switch-input"
-                    :checked="configData.autoWithdraw.status == true"
-                    v-model="configData.autoWithdraw.status"
-                  />
-                  <span class="custom-switch-indicator"></span>
-                </label>
+              <div class="float-sm-right text-right">
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      :checked="configData.autoWithdraw.status == true"
+                      v-model="configData.autoWithdraw.status"
+                    />
+                    <i class="input-helper"></i>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -980,6 +1033,7 @@
           </div>
         </div>
       </div>
+      <div class="col-md-4"></div>
     </div>
 
     <!-- Modal -->
@@ -1032,7 +1086,7 @@
         </div>
       </div>
     </div>
-    <nav class="navbar fixed-bottom navbar-menu-wrapper d-flex align-items-center justify-content-end">
+    <nav class style="position: fixed; bottom: 0px; right: 0px;">
       <div class="float-sm-right">
         <div class="card alert alert-primary">
           <template v-if="this.saveLoader === true">
@@ -1047,14 +1101,20 @@
             </button>
           </template>
           <div v-if="this.saveLoader === false">
-            <button class="btn btn-outline-success btn-icon-text mt-2" @click.prevent="saveConfig"><i class="mdi mdi-content-save btn-icon-prepend"></i> Save</button>
+            <button class="btn btn-outline-success btn-icon-text mt-2" @click.prevent="saveConfig">
+              <i class="mdi mdi-content-save btn-icon-prepend"></i> Save
+            </button>
           </div>
           <button
-              class="btn btn-outline-danger btn-icon-text mt-2"
-              data-toggle="modal"
-              data-target="#saveAsModal"
-            ><i class="mdi mdi-content-save-all btn-icon-prepend"></i> Save As</button>
-          <router-link to="/settings/loads" class="btn btn-outline-warning btn-icon-text mt-2"><i class="mdi mdi-folder-download btn-icon-prepend"></i> Load</router-link>  
+            class="btn btn-outline-danger btn-icon-text mt-2"
+            data-toggle="modal"
+            data-target="#saveAsModal"
+          >
+            <i class="mdi mdi-content-save-all btn-icon-prepend"></i> Save As
+          </button>
+          <router-link to="/settings/loads" class="btn btn-outline-warning btn-icon-text mt-2">
+            <i class="mdi mdi-folder-download btn-icon-prepend"></i> Load
+          </router-link>
         </div>
       </div>
     </nav>
