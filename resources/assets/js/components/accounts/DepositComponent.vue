@@ -5,7 +5,7 @@
 
     <div class="card-body">
       <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-2">
           <button class="btn btn-pill btn-warning" type="button" @click.prevent="getAddress()">
             <i class="fe fe-layers"></i> Get Address
           </button>
