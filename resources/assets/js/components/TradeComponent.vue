@@ -195,7 +195,7 @@ export default {
           {
             theme: "toasted-primary",
             position: "top-right",
-            duration: 500
+            duration: 5000
           }
         );
       } else {

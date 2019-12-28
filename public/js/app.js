@@ -64833,7 +64833,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var toast = this.$toasted.show("session not found, Please Login Now !", {
           theme: "toasted-primary",
           position: "top-right",
-          duration: 500
+          duration: 5000
         });
       } else {
         var baseUrl = "https://www.999doge.com/api/web.aspx";
@@ -71954,7 +71954,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var toast = this.$toasted.show("Setting Saved !", {
           theme: "toasted-primary",
           position: "top-right",
-          duration: 500
+          duration: 5000
         });
       }
     }
@@ -75882,7 +75882,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           var toast = _this.$toasted.show("Register Successed :) Please Login Now !", {
             theme: "toasted-primary",
             position: "top-right",
-            duration: 500
+            duration: 5000
           });
         }
         if (response.data.UsernameTaken != undefined) {
@@ -75890,7 +75890,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           var _toast = _this.$toasted.show("Username Already Taken !", {
             theme: "toasted-primary",
             position: "top-right",
-            duration: 500
+            duration: 5000
           });
         }
       });
@@ -75920,7 +75920,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           var toast = _this2.$toasted.show(response.data.error, {
             theme: "toasted-primary",
             position: "top-right",
-            duration: 500
+            duration: 5000
           });
         }
         if (response.data.LoginInvalid == 1) {
@@ -75928,7 +75928,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           var _toast2 = _this2.$toasted.show("Username or Password is Incorrect !!", {
             theme: "toasted-primary",
             position: "top-right",
-            duration: 500
+            duration: 5000
           });
         }
         if (response.data.SessionCookie != undefined) {
@@ -75940,7 +75940,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           var _toast3 = _this2.$toasted.show("Login Success :)", {
             theme: "toasted-primary",
             position: "top-right",
-            duration: 500
+            duration: 5000
           });
         }
       });
@@ -77807,8 +77807,83 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      address: "",
+      amount: 0,
+      totp: ""
+    };
+  },
+
+  methods: {
+    createWithdraw: function createWithdraw() {
+      var _this = this;
+
+      if (this.address == "") {
+        var toast = this.$toasted.show("Address Must Be Fill !", {
+          theme: "toasted-primary",
+          position: "top-right",
+          duration: 5000
+        });
+      } else {
+        var formBodyData = new FormData();
+        formBodyData.set("a", "Withdraw");
+        formBodyData.set("s", $cookies.get("SessionCookies"));
+        formBodyData.set("Amount", Number.parseInt(this.amount / 0.00000001));
+        formBodyData.set("Address", this.address);
+        formBodyData.set("Totp", this.totp);
+        formBodyData.set("Currency", "doge");
+        this.axios.post("https://www.999doge.com/api/web.aspx", formBodyData).then(function (response) {
+          console.log(response.data);
+          if (response.data.InsufficientFunds == 1) {
+            var _toast = _this.$toasted.show("Balance Insufficient", {
+              theme: "toasted-primary",
+              position: "top-right",
+              duration: 5000
+            });
+          } else if (response.data.TooSmall == 1) {
+            var _toast2 = _this.$toasted.show("Balance Too Small", {
+              theme: "toasted-primary",
+              position: "top-right",
+              duration: 5000
+            });
+          } else if (response.data.Pending) {
+            var _toast3 = _this.$toasted.show("Withdraw Succesfully :)", {
+              theme: "toasted-primary",
+              position: "top-right",
+              duration: 5000
+            });
+          }
+        });
+      }
+    }
+  }
+});
 
 /***/ }),
 /* 180 */
@@ -77818,84 +77893,134 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card card-default" }, [
-      _c("div", { staticClass: "card-header" }, [_vm._v("Withdraw")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
-        _c(
-          "form",
-          { attrs: { action: "https://httpbin.org/post", method: "post" } },
-          [
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { staticClass: "form-label" }, [_vm._v("Address")]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  name: "address",
-                  placeholder: "Address..",
-                  "aria-autocomplete": "list"
-                }
-              })
-            ]),
+  return _c("div", { staticClass: "card card-default" }, [
+    _c("div", { staticClass: "card-header" }, [_vm._v("Withdraw")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-body" }, [
+      _c(
+        "form",
+        { attrs: { action: "https://httpbin.org/post", method: "post" } },
+        [
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { staticClass: "form-label" }, [_vm._v("Address")]),
             _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { staticClass: "form-label" }, [_vm._v("Amount")]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control",
-                attrs: {
-                  type: "number",
-                  name: "amount",
-                  placeholder: "Amount..",
-                  "aria-autocomplete": "list"
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c("label", { staticClass: "form-label" }, [
-                _vm._v("2FA (if enable)")
-              ]),
-              _vm._v(" "),
-              _c("input", {
-                staticClass: "form-control",
-                attrs: {
-                  type: "text",
-                  name: "2fa",
-                  placeholder: "2FA..",
-                  "aria-autocomplete": "list"
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "form-group" }, [
-              _c(
-                "button",
+            _c("input", {
+              directives: [
                 {
-                  staticClass: "btn btn-pill btn-warning",
-                  attrs: { type: "button" }
-                },
-                [
-                  _c("i", { staticClass: "fe fe-dollar-sign" }),
-                  _vm._v(" Withdraw")
-                ]
-              )
-            ])
-          ]
-        )
-      ])
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.address,
+                  expression: "address"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                name: "address",
+                placeholder: "Address..",
+                "aria-autocomplete": "list"
+              },
+              domProps: { value: _vm.address },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.address = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { staticClass: "form-label" }, [_vm._v("Amount")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.amount,
+                  expression: "amount"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "number",
+                name: "amount",
+                placeholder: "Amount..",
+                "aria-autocomplete": "list"
+              },
+              domProps: { value: _vm.amount },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.amount = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("label", { staticClass: "form-label" }, [
+              _vm._v("2FA (if enable)")
+            ]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.totp,
+                  expression: "totp"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                name: "2fa",
+                placeholder: "2FA..",
+                "aria-autocomplete": "list"
+              },
+              domProps: { value: _vm.totp },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.totp = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-pill btn-warning",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.createWithdraw()
+                  }
+                }
+              },
+              [
+                _c("i", { staticClass: "fe fe-dollar-sign" }),
+                _vm._v(" Withdraw\n        ")
+              ]
+            )
+          ])
+        ]
+      )
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -78312,7 +78437,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var toast = _this2.$toasted.show(response.data.message, {
           theme: "toasted-primary",
           position: "top-right",
-          duration: 500
+          duration: 5000
         });
         if (response.data.status == "ok") {
           _this2.settingCollections.splice(event, 1);
@@ -78336,7 +78461,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           var toast = _this3.$toasted.show("Setting Loaded !", {
             theme: "toasted-primary",
             position: "top-right",
-            duration: 500
+            duration: 5000
           });
           _this3.$router.push("/settings");
         }

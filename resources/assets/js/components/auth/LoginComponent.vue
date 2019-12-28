@@ -88,7 +88,7 @@ export default {
             {
               theme: "toasted-primary",
               position: "top-right",
-              duration: 500
+              duration: 5000
             }
           );
         }
@@ -97,7 +97,7 @@ export default {
           let toast = this.$toasted.show("Username Already Taken !", {
             theme: "toasted-primary",
             position: "top-right",
-            duration: 500
+            duration: 5000
           });
         }
       });
@@ -125,7 +125,7 @@ export default {
           let toast = this.$toasted.show(response.data.error, {
             theme: "toasted-primary",
             position: "top-right",
-            duration: 500
+            duration: 5000
           });
         }
         if (response.data.LoginInvalid == 1) {
@@ -135,7 +135,7 @@ export default {
             {
               theme: "toasted-primary",
               position: "top-right",
-              duration: 500
+              duration: 5000
             }
           );
         }
@@ -148,7 +148,7 @@ export default {
           let toast = this.$toasted.show("Login Success :)", {
             theme: "toasted-primary",
             position: "top-right",
-            duration: 500
+            duration: 5000
           });
         }
       });

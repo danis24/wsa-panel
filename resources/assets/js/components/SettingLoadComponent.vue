@@ -61,7 +61,7 @@ export default {
         let toast = this.$toasted.show(response.data.message, {
           theme: "toasted-primary",
           position: "top-right",
-          duration: 500
+          duration: 5000
         });
         if (response.data.status == "ok") {
           this.settingCollections.splice(event, 1);
@@ -83,7 +83,7 @@ export default {
           let toast = this.$toasted.show("Setting Loaded !", {
             theme: "toasted-primary",
             position: "top-right",
-            duration: 500
+            duration: 5000
           });
           this.$router.push("/settings");
         }

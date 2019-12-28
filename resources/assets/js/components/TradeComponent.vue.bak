@@ -194,7 +194,7 @@ export default {
           {
             theme: "toasted-primary",
             position: "top-right",
-            duration: 500
+            duration: 5000
           }
         );
       } else {
@@ -334,7 +334,7 @@ export default {
           this.options.IncreaseOnLosePercent = this.settings.martingleSingle.onLose.value / 100;
         }
       }
-      
+
       //Trade Amount
       //Profit
       if(this.settings.tradeAmount.profit.mathBaseAmount == true){
@@ -347,7 +347,7 @@ export default {
       if(this.settings.tradeAmount.maxTradeAmount.mathBaseAmount == true){
         this.options.MaxPayIn = Math.floor(this.settings.tradeAmount.maxTradeAmount.value * this.options.basePayIn);
       }else{
-        this.options.MaxPayIn = Math.floor(this.settings.tradeAmount.maxTradeAmount.value / 0.00000001); 
+        this.options.MaxPayIn = Math.floor(this.settings.tradeAmount.maxTradeAmount.value / 0.00000001);
       }
 
       //Reset OnLose MaxBet
@@ -430,7 +430,7 @@ export default {
                 this.options.IncreaseOnLosePercent = this.settings.martingleSingle.onLose.value / 100;
               }
             }
-            
+
             //Trade Amount
             //Profit
             if(this.settings.tradeAmount.profit.mathBaseAmount == true){
@@ -443,7 +443,7 @@ export default {
             if(this.settings.tradeAmount.maxTradeAmount.mathBaseAmount == true){
               this.options.MaxPayIn = Math.floor(this.settings.tradeAmount.maxTradeAmount.value * this.options.basePayIn);
             }else{
-              this.options.MaxPayIn = Math.floor(this.settings.tradeAmount.maxTradeAmount.value / 0.00000001); 
+              this.options.MaxPayIn = Math.floor(this.settings.tradeAmount.maxTradeAmount.value / 0.00000001);
             }
 
             //Reset OnLose MaxBet

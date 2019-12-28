@@ -1331,7 +1331,7 @@ export default {
         let toast = this.$toasted.show("Setting Saved !", {
           theme: "toasted-primary",
           position: "top-right",
-          duration: 500
+          duration: 5000
         });
       }
     }
