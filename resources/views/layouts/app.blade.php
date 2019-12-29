@@ -57,25 +57,25 @@
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <router-link to="/home" class="nav-link">
+            <router-link to="/home" class="nav-link" exact>
               <i class="mdi mdi-view-dashboard-outline menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/trade" class="nav-link">
+            <router-link to="/trade" class="nav-link" exact>
               <i class="mdi mdi-finance menu-icon"></i>
               <span class="menu-title">Trading Bot</span>
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/settings" class="nav-link">
+            <router-link to="/settings" class="nav-link" exact>
               <i class="mdi mdi-codepen menu-icon"></i>
               <span class="menu-title">Settings</span>
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/accounts" class="nav-link">
+            <router-link to="/accounts" class="nav-link" exact>
               <i class="mdi mdi-account-outline menu-icon"></i>
               <span class="menu-title">Account</span>
             </router-link>

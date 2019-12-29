@@ -76,6 +76,7 @@ export default {
       var bodyFormData = new FormData();
       bodyFormData.set("a", "GetWithdrawals");
       bodyFormData.set("s", sessionCookies);
+
       var xhr = new XMLHttpRequest();
       var url = "https://www.999doge.com/api/web.aspx";
       xhr.open("POST", url, true);

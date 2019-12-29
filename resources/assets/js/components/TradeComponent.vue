@@ -146,10 +146,14 @@ export default {
       tradeLoader: false,
       settings: {},
       tradeStatus: false,
+      tradeLogicHiLo: {
+        onWin: 1,
+        onLose: 1
+      },
       options: {
         tradeLogic: true,
         delay: 1000,
-        highLow: "",
+        highLow: "L",
         low: true,
         high: true,
         changePercent: 5,
@@ -254,7 +258,6 @@ export default {
       var url = "https://www.999doge.com/api/web.aspx";
       xhr.open("POST", url, true);
       xhr.onreadystatechange = function(vm) {
-        console.log(XMLHttpRequest.DONE);
         if (this.readyState === XMLHttpRequest.DONE) {
           let response = JSON.parse(this.responseText);
           if (response.InsufficientFunds) {
@@ -327,6 +330,7 @@ export default {
       if (profit > 0) {
         this.options.countWinStreak += 1;
         this.options.countLoseStreak = 0;
+        this.tradeLogicHiLo.onWin += 1;
         htmlResult +=
           '<tr class="alert alert-fill-success mb-0" align="center" style="cursor: pointer;">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
@@ -337,6 +341,7 @@ export default {
       } else {
         this.options.countLoseStreak += 1;
         this.options.countWinStreak = 0;
+        this.tradeLogicHiLo.onLose += 1;
         htmlResult +=
           '<tr class="alert alert-fill-danger mb-0" align="center" style="cursor: pointer;">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
@@ -353,6 +358,35 @@ export default {
     },
     tradeLogic() {
       if (this.settings.tradeLogicSelected.selectedValue == 1) {
+        let sumTradeLogicWin =
+          Number.parseInt(this.settings.tradeLogicHiLo.win) + 1;
+        let sumTradeLogicLose =
+          Number.parseInt(this.settings.tradeLogicHiLo.lose) + 1;
+        console.log("Sum trade", sumTradeLogicLose);
+        if (this.tradeLogicHiLo.onWin == sumTradeLogicWin) {
+          if (this.options.tradeLogic == false) {
+            console.log("Low");
+            this.options.tradeLogic = true;
+            this.options.highLow = "L";
+          } else {
+            console.log("High");
+            this.options.tradeLogic = false;
+            this.options.highLow = "H";
+          }
+          this.tradeLogicHiLo.onWin = 1;
+          console.log("asd");
+          console.log(this.options.tradeLogic);
+        }
+        if (this.tradeLogicHiLo.onLose == sumTradeLogicLose) {
+          if (this.options.tradeLogic == false) {
+            this.options.tradeLogic = true;
+            this.options.highLow = "L";
+          } else {
+            this.options.tradeLogic = false;
+            this.options.highLow = "H";
+          }
+          this.tradeLogicHiLo.onLose = 1;
+        }
       }
       if (this.settings.tradeLogicSelected.selectedValue == 2) {
         this.options.tradeLogic = false;
@@ -386,6 +420,8 @@ export default {
       this.options.countLoseStreak = 0;
       this.options.takeProfitGlobal = 0;
       this.options.takeProfitSession = 0;
+      this.tradeLogicHiLo.onWin = 1;
+      this.tradeLogicHiLo.onLose = 1;
       this.baseTradeAmount();
       this.sendMessage();
     },
@@ -759,6 +795,7 @@ export default {
       await this.takeProfitGlobal();
       await this.takeProfitSession();
       await this.winLoseStreak();
+      console.log(this.tradeLogicHiLo.onWin);
       await this.autoWithdraw();
     },
     tradeSingleHistories() {}

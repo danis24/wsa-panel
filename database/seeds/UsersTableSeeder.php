@@ -15,5 +15,9 @@ class UsersTableSeeder extends Seeder
             "name" => "Danis Yogaswara",
             "email" => "danistutorial@gmail.com"
         ]);
+        factory(\App\User::class, 1)->create([
+            "name" => "Taufiq",
+            "email" => "taufik@gmail.com"
+        ]);
     }
 }

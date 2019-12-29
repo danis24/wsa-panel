@@ -64799,10 +64799,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       tradeLoader: false,
       settings: {},
       tradeStatus: false,
+      tradeLogicHiLo: {
+        onWin: 1,
+        onLose: 1
+      },
       options: (_options = {
         tradeLogic: true,
         delay: 1000,
-        highLow: "",
+        highLow: "L",
         low: true,
         high: true,
         changePercent: 5
@@ -64891,7 +64895,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
                 xhr.open("POST", url, true);
                 xhr.onreadystatechange = function (vm) {
-                  console.log(XMLHttpRequest.DONE);
                   if (this.readyState === XMLHttpRequest.DONE) {
                     var response = JSON.parse(this.responseText);
                     if (response.InsufficientFunds) {
@@ -65005,6 +65008,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (profit > 0) {
         this.options.countWinStreak += 1;
         this.options.countLoseStreak = 0;
+        this.tradeLogicHiLo.onWin += 1;
         htmlResult += '<tr class="alert alert-fill-success mb-0" align="center" style="cursor: pointer;">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
@@ -65014,6 +65018,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       } else {
         this.options.countLoseStreak += 1;
         this.options.countWinStreak = 0;
+        this.tradeLogicHiLo.onLose += 1;
         htmlResult += '<tr class="alert alert-fill-danger mb-0" align="center" style="cursor: pointer;">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
@@ -65028,7 +65033,35 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(htmlResult);
     },
     tradeLogic: function tradeLogic() {
-      if (this.settings.tradeLogicSelected.selectedValue == 1) {}
+      if (this.settings.tradeLogicSelected.selectedValue == 1) {
+        var sumTradeLogicWin = Number.parseInt(this.settings.tradeLogicHiLo.win) + 1;
+        var sumTradeLogicLose = Number.parseInt(this.settings.tradeLogicHiLo.lose) + 1;
+        console.log("Sum trade", sumTradeLogicLose);
+        if (this.tradeLogicHiLo.onWin == sumTradeLogicWin) {
+          if (this.options.tradeLogic == false) {
+            console.log("Low");
+            this.options.tradeLogic = true;
+            this.options.highLow = "L";
+          } else {
+            console.log("High");
+            this.options.tradeLogic = false;
+            this.options.highLow = "H";
+          }
+          this.tradeLogicHiLo.onWin = 1;
+          console.log("asd");
+          console.log(this.options.tradeLogic);
+        }
+        if (this.tradeLogicHiLo.onLose == sumTradeLogicLose) {
+          if (this.options.tradeLogic == false) {
+            this.options.tradeLogic = true;
+            this.options.highLow = "L";
+          } else {
+            this.options.tradeLogic = false;
+            this.options.highLow = "H";
+          }
+          this.tradeLogicHiLo.onLose = 1;
+        }
+      }
       if (this.settings.tradeLogicSelected.selectedValue == 2) {
         this.options.tradeLogic = false;
         this.options.highLow = "H";
@@ -65061,6 +65094,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.options.countLoseStreak = 0;
       this.options.takeProfitGlobal = 0;
       this.options.takeProfitSession = 0;
+      this.tradeLogicHiLo.onWin = 1;
+      this.tradeLogicHiLo.onLose = 1;
       this.baseTradeAmount();
       this.sendMessage();
     },
@@ -65538,10 +65573,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 return this.winLoseStreak();
 
               case 19:
-                _context9.next = 21;
+                console.log(this.tradeLogicHiLo.onWin);
+                _context9.next = 22;
                 return this.autoWithdraw();
 
-              case 21:
+              case 22:
               case "end":
                 return _context9.stop();
             }
@@ -76296,6 +76332,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var bodyFormData = new FormData();
       bodyFormData.set("a", "GetWithdrawals");
       bodyFormData.set("s", sessionCookies);
+
       var xhr = new XMLHttpRequest();
       var url = "https://www.999doge.com/api/web.aspx";
       xhr.open("POST", url, true);
