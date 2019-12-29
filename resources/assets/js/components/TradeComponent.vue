@@ -107,7 +107,12 @@
           <div class="card">
             <div class="card-body">
               <h4 class="card-title d-inline">Recent Last 50 Transaction</h4>
-              <button type="button" class="btn btn-dark btn-rounded btn-icon d-inline float-right">
+              <button
+                type="button"
+                class="btn btn-dark btn-rounded btn-icon d-inline float-right"
+                data-toggle="modal"
+                data-target="#saveAsModal"
+              >
                 <i class="mdi mdi-finance"></i>
               </button>
               <div class="clearfix"></div>
@@ -129,6 +134,95 @@
         </div>
       </div>
     </div>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="saveAsModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="saveAsModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document" style="opacity:0.7 !important;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="saveAsModalLabel">Trade Analitycs</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <area-chart :data="chartData"></area-chart>
+              </div>
+              <div class="col-md-6">
+                <div class="col-md-12">
+                  <div class="row mt-1">
+                    <div class="col-6">
+                      <div v-if="this.tradeLoader === true">
+                        <button class="btn btn-primary btn-block d-flex justify-content-center">
+                          <fulfilling-bouncing-circle-spinner
+                            :animation-duration="4000"
+                            :size="17"
+                            color="#fff"
+                          />
+                        </button>
+                      </div>
+                      <div v-if="this.tradeLoader === false">
+                        <button
+                          class="btn btn-primary btn-block"
+                          @click.prevent="startTradding()"
+                        >Start</button>
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <button
+                        class="btn btn-danger btn-block float-right"
+                        @click.prevent="stopTradding()"
+                      >Stop</button>
+                    </div>
+                  </div>
+                </div>
+                <table class="table">
+                  <tr>
+                    <td width="25%">Balance</td>
+                    <td width="2%">:</td>
+                    <td>{{ Number.parseFloat(this.balance).toFixed(2) }}</td>
+                  </tr>
+                  <tr>
+                    <td width="25%">Profit Trade</td>
+                    <td width="2%">:</td>
+                    <td>{{ Number.parseFloat(this.result.profitGlobal).toFixed(2) }}</td>
+                  </tr>
+                  <tr>
+                    <td width="25%">Max Win Streak</td>
+                    <td width="2%">:</td>
+                    <td>{{ this.result.maxWinStreak }}</td>
+                  </tr>
+                  <tr>
+                    <td width="25%">Max Lose Streak</td>
+                    <td width="2%">:</td>
+                    <td>{{ this.result.maxLoseStreak }}</td>
+                  </tr>
+                  <tr>
+                    <td width="25%">Max Trade Win</td>
+                    <td width="2%">:</td>
+                    <td>{{ Number.parseFloat(this.result.maxTradeWin).toFixed(2) }}</td>
+                  </tr>
+                  <tr>
+                    <td width="25%">Max Trade Lose</td>
+                    <td width="2%">:</td>
+                    <td>{{ Number.parseFloat(this.result.maxTradeLose).toFixed(2) }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -138,6 +232,7 @@ import $ from "jquery";
 export default {
   data() {
     return {
+      chartData: [],
       balance: "",
       tradeList: [],
       breakTrade: false,
@@ -180,7 +275,17 @@ export default {
         payOut: 0,
         profit: 0,
         profitSession: 0,
-        profitGlobal: 0
+        profitGlobal: 0,
+        tradeSingleHistoriesValue: [],
+        tradeListCount: 0,
+        maxWinStreak: 0,
+        maxLoseStreak: 0,
+        maxTradeWin: 0,
+        maxTradeLose: 0
+      },
+      temp: {
+        maxWinStreak: 0,
+        maxLoseStreak: 0
       }
     };
   },
@@ -277,6 +382,8 @@ export default {
               response.PayOuts.reduce((a, b) => a + b, 0) +
               response.PayIns.reduce((a, b) => a + b, 0);
             vm.result.payOut = vm.result.profit + vm.options.basePayIn;
+            vm.chartData.push([vm.result.tradeListCount, vm.balance]);
+            vm.tradeSingleHistories(response);
             vm.tradeResult();
           }
         }
@@ -321,6 +428,12 @@ export default {
     delay(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     },
+    tradeListHistories(id) {
+      console.log(id);
+    },
+    tradeModal() {
+      console.log("asd");
+    },
     tradeResult() {
       let trade = this.options.basePayIn * 0.00000001;
       let payOut = this.result.payOut * 0.00000001;
@@ -328,17 +441,41 @@ export default {
 
       let htmlResult = "";
       if (profit > 0) {
+        this.temp.maxWinStreak += 1;
+        if (this.temp.maxWinStreak > this.result.maxWinStreak) {
+          this.result.maxWinStreak = this.temp.maxWinStreak;
+        }
+        this.temp.maxLoseStreak = 0;
+
+        if (profit > this.result.maxTradeWin) {
+          this.result.maxTradeWin = profit;
+        }
         this.options.countWinStreak += 1;
         this.options.countLoseStreak = 0;
         this.tradeLogicHiLo.onWin += 1;
+        this.result.tradeListCount += 1;
+
+        let countTradeId = Number.parseInt(this.result.tradeListCount) - 1;
         htmlResult +=
-          '<tr class="alert alert-fill-success mb-0" align="center" style="cursor: pointer;">';
+          '<tr class="alert alert-fill-success mb-0" align="center" style="cursor: pointer;" onClick="tradeListHistories(' +
+          countTradeId +
+          ')">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
         htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
         htmlResult += "<td>" + profit.toFixed(2) + "</td>";
         htmlResult += "</tr>";
       } else {
+        this.temp.maxLoseStreak += 1;
+        if (this.temp.maxLoseStreak > this.result.maxLoseStreak) {
+          this.result.maxLoseStreak = this.temp.maxWinStreak;
+        }
+        this.temp.maxWinStreak = 0;
+
+        if (profit < this.result.maxTradeLose) {
+          this.result.maxTradeLose = profit;
+        }
+
         this.options.countLoseStreak += 1;
         this.options.countWinStreak = 0;
         this.tradeLogicHiLo.onLose += 1;
@@ -405,18 +542,28 @@ export default {
       this.tradeStatus = true;
       this.settings = JSON.parse(this.$localStorage.get("configData"));
       this.tradeList = [];
+
       this.result.profitSession = 0;
       this.result.profitGlobal = 0;
       this.result.payOut = 0;
       this.result.profit = 0;
       this.result.profitSession = 0;
       this.result.profitGlobal = 0;
+
+      this.temp.maxWinStreak = 0;
+      this.temp.maxLoseStreak = 0;
+
+      this.result.tradeSingleHistoriesValue = [];
+
       this.options.countWinStreak = 0;
       this.options.countLoseStreak = 0;
       this.options.takeProfitGlobal = 0;
       this.options.takeProfitSession = 0;
+
       this.tradeLogicHiLo.onWin = 1;
       this.tradeLogicHiLo.onLose = 1;
+
+      this.chartData = [];
       this.baseTradeAmount();
       this.sendMessage();
     },
@@ -792,7 +939,18 @@ export default {
       await this.winLoseStreak();
       await this.autoWithdraw();
     },
-    tradeSingleHistories() {}
+    tradeSingleHistories(data) {
+      let payIns = data.PayIns;
+      let payOut = data.PayOuts;
+      let outInsData = [];
+      for (let i = 0; i < payIns.length; i++) {
+        outInsData.push({
+          payIns: payIns[i],
+          payOuts: payOut[i]
+        });
+      }
+      this.result.tradeSingleHistoriesValue.push(outInsData);
+    }
   }
 };
 </script>
