@@ -26,3 +26,4 @@ Route::get('/settings/collections', 'Settings\SettingController@browse')->name('
 Route::post('/settings/create', 'Settings\SettingController@create')->name('setting.create');
 Route::delete('/settings/collections/{id}', 'Settings\SettingController@delete')->name('setting.delete');
 Route::get('/settings/collections/{id}', 'Settings\SettingController@select')->name('settings.select');
+Route::get('/lastrain', 'Settings\SettingController@lastRain')->name('lastrain');

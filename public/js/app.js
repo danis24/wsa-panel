@@ -65036,20 +65036,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.settings.tradeLogicSelected.selectedValue == 1) {
         var sumTradeLogicWin = Number.parseInt(this.settings.tradeLogicHiLo.win) + 1;
         var sumTradeLogicLose = Number.parseInt(this.settings.tradeLogicHiLo.lose) + 1;
-        console.log("Sum trade", sumTradeLogicLose);
         if (this.tradeLogicHiLo.onWin == sumTradeLogicWin) {
           if (this.options.tradeLogic == false) {
-            console.log("Low");
             this.options.tradeLogic = true;
             this.options.highLow = "L";
           } else {
-            console.log("High");
             this.options.tradeLogic = false;
             this.options.highLow = "H";
           }
           this.tradeLogicHiLo.onWin = 1;
-          console.log("asd");
-          console.log(this.options.tradeLogic);
         }
         if (this.tradeLogicHiLo.onLose == sumTradeLogicLose) {
           if (this.options.tradeLogic == false) {
@@ -65573,11 +65568,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 return this.winLoseStreak();
 
               case 19:
-                console.log(this.tradeLogicHiLo.onWin);
-                _context9.next = 22;
+                _context9.next = 21;
                 return this.autoWithdraw();
 
-              case 22:
+              case 21:
               case "end":
                 return _context9.stop();
             }

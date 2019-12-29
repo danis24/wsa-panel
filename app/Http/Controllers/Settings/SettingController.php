@@ -7,9 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use App\Setting;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Traits\ClientTrait;
 
 class SettingController extends Controller
 {
+    use ClientTrait;
+
     protected $setting;
 
     public function __construct()
@@ -61,6 +64,18 @@ class SettingController extends Controller
             return $this->message("ok", "Delete Successfuly !");
         }
         return $this->message("failed", "Delete Failed !");
+    }
+
+    private function getLastRain()
+    {
+    }
+
+    public function lastRain()
+    {
+        return $this->getData()->getBody();
+        // return response()->json([
+        //     "lastRain" => 120
+        // ]);
     }
 
     private function message($status, $message)

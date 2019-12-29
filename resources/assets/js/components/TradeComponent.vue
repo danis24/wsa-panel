@@ -362,20 +362,15 @@ export default {
           Number.parseInt(this.settings.tradeLogicHiLo.win) + 1;
         let sumTradeLogicLose =
           Number.parseInt(this.settings.tradeLogicHiLo.lose) + 1;
-        console.log("Sum trade", sumTradeLogicLose);
         if (this.tradeLogicHiLo.onWin == sumTradeLogicWin) {
           if (this.options.tradeLogic == false) {
-            console.log("Low");
             this.options.tradeLogic = true;
             this.options.highLow = "L";
           } else {
-            console.log("High");
             this.options.tradeLogic = false;
             this.options.highLow = "H";
           }
           this.tradeLogicHiLo.onWin = 1;
-          console.log("asd");
-          console.log(this.options.tradeLogic);
         }
         if (this.tradeLogicHiLo.onLose == sumTradeLogicLose) {
           if (this.options.tradeLogic == false) {
@@ -795,7 +790,6 @@ export default {
       await this.takeProfitGlobal();
       await this.takeProfitSession();
       await this.winLoseStreak();
-      console.log(this.tradeLogicHiLo.onWin);
       await this.autoWithdraw();
     },
     tradeSingleHistories() {}
