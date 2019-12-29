@@ -47,10 +47,18 @@ export default {
       bodyFormData.set("a", "GetDepositAddress");
       bodyFormData.set("s", sessionCookies);
       bodyFormData.set("Currency", "doge");
-      this.axios.post(uri, bodyFormData).then(response => {
-        this.depositAddress = response.data.Address;
-        this.isLoading = false;
-      });
+
+      var xhr = new XMLHttpRequest();
+      var url = "https://www.999doge.com/api/web.aspx";
+      xhr.open("POST", url, true);
+      xhr.onreadystatechange = function(vm) {
+        if (this.readyState === XMLHttpRequest.DONE) {
+          let response = JSON.parse(this.responseText);
+          vm.depositAddress = response.Address;
+          vm.isLoading = false;
+        }
+      }.bind(xhr, this);
+      xhr.send(bodyFormData);
     }
   }
 };

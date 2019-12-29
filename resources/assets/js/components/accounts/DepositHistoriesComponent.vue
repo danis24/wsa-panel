@@ -64,10 +64,18 @@ export default {
       var bodyFormData = new FormData();
       bodyFormData.set("a", "GetDeposits");
       bodyFormData.set("s", SessionId);
-      this.axios.post(uri, bodyFormData).then(response => {
-        this.isLoading = false;
-        this.deposits = response.data.Deposits;
-      });
+
+      var xhr = new XMLHttpRequest();
+      var url = "https://www.999doge.com/api/web.aspx";
+      xhr.open("POST", url, true);
+      xhr.onreadystatechange = function(vm) {
+        if (this.readyState === XMLHttpRequest.DONE) {
+          let response = JSON.parse(this.responseText);
+          vm.isLoading = false;
+          vm.deposits = response.Deposits;
+        }
+      }.bind(xhr, this);
+      xhr.send(bodyFormData);
     },
 
     refresh() {

@@ -76,10 +76,17 @@ export default {
       var bodyFormData = new FormData();
       bodyFormData.set("a", "GetWithdrawals");
       bodyFormData.set("s", sessionCookies);
-      this.axios.post(baseUrl, bodyFormData).then(response => {
-        this.withdrawals = response.data.Withdrawals;
-        this.isLoading = false;
-      });
+      var xhr = new XMLHttpRequest();
+      var url = "https://www.999doge.com/api/web.aspx";
+      xhr.open("POST", url, true);
+      xhr.onreadystatechange = function(vm) {
+        if (this.readyState === XMLHttpRequest.DONE) {
+          let response = JSON.parse(this.responseText);
+          vm.withdrawals = response.Withdrawals;
+          vm.isLoading = false;
+        }
+      }.bind(xhr, this);
+      xhr.send(bodyFormData);
     },
     refresh() {
       this.isLoading = true;

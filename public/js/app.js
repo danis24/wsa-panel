@@ -64826,8 +64826,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
   methods: {
     getBalance: function getBalance() {
-      var _this = this;
-
       var cookies = $cookies.get("SessionCookies");
       if (cookies === null) {
         var toast = this.$toasted.show("session not found, Please Login Now !", {
@@ -64845,27 +64843,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         bodyFormData.set("Currency", "doge");
         bodyFormData.set("Referrals", 0);
         bodyFormData.set("Stats", 0);
-        this.axios.post(baseUrl, bodyFormData).then(function (response) {
-          var balance = response.data.Balance * 0.00000001;
-          _this.balance = balance;
-          _this.balanceLoader = false;
-        });
+
+        var xhr = new XMLHttpRequest();
+        var url = "https://www.999doge.com/api/web.aspx";
+        xhr.open("POST", url, true);
+        xhr.onreadystatechange = function (vm) {
+          if (this.readyState === XMLHttpRequest.DONE) {
+            var response = JSON.parse(this.responseText);
+            var balance = response.Balance * 0.00000001;
+            vm.balance = balance;
+            vm.balanceLoader = false;
+          }
+        }.bind(xhr, this);
+        xhr.send(bodyFormData);
       }
     },
-    automateBetsParam: function () {
+    makeTradeRequest: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
-        var _this2 = this;
-
-        var formBodyData, baseUrl;
+        var formBodyData, xhr, url;
         return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (!(this.tradeStatus == true)) {
-                  _context.next = 25;
-                  break;
-                }
-
                 formBodyData = new FormData();
 
                 formBodyData.set("a", "PlaceAutomatedBets");
@@ -64887,35 +64886,38 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 formBodyData.set("Currency", "doge");
                 formBodyData.set("ProtocolVersion", 2);
 
-                baseUrl = "https://www.999doge.com/api/web.aspx";
-                _context.next = 23;
-                return this.axios.post(baseUrl, formBodyData).then(baseUrl, formBodyData).then(function (response) {
-                  if (response.data.InsufficientFunds) {
-                    var htmlResult = "<tr>";
-                    htmlResult += "<td colspan='4' align='center'><b>Balance Insufficient</b></td>";
-                    htmlResult += "</tr>";
-                    __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(htmlResult);
-                  } else if (response.data.TooFast) {
-                    var _htmlResult = "<tr>";
-                    _htmlResult += "<td colspan='4' align='center'><b>To Faset Delay 10 Seconds</b></td>";
-                    _htmlResult += "</tr>";
-                    __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(_htmlResult);
-                  } else {
-                    _this2.result.profit = response.data.PayOuts.reduce(function (a, b) {
-                      return a + b;
-                    }, 0) + response.data.PayIns.reduce(function (a, b) {
-                      return a + b;
-                    }, 0);
-                    _this2.result.payOut = _this2.result.profit - _this2.options.basePayIn;
-                    _this2.tradeResult();
+                xhr = new XMLHttpRequest();
+                url = "https://www.999doge.com/api/web.aspx";
+
+                xhr.open("POST", url, true);
+                xhr.onreadystatechange = function (vm) {
+                  console.log(XMLHttpRequest.DONE);
+                  if (this.readyState === XMLHttpRequest.DONE) {
+                    var response = JSON.parse(this.responseText);
+                    if (response.InsufficientFunds) {
+                      var htmlResult = "<tr>";
+                      htmlResult += "<td colspan='4' align='center'><b>Balance Insufficient</b></td>";
+                      htmlResult += "</tr>";
+                      __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(htmlResult);
+                    } else if (response.TooFast) {
+                      var _htmlResult = "<tr>";
+                      _htmlResult += "<td colspan='4' align='center'><b>To Fast Delay 10 Seconds</b></td>";
+                      _htmlResult += "</tr>";
+                      __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(_htmlResult);
+                    } else {
+                      vm.result.profit = response.PayOuts.reduce(function (a, b) {
+                        return a + b;
+                      }, 0) + response.PayIns.reduce(function (a, b) {
+                        return a + b;
+                      }, 0);
+                      vm.result.payOut = vm.result.profit + vm.options.basePayIn;
+                      vm.tradeResult();
+                    }
                   }
-                });
+                }.bind(xhr, this);
+                xhr.send(formBodyData);
 
-              case 23:
-                _context.next = 25;
-                return this.delayOnWinLose();
-
-              case 25:
+              case 24:
               case "end":
                 return _context.stop();
             }
@@ -64923,8 +64925,40 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }, _callee, this);
       }));
 
-      function automateBetsParam() {
+      function makeTradeRequest() {
         return _ref.apply(this, arguments);
+      }
+
+      return makeTradeRequest;
+    }(),
+    automateBetsParam: function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                if (!(this.tradeStatus == true)) {
+                  _context2.next = 5;
+                  break;
+                }
+
+                _context2.next = 3;
+                return this.makeTradeRequest();
+
+              case 3:
+                _context2.next = 5;
+                return this.delayOnWinLose();
+
+              case 5:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function automateBetsParam() {
+        return _ref2.apply(this, arguments);
       }
 
       return automateBetsParam;
@@ -64971,7 +65005,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (profit > 0) {
         this.options.countWinStreak += 1;
         this.options.countLoseStreak = 0;
-        htmlResult += '<tr class="alert alert-fill-success mb-0" align="center">';
+        htmlResult += '<tr class="alert alert-fill-success mb-0" align="center" style="cursor: pointer;">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
         htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
@@ -64980,7 +65014,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       } else {
         this.options.countLoseStreak += 1;
         this.options.countWinStreak = 0;
-        htmlResult += '<tr class="alert alert-fill-danger mb-0" align="center">';
+        htmlResult += '<tr class="alert alert-fill-danger mb-0" align="center" style="cursor: pointer;">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
         htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
@@ -65035,37 +65069,37 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.tradeLoader = false;
     },
     delayOnWinLose: function () {
-      var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
-        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
+      var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3() {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context3.prev = _context3.next) {
               case 0:
                 if (this.result.profit > 0) {
                   if (this.settings.delay.onWin < 1) {
-                    this.options.delay = 500;
+                    this.options.delay = 200;
                   } else {
                     this.options.delay = Number.parseInt(this.settings.delay.onWin * 1000);
                   }
                 } else {
                   if (this.settings.delay.onLose < 1) {
-                    this.options.delay = 500;
+                    this.options.delay = 200;
                   } else {
                     this.options.delay = Number.parseInt(this.settings.delay.onLose * 1000);
                   }
                 }
-                _context2.next = 3;
+                _context3.next = 3;
                 return this.delay(this.options.delay);
 
               case 3:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee3, this);
       }));
 
       function delayOnWinLose() {
-        return _ref2.apply(this, arguments);
+        return _ref3.apply(this, arguments);
       }
 
       return delayOnWinLose;
@@ -65078,17 +65112,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     sendMessage: function () {
-      var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3() {
-        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
+      var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4() {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
                 if (!(this.tradeStatus == true)) {
-                  _context3.next = 4;
+                  _context4.next = 4;
                   break;
                 }
 
-                _context3.next = 3;
+                _context4.next = 3;
                 return this.sendRequest();
 
               case 3:
@@ -65096,14 +65130,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
               case 4:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee4, this);
       }));
 
       function sendMessage() {
-        return _ref3.apply(this, arguments);
+        return _ref4.apply(this, arguments);
       }
 
       return sendMessage;
@@ -65165,11 +65199,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     takeProfitGlobal: function () {
-      var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4() {
+      var _ref5 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee5() {
         var balance, htmlResult;
-        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
                 if (this.settings.takeProfitGlobal.profitGlobalValue > 0) {
                   balance = this.balance;
@@ -65193,27 +65227,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
               case 1:
               case "end":
-                return _context4.stop();
+                return _context5.stop();
             }
           }
-        }, _callee4, this);
+        }, _callee5, this);
       }));
 
       function takeProfitGlobal() {
-        return _ref4.apply(this, arguments);
+        return _ref5.apply(this, arguments);
       }
 
       return takeProfitGlobal;
     }(),
     takeProfitSession: function () {
-      var _ref5 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee5() {
+      var _ref6 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee6() {
         var balance, htmlResult;
-        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee5$(_context5) {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee6$(_context6) {
           while (1) {
-            switch (_context5.prev = _context5.next) {
+            switch (_context6.prev = _context6.next) {
               case 0:
                 if (!(this.settings.takeProfitSession.profitSessionValue > 0)) {
-                  _context5.next = 11;
+                  _context6.next = 11;
                   break;
                 }
 
@@ -65226,7 +65260,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 }
 
                 if (!(Number.parseFloat(this.result.profitSession) > Number.parseFloat(this.options.takeProfitSession))) {
-                  _context5.next = 11;
+                  _context6.next = 11;
                   break;
                 }
 
@@ -65236,44 +65270,44 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 htmlResult += "</tr>";
                 __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(htmlResult);
                 this.result.profitSession = 0;
-                _context5.next = 11;
+                _context6.next = 11;
                 return this.delay(this.settings.takeProfitSession.delay * 1000);
 
               case 11:
               case "end":
-                return _context5.stop();
+                return _context6.stop();
             }
           }
-        }, _callee5, this);
+        }, _callee6, this);
       }));
 
       function takeProfitSession() {
-        return _ref5.apply(this, arguments);
+        return _ref6.apply(this, arguments);
       }
 
       return takeProfitSession;
     }(),
     winLoseStreak: function () {
-      var _ref6 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee6() {
+      var _ref7 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee7() {
         var htmlResult;
-        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee6$(_context6) {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee7$(_context7) {
           while (1) {
-            switch (_context6.prev = _context6.next) {
+            switch (_context7.prev = _context7.next) {
               case 0:
                 htmlResult = "";
 
                 if (!(this.settings.tradeAmount.winStreak.status == true)) {
-                  _context6.next = 21;
+                  _context7.next = 21;
                   break;
                 }
 
                 if (!(this.settings.tradeAmount.winStreak.value == this.options.countWinStreak)) {
-                  _context6.next = 21;
+                  _context7.next = 21;
                   break;
                 }
 
                 if (!(this.settings.tradeAmount.winStreak.onWinStreak == "false")) {
-                  _context6.next = 15;
+                  _context7.next = 15;
                   break;
                 }
 
@@ -65288,11 +65322,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   this.options.delay = 500;
                 }
                 __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(htmlResult);
-                _context6.next = 13;
+                _context7.next = 13;
                 return this.delay(this.options.delay);
 
               case 13:
-                _context6.next = 21;
+                _context7.next = 21;
                 break;
 
               case 15:
@@ -65305,17 +65339,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
               case 21:
                 if (!(this.settings.tradeAmount.loseStreak.status == true)) {
-                  _context6.next = 41;
+                  _context7.next = 41;
                   break;
                 }
 
                 if (!(this.settings.tradeAmount.loseStreak.value == this.options.countLoseStreak)) {
-                  _context6.next = 41;
+                  _context7.next = 41;
                   break;
                 }
 
                 if (!(this.settings.tradeAmount.loseStreak.onLoseStreak == "false")) {
-                  _context6.next = 35;
+                  _context7.next = 35;
                   break;
                 }
 
@@ -65330,11 +65364,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   this.options.delay = 500;
                 }
                 __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(htmlResult);
-                _context6.next = 33;
+                _context7.next = 33;
                 return this.delay(this.options.delay);
 
               case 33:
-                _context6.next = 41;
+                _context7.next = 41;
                 break;
 
               case 35:
@@ -65347,34 +65381,32 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
               case 41:
               case "end":
-                return _context6.stop();
+                return _context7.stop();
             }
           }
-        }, _callee6, this);
+        }, _callee7, this);
       }));
 
       function winLoseStreak() {
-        return _ref6.apply(this, arguments);
+        return _ref7.apply(this, arguments);
       }
 
       return winLoseStreak;
     }(),
     autoWithdraw: function () {
-      var _ref7 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee7() {
-        var _this3 = this;
-
-        var amount, formBodyData;
-        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee7$(_context7) {
+      var _ref8 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee8() {
+        var amount, formBodyData, xhr, url;
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee8$(_context8) {
           while (1) {
-            switch (_context7.prev = _context7.next) {
+            switch (_context8.prev = _context8.next) {
               case 0:
                 if (!(this.settings.autoWithdraw.status == true)) {
-                  _context7.next = 13;
+                  _context8.next = 17;
                   break;
                 }
 
                 if (!(this.balance >= this.settings.autoWithdraw.triggeredBalance)) {
-                  _context7.next = 13;
+                  _context8.next = 17;
                   break;
                 }
 
@@ -65387,28 +65419,36 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 formBodyData.set("Address", this.settings.autoWithdraw.destinationAddress);
                 formBodyData.set("Totp", "");
                 formBodyData.set("Currency", "doge");
-                this.axios.post("https://www.999doge.com/api/web.aspx", formBodyData).then(function (response) {
-                  console.log(_this3.balance - _this3.settings.autoWithdraw.initialBalance);
-                  var htmlResult = "<tr>";
-                  var wdAmount = _this3.balance - _this3.settings.autoWithdraw.initialBalance;
-                  htmlResult += "<td colspan='4' align='center'><b>Withdraw " + wdAmount.toFixed(2) + " Doge</b></td>";
-                  htmlResult += "</tr>";
-                  __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(htmlResult);
-                  _this3.balance = _this3.balance - (_this3.balance - _this3.settings.autoWithdraw.initialBalance);
-                });
-                _context7.next = 13;
+
+                xhr = new XMLHttpRequest();
+                url = "https://www.999doge.com/api/web.aspx";
+
+                xhr.open("POST", url, true);
+                xhr.onreadystatechange = function (vm) {
+                  if (this.readyState === XMLHttpRequest.DONE) {
+                    var response = JSON.parse(this.responseText);
+                    var htmlResult = "<tr>";
+                    var wdAmount = vm.balance - vm.settings.autoWithdraw.initialBalance;
+                    htmlResult += "<td colspan='4' align='center'><b>Withdraw " + wdAmount.toFixed(2) + " Doge</b></td>";
+                    htmlResult += "</tr>";
+                    __WEBPACK_IMPORTED_MODULE_2_jquery___default()("#htmlResult").prepend(htmlResult);
+                    vm.balance = vm.balance - (vm.balance - vm.settings.autoWithdraw.initialBalance);
+                  }
+                }.bind(xhr, this);
+                xhr.send(formBodyData);
+                _context8.next = 17;
                 return this.delay(1000);
 
-              case 13:
+              case 17:
               case "end":
-                return _context7.stop();
+                return _context8.stop();
             }
           }
-        }, _callee7, this);
+        }, _callee8, this);
       }));
 
       function autoWithdraw() {
-        return _ref7.apply(this, arguments);
+        return _ref8.apply(this, arguments);
       }
 
       return autoWithdraw;
@@ -65455,10 +65495,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     },
     sendRequest: function () {
-      var _ref8 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee8() {
-        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee8$(_context8) {
+      var _ref9 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee9() {
+        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee9$(_context9) {
           while (1) {
-            switch (_context8.prev = _context8.next) {
+            switch (_context9.prev = _context9.next) {
               case 0:
                 this.tradeLoader = true;
 
@@ -65482,39 +65522,40 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 this.ResetOnLoseMaxBetEvent();
 
                 this.tradeLogic();
-                _context8.next = 13;
+                _context9.next = 13;
                 return this.automateBetsParam();
 
               case 13:
-                _context8.next = 15;
+                _context9.next = 15;
                 return this.takeProfitGlobal();
 
               case 15:
-                _context8.next = 17;
+                _context9.next = 17;
                 return this.takeProfitSession();
 
               case 17:
-                _context8.next = 19;
+                _context9.next = 19;
                 return this.winLoseStreak();
 
               case 19:
-                _context8.next = 21;
+                _context9.next = 21;
                 return this.autoWithdraw();
 
               case 21:
               case "end":
-                return _context8.stop();
+                return _context9.stop();
             }
           }
-        }, _callee8, this);
+        }, _callee9, this);
       }));
 
       function sendRequest() {
-        return _ref8.apply(this, arguments);
+        return _ref9.apply(this, arguments);
       }
 
       return sendRequest;
-    }()
+    }(),
+    tradeSingleHistories: function tradeSingleHistories() {}
   }
 });
 
@@ -75869,20 +75910,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this = this;
 
       var basUrl = "http://localhost:8000/api/v1/register";
-
       var loader = this.$loading.show({
         loader: "dots",
         color: "#5EABED",
         backgroundColor: "#000000"
       });
-
       this.axios.post(basUrl, this.login).then(function (response) {
         if (response.data.success != undefined) {
           loader.hide();
           var toast = _this.$toasted.show("Register Successed :) Please Login Now !", {
             theme: "toasted-primary",
             position: "top-right",
-            duration: 5000
+            duration: 500
           });
         }
         if (response.data.UsernameTaken != undefined) {
@@ -75897,8 +75936,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     actionLogin: function actionLogin() {
-      var _this2 = this;
-
       var basUrl = "https://www.999doge.com/api/web.aspx";
 
       var loader = this.$loading.show({
@@ -75914,36 +75951,43 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       bodyFormData.set("Username", this.login.username);
       bodyFormData.set("Password", this.login.password);
 
-      this.axios.post(basUrl, bodyFormData).then(function (response) {
-        if (response.data.error != undefined) {
-          loader.hide();
-          var toast = _this2.$toasted.show(response.data.error, {
-            theme: "toasted-primary",
-            position: "top-right",
-            duration: 5000
-          });
-        }
-        if (response.data.LoginInvalid == 1) {
-          loader.hide();
-          var _toast2 = _this2.$toasted.show("Username or Password is Incorrect !!", {
-            theme: "toasted-primary",
-            position: "top-right",
-            duration: 5000
-          });
-        }
-        if (response.data.SessionCookie != undefined) {
-          $cookies.set("SessionCookies", response.data.SessionCookie);
-          $cookies.set("AccountId", response.data.AccountId);
-          _this2.$localStorage.set("auth", JSON.stringify(_this2.login));
-          loader.hide();
+      var xhr = new XMLHttpRequest();
+      var url = "https://www.999doge.com/api/web.aspx";
+      xhr.open("POST", url, true);
+      xhr.onreadystatechange = function (vm, loader) {
+        if (this.readyState === XMLHttpRequest.DONE) {
+          var response = JSON.parse(this.responseText);
+          if (response.error != undefined) {
+            loader.hide();
+            var toast = vm.$toasted.show(response.error, {
+              theme: "toasted-primary",
+              position: "top-right",
+              duration: 5000
+            });
+          }
+          if (response.LoginInvalid == 1) {
+            loader.hide();
+            var _toast2 = vm.$toasted.show("Username or Password is Incorrect !!", {
+              theme: "toasted-primary",
+              position: "top-right",
+              duration: 5000
+            });
+          }
+          if (response.SessionCookie != undefined) {
+            $cookies.set("SessionCookies", response.SessionCookie);
+            $cookies.set("AccountId", response.AccountId);
+            vm.$localStorage.set("auth", JSON.stringify(vm.login));
+            loader.hide();
 
-          var _toast3 = _this2.$toasted.show("Login Success :)", {
-            theme: "toasted-primary",
-            position: "top-right",
-            duration: 5000
-          });
+            var _toast3 = vm.$toasted.show("Login Success :)", {
+              theme: "toasted-primary",
+              position: "top-right",
+              duration: 5000
+            });
+          }
         }
-      });
+      }.bind(xhr, this, loader);
+      xhr.send(bodyFormData);
     }
   }
 });
@@ -76246,18 +76290,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     getWithdrawHistoris: function getWithdrawHistoris() {
-      var _this = this;
-
       var baseUrl = "https://www.999doge.com/api/web.aspx";
 
       var sessionCookies = $cookies.get("SessionCookies");
       var bodyFormData = new FormData();
       bodyFormData.set("a", "GetWithdrawals");
       bodyFormData.set("s", sessionCookies);
-      this.axios.post(baseUrl, bodyFormData).then(function (response) {
-        _this.withdrawals = response.data.Withdrawals;
-        _this.isLoading = false;
-      });
+      var xhr = new XMLHttpRequest();
+      var url = "https://www.999doge.com/api/web.aspx";
+      xhr.open("POST", url, true);
+      xhr.onreadystatechange = function (vm) {
+        if (this.readyState === XMLHttpRequest.DONE) {
+          var response = JSON.parse(this.responseText);
+          vm.withdrawals = response.Withdrawals;
+          vm.isLoading = false;
+        }
+      }.bind(xhr, this);
+      xhr.send(bodyFormData);
     },
     refresh: function refresh() {
       this.isLoading = true;
@@ -76492,8 +76541,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   methods: {
     getAddress: function getAddress() {
-      var _this = this;
-
       this.isLoading = true;
       var sessionCookies = $cookies.get("SessionCookies");
       var uri = "https://www.999doge.com/api/web.aspx";
@@ -76502,10 +76549,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       bodyFormData.set("a", "GetDepositAddress");
       bodyFormData.set("s", sessionCookies);
       bodyFormData.set("Currency", "doge");
-      this.axios.post(uri, bodyFormData).then(function (response) {
-        _this.depositAddress = response.data.Address;
-        _this.isLoading = false;
-      });
+
+      var xhr = new XMLHttpRequest();
+      var url = "https://www.999doge.com/api/web.aspx";
+      xhr.open("POST", url, true);
+      xhr.onreadystatechange = function (vm) {
+        if (this.readyState === XMLHttpRequest.DONE) {
+          var response = JSON.parse(this.responseText);
+          vm.depositAddress = response.Address;
+          vm.isLoading = false;
+        }
+      }.bind(xhr, this);
+      xhr.send(bodyFormData);
     }
   }
 });
@@ -77842,8 +77897,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     createWithdraw: function createWithdraw() {
-      var _this = this;
-
       if (this.address == "") {
         var toast = this.$toasted.show("Address Must Be Fill !", {
           theme: "toasted-primary",
@@ -77851,35 +77904,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           duration: 5000
         });
       } else {
-        var formBodyData = new FormData();
-        formBodyData.set("a", "Withdraw");
-        formBodyData.set("s", $cookies.get("SessionCookies"));
-        formBodyData.set("Amount", Number.parseInt(this.amount / 0.00000001));
-        formBodyData.set("Address", this.address);
-        formBodyData.set("Totp", this.totp);
-        formBodyData.set("Currency", "doge");
-        this.axios.post("https://www.999doge.com/api/web.aspx", formBodyData).then(function (response) {
-          console.log(response.data);
-          if (response.data.InsufficientFunds == 1) {
-            var _toast = _this.$toasted.show("Balance Insufficient", {
-              theme: "toasted-primary",
-              position: "top-right",
-              duration: 5000
-            });
-          } else if (response.data.TooSmall == 1) {
-            var _toast2 = _this.$toasted.show("Balance Too Small", {
-              theme: "toasted-primary",
-              position: "top-right",
-              duration: 5000
-            });
-          } else if (response.data.Pending) {
-            var _toast3 = _this.$toasted.show("Withdraw Succesfully :)", {
-              theme: "toasted-primary",
-              position: "top-right",
-              duration: 5000
-            });
+        var bodyFormData = new FormData();
+        bodyFormData.set("a", "Withdraw");
+        bodyFormData.set("s", $cookies.get("SessionCookies"));
+        bodyFormData.set("Amount", Number.parseInt(this.amount / 0.00000001));
+        bodyFormData.set("Address", this.address);
+        bodyFormData.set("Totp", this.totp);
+        bodyFormData.set("Currency", "doge");
+
+        var xhr = new XMLHttpRequest();
+        var url = "https://www.999doge.com/api/web.aspx";
+        xhr.open("POST", url, true);
+        xhr.onreadystatechange = function (vm) {
+          if (this.readyState === XMLHttpRequest.DONE) {
+            var response = JSON.parse(this.responseText);
+            if (response.InsufficientFunds == 1) {
+              var _toast = vm.$toasted.show("Balance Insufficient", {
+                theme: "toasted-primary",
+                position: "top-right",
+                duration: 5000
+              });
+            } else if (response.TooSmall == 1) {
+              var _toast2 = vm.$toasted.show("Balance Too Small", {
+                theme: "toasted-primary",
+                position: "top-right",
+                duration: 5000
+              });
+            } else if (response.Pending) {
+              var _toast3 = vm.$toasted.show("Withdraw Succesfully :)", {
+                theme: "toasted-primary",
+                position: "top-right",
+                duration: 5000
+              });
+            }
           }
-        });
+        }.bind(xhr, this);
+        xhr.send(bodyFormData);
       }
     }
   }
@@ -78149,17 +78209,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
   methods: {
     loadData: function loadData() {
-      var _this = this;
-
       var SessionId = $cookies.get("SessionCookies");
       var uri = "https://www.999doge.com/api/web.aspx";
       var bodyFormData = new FormData();
       bodyFormData.set("a", "GetDeposits");
       bodyFormData.set("s", SessionId);
-      this.axios.post(uri, bodyFormData).then(function (response) {
-        _this.isLoading = false;
-        _this.deposits = response.data.Deposits;
-      });
+
+      var xhr = new XMLHttpRequest();
+      var url = "https://www.999doge.com/api/web.aspx";
+      xhr.open("POST", url, true);
+      xhr.onreadystatechange = function (vm) {
+        if (this.readyState === XMLHttpRequest.DONE) {
+          var response = JSON.parse(this.responseText);
+          vm.isLoading = false;
+          vm.deposits = response.Deposits;
+        }
+      }.bind(xhr, this);
+      xhr.send(bodyFormData);
     },
     refresh: function refresh() {
       this.isLoading = true;

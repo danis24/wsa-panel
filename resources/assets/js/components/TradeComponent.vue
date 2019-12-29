@@ -208,67 +208,81 @@ export default {
         bodyFormData.set("Currency", "doge");
         bodyFormData.set("Referrals", 0);
         bodyFormData.set("Stats", 0);
-        this.axios.post(baseUrl, bodyFormData).then(response => {
-          let balance = response.data.Balance * 0.00000001;
-          this.balance = balance;
-          this.balanceLoader = false;
-        });
+
+        var xhr = new XMLHttpRequest();
+        var url = "https://www.999doge.com/api/web.aspx";
+        xhr.open("POST", url, true);
+        xhr.onreadystatechange = function(vm) {
+          if (this.readyState === XMLHttpRequest.DONE) {
+            let response = JSON.parse(this.responseText);
+            let balance = response.Balance * 0.00000001;
+            vm.balance = balance;
+            vm.balanceLoader = false;
+          }
+        }.bind(xhr, this);
+        xhr.send(bodyFormData);
       }
     },
+    async makeTradeRequest() {
+      var formBodyData = new FormData();
+      formBodyData.set("a", "PlaceAutomatedBets");
+      formBodyData.set("s", $cookies.get("SessionCookies"));
+      formBodyData.set("BasePayIn", this.options.basePayIn);
+      formBodyData.set("Low", this.options.low);
+      formBodyData.set("High", this.options.high);
+      formBodyData.set("MaxBets", this.settings.tradeCount);
+      formBodyData.set("ResetOnWin", this.options.resetOnWin);
+      formBodyData.set("ResetOnLose", this.options.resetOnLose);
+      formBodyData.set(
+        "IncreaseOnWinPercent",
+        this.options.IncreaseOnWinPercent
+      );
+      formBodyData.set(
+        "IncreaseOnLosePercent",
+        this.options.IncreaseOnLosePercent
+      );
+      formBodyData.set("MaxPayIn", this.options.MaxPayIn);
+      formBodyData.set("ResetOnLoseMaxBet", this.options.ResetOnLoseMaxBet);
+      formBodyData.set("StopOnLoseMaxBet", this.options.StopOnLoseMaxBet);
+      formBodyData.set("StopMaxBalance", this.options.profitTrade);
+      formBodyData.set("StopMinBalance", this.options.StopMinBalance);
+      formBodyData.set("ClientSeed", this.options.clientSeed);
+      formBodyData.set("Currency", "doge");
+      formBodyData.set("ProtocolVersion", 2);
 
+      var xhr = new XMLHttpRequest();
+      var url = "https://www.999doge.com/api/web.aspx";
+      xhr.open("POST", url, true);
+      xhr.onreadystatechange = function(vm) {
+        console.log(XMLHttpRequest.DONE);
+        if (this.readyState === XMLHttpRequest.DONE) {
+          let response = JSON.parse(this.responseText);
+          if (response.InsufficientFunds) {
+            let htmlResult = "<tr>";
+            htmlResult +=
+              "<td colspan='4' align='center'><b>Balance Insufficient</b></td>";
+            htmlResult += "</tr>";
+            $("#htmlResult").prepend(htmlResult);
+          } else if (response.TooFast) {
+            let htmlResult = "<tr>";
+            htmlResult +=
+              "<td colspan='4' align='center'><b>To Fast Delay 10 Seconds</b></td>";
+            htmlResult += "</tr>";
+            $("#htmlResult").prepend(htmlResult);
+          } else {
+            vm.result.profit =
+              response.PayOuts.reduce((a, b) => a + b, 0) +
+              response.PayIns.reduce((a, b) => a + b, 0);
+            vm.result.payOut = vm.result.profit + vm.options.basePayIn;
+            vm.tradeResult();
+          }
+        }
+      }.bind(xhr, this);
+      xhr.send(formBodyData);
+    },
     async automateBetsParam() {
       if (this.tradeStatus == true) {
-        var formBodyData = new FormData();
-        formBodyData.set("a", "PlaceAutomatedBets");
-        formBodyData.set("s", $cookies.get("SessionCookies"));
-        formBodyData.set("BasePayIn", this.options.basePayIn);
-        formBodyData.set("Low", this.options.low);
-        formBodyData.set("High", this.options.high);
-        formBodyData.set("MaxBets", this.settings.tradeCount);
-        formBodyData.set("ResetOnWin", this.options.resetOnWin);
-        formBodyData.set("ResetOnLose", this.options.resetOnLose);
-        formBodyData.set(
-          "IncreaseOnWinPercent",
-          this.options.IncreaseOnWinPercent
-        );
-        formBodyData.set(
-          "IncreaseOnLosePercent",
-          this.options.IncreaseOnLosePercent
-        );
-        formBodyData.set("MaxPayIn", this.options.MaxPayIn);
-        formBodyData.set("ResetOnLoseMaxBet", this.options.ResetOnLoseMaxBet);
-        formBodyData.set("StopOnLoseMaxBet", this.options.StopOnLoseMaxBet);
-        formBodyData.set("StopMaxBalance", this.options.profitTrade);
-        formBodyData.set("StopMinBalance", this.options.StopMinBalance);
-        formBodyData.set("ClientSeed", this.options.clientSeed);
-        formBodyData.set("Currency", "doge");
-        formBodyData.set("ProtocolVersion", 2);
-
-        let baseUrl = "https://www.999doge.com/api/web.aspx";
-        await this.axios
-          .post(baseUrl, formBodyData)
-          .then(baseUrl, formBodyData)
-          .then(response => {
-            if (response.data.InsufficientFunds) {
-              let htmlResult = "<tr>";
-              htmlResult +=
-                "<td colspan='4' align='center'><b>Balance Insufficient</b></td>";
-              htmlResult += "</tr>";
-              $("#htmlResult").prepend(htmlResult);
-            } else if (response.data.TooFast) {
-              let htmlResult = "<tr>";
-              htmlResult +=
-                "<td colspan='4' align='center'><b>To Faset Delay 10 Seconds</b></td>";
-              htmlResult += "</tr>";
-              $("#htmlResult").prepend(htmlResult);
-            } else {
-              this.result.profit =
-                response.data.PayOuts.reduce((a, b) => a + b, 0) +
-                response.data.PayIns.reduce((a, b) => a + b, 0);
-              this.result.payOut = this.result.profit - this.options.basePayIn;
-              this.tradeResult();
-            }
-          });
+        await this.makeTradeRequest();
         await this.delayOnWinLose();
       }
     },
@@ -314,7 +328,7 @@ export default {
         this.options.countWinStreak += 1;
         this.options.countLoseStreak = 0;
         htmlResult +=
-          '<tr class="alert alert-fill-success mb-0" align="center">';
+          '<tr class="alert alert-fill-success mb-0" align="center" style="cursor: pointer;">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
         htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
@@ -324,7 +338,7 @@ export default {
         this.options.countLoseStreak += 1;
         this.options.countWinStreak = 0;
         htmlResult +=
-          '<tr class="alert alert-fill-danger mb-0" align="center">';
+          '<tr class="alert alert-fill-danger mb-0" align="center" style="cursor: pointer;">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
         htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
@@ -382,7 +396,7 @@ export default {
     async delayOnWinLose() {
       if (this.result.profit > 0) {
         if (this.settings.delay.onWin < 1) {
-          this.options.delay = 500;
+          this.options.delay = 200;
         } else {
           this.options.delay = Number.parseInt(
             this.settings.delay.onWin * 1000
@@ -390,7 +404,7 @@ export default {
         }
       } else {
         if (this.settings.delay.onLose < 1) {
-          this.options.delay = 500;
+          this.options.delay = 200;
         } else {
           this.options.delay = Number.parseInt(
             this.settings.delay.onLose * 1000
@@ -635,25 +649,28 @@ export default {
           );
           formBodyData.set("Totp", "");
           formBodyData.set("Currency", "doge");
-          this.axios
-            .post("https://www.999doge.com/api/web.aspx", formBodyData)
-            .then(response => {
-              console.log(
-                this.balance - this.settings.autoWithdraw.initialBalance
-              );
+
+          var xhr = new XMLHttpRequest();
+          var url = "https://www.999doge.com/api/web.aspx";
+          xhr.open("POST", url, true);
+          xhr.onreadystatechange = function(vm) {
+            if (this.readyState === XMLHttpRequest.DONE) {
+              let response = JSON.parse(this.responseText);
               let htmlResult = "<tr>";
               let wdAmount =
-                this.balance - this.settings.autoWithdraw.initialBalance;
+                vm.balance - vm.settings.autoWithdraw.initialBalance;
               htmlResult +=
                 "<td colspan='4' align='center'><b>Withdraw " +
                 wdAmount.toFixed(2) +
                 " Doge</b></td>";
               htmlResult += "</tr>";
               $("#htmlResult").prepend(htmlResult);
-              this.balance =
-                this.balance -
-                (this.balance - this.settings.autoWithdraw.initialBalance);
-            });
+              vm.balance =
+                vm.balance -
+                (vm.balance - vm.settings.autoWithdraw.initialBalance);
+            }
+          }.bind(xhr, this);
+          xhr.send(formBodyData);
           await this.delay(1000);
         }
       }
@@ -743,7 +760,8 @@ export default {
       await this.takeProfitSession();
       await this.winLoseStreak();
       await this.autoWithdraw();
-    }
+    },
+    tradeSingleHistories() {}
   }
 };
 </script>

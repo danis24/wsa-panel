@@ -73,13 +73,11 @@ export default {
   methods: {
     actionRegister: function() {
       let basUrl = "http://localhost:8000/api/v1/register";
-
       let loader = this.$loading.show({
         loader: "dots",
         color: "#5EABED",
         backgroundColor: "#000000"
       });
-
       this.axios.post(basUrl, this.login).then(response => {
         if (response.data.success != undefined) {
           loader.hide();
@@ -88,7 +86,7 @@ export default {
             {
               theme: "toasted-primary",
               position: "top-right",
-              duration: 5000
+              duration: 500
             }
           );
         }
@@ -119,39 +117,46 @@ export default {
       bodyFormData.set("Username", this.login.username);
       bodyFormData.set("Password", this.login.password);
 
-      this.axios.post(basUrl, bodyFormData).then(response => {
-        if (response.data.error != undefined) {
-          loader.hide();
-          let toast = this.$toasted.show(response.data.error, {
-            theme: "toasted-primary",
-            position: "top-right",
-            duration: 5000
-          });
-        }
-        if (response.data.LoginInvalid == 1) {
-          loader.hide();
-          let toast = this.$toasted.show(
-            "Username or Password is Incorrect !!",
-            {
+      var xhr = new XMLHttpRequest();
+      var url = "https://www.999doge.com/api/web.aspx";
+      xhr.open("POST", url, true);
+      xhr.onreadystatechange = function(vm, loader) {
+        if (this.readyState === XMLHttpRequest.DONE) {
+          let response = JSON.parse(this.responseText);
+          if (response.error != undefined) {
+            loader.hide();
+            let toast = vm.$toasted.show(response.error, {
               theme: "toasted-primary",
               position: "top-right",
               duration: 5000
-            }
-          );
-        }
-        if (response.data.SessionCookie != undefined) {
-          $cookies.set("SessionCookies", response.data.SessionCookie);
-          $cookies.set("AccountId", response.data.AccountId);
-          this.$localStorage.set("auth", JSON.stringify(this.login));
-          loader.hide();
+            });
+          }
+          if (response.LoginInvalid == 1) {
+            loader.hide();
+            let toast = vm.$toasted.show(
+              "Username or Password is Incorrect !!",
+              {
+                theme: "toasted-primary",
+                position: "top-right",
+                duration: 5000
+              }
+            );
+          }
+          if (response.SessionCookie != undefined) {
+            $cookies.set("SessionCookies", response.SessionCookie);
+            $cookies.set("AccountId", response.AccountId);
+            vm.$localStorage.set("auth", JSON.stringify(vm.login));
+            loader.hide();
 
-          let toast = this.$toasted.show("Login Success :)", {
-            theme: "toasted-primary",
-            position: "top-right",
-            duration: 5000
-          });
+            let toast = vm.$toasted.show("Login Success :)", {
+              theme: "toasted-primary",
+              position: "top-right",
+              duration: 5000
+            });
+          }
         }
-      });
+      }.bind(xhr, this, loader);
+      xhr.send(bodyFormData);
     }
   }
 };

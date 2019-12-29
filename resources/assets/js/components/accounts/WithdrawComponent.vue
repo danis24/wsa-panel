@@ -68,37 +68,42 @@ export default {
           duration: 5000
         });
       } else {
-        var formBodyData = new FormData();
-        formBodyData.set("a", "Withdraw");
-        formBodyData.set("s", $cookies.get("SessionCookies"));
-        formBodyData.set("Amount", Number.parseInt(this.amount / 0.00000001));
-        formBodyData.set("Address", this.address);
-        formBodyData.set("Totp", this.totp);
-        formBodyData.set("Currency", "doge");
-        this.axios
-          .post("https://www.999doge.com/api/web.aspx", formBodyData)
-          .then(response => {
-            console.log(response.data);
-            if (response.data.InsufficientFunds == 1) {
-              let toast = this.$toasted.show("Balance Insufficient", {
+        var bodyFormData = new FormData();
+        bodyFormData.set("a", "Withdraw");
+        bodyFormData.set("s", $cookies.get("SessionCookies"));
+        bodyFormData.set("Amount", Number.parseInt(this.amount / 0.00000001));
+        bodyFormData.set("Address", this.address);
+        bodyFormData.set("Totp", this.totp);
+        bodyFormData.set("Currency", "doge");
+
+        var xhr = new XMLHttpRequest();
+        var url = "https://www.999doge.com/api/web.aspx";
+        xhr.open("POST", url, true);
+        xhr.onreadystatechange = function(vm) {
+          if (this.readyState === XMLHttpRequest.DONE) {
+            let response = JSON.parse(this.responseText);
+            if (response.InsufficientFunds == 1) {
+              let toast = vm.$toasted.show("Balance Insufficient", {
                 theme: "toasted-primary",
                 position: "top-right",
                 duration: 5000
               });
-            } else if (response.data.TooSmall == 1) {
-              let toast = this.$toasted.show("Balance Too Small", {
+            } else if (response.TooSmall == 1) {
+              let toast = vm.$toasted.show("Balance Too Small", {
                 theme: "toasted-primary",
                 position: "top-right",
                 duration: 5000
               });
-            } else if (response.data.Pending) {
-              let toast = this.$toasted.show("Withdraw Succesfully :)", {
+            } else if (response.Pending) {
+              let toast = vm.$toasted.show("Withdraw Succesfully :)", {
                 theme: "toasted-primary",
                 position: "top-right",
                 duration: 5000
               });
             }
-          });
+          }
+        }.bind(xhr, this);
+        xhr.send(bodyFormData);
       }
     }
   }
