@@ -33,6 +33,7 @@ import SettingComponent from './components/SettingComponent.vue';
 import AccountComponent from './components/AccountComponent.vue';
 import SettingLoadComponent from './components/SettingLoadComponent.vue';
 
+
 const routes = [
     {
         name: 'trade',

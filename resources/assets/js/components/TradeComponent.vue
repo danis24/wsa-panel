@@ -5,7 +5,7 @@
         <div class="mt-1 alert alert-fill-danger">
           LastRain :
           <br />
-          <h4>120</h4>
+          <h4>{{ this.lastRain }}</h4>
         </div>
         <div class="card">
           <div class="card-body">
@@ -242,6 +242,7 @@ export default {
       tradeLoader: false,
       settings: {},
       tradeStatus: false,
+      lastRain: 0,
       tradeLogicHiLo: {
         onWin: 1,
         onLose: 1
@@ -295,8 +296,35 @@ export default {
   },
   mounted() {
     this.getBalance();
+    this.sendWebSocket();
   },
   methods: {
+    async sendWebSocket() {
+      await this.connect();
+      await this.delay(20000);
+      this.sendWebSocket();
+    },
+    async connect() {
+      this.socket = new WebSocket(
+        "wss://www.999doge.com/signalr/connect?transport=webSockets&clientProtocol=1.5&connectionToken=V6%2FKDHAthb9O46r4f1cQonMbzkRDpi69q%2BD7if80pScGTqfP2640sQzsyi8YO4mpZybAvkFciuuEbi4yj0GXnnGLE6MmKV8PdrsaLo85QoW3vsZjbVVPlxC%2FdkfKyrLX&connectionData=%5B%7B%22name%22%3A%22mainhub%22%7D%5D&tid=5"
+      );
+      this.socket.onopen = () => {
+        this.socket.send(
+          JSON.stringify({
+            H: "mainhub",
+            M: "GetStartupInfo",
+            A: [true],
+            I: 0
+          })
+        );
+        this.socket.onmessage = ({ data }) => {
+          let response = JSON.parse(data);
+          if (response.R) {
+            this.lastRain = response.R.site.lastRain;
+          }
+        };
+      };
+    },
     getBalance() {
       let cookies = $cookies.get("SessionCookies");
       if (cookies === null) {
