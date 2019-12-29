@@ -64880,6 +64880,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -65245,6 +65246,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     stopTradding: function stopTradding() {
       this.tradeStatus = false;
       this.tradeLoader = false;
+      this.stopOnWinLoader = false;
     },
     delayOnWinLose: function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3() {
@@ -65286,7 +65288,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.stopOnWinLoader = true;
       if (this.result.profit > 0) {
         this.stopTradding();
-        this.stopOnWinLoader = false;
       }
     },
     sendMessage: function () {
@@ -70717,6 +70718,7 @@ var render = function() {
                   "button",
                   {
                     staticClass: "btn btn-warning btn-block float-right",
+                    attrs: { disabled: this.tradeStatus == false },
                     on: {
                       click: function($event) {
                         $event.preventDefault()

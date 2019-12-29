@@ -99,6 +99,7 @@
             <button
               class="btn btn-warning btn-block float-right"
               @click.prevent="stopOnWin()"
+              :disabled="this.tradeStatus == false"
             >Stop On WIN</button>
           </div>
         </div>
@@ -570,6 +571,7 @@ export default {
     stopTradding() {
       this.tradeStatus = false;
       this.tradeLoader = false;
+      this.stopOnWinLoader = false;
     },
     async delayOnWinLose() {
       if (this.result.profit > 0) {
@@ -595,7 +597,6 @@ export default {
       this.stopOnWinLoader = true;
       if (this.result.profit > 0) {
         this.stopTradding();
-        this.stopOnWinLoader = false;
       }
     },
     async sendMessage() {
