@@ -84,7 +84,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-6">
+      <div class="col-lg-6 grid-margin">
         <div class="col-md-12">
           <div class="row mt-1">
             <div class="col-6">
@@ -109,7 +109,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-12 mt-4">
+        <div class="col-md-12 mt-4 mb-2">
           <div v-if="this.stopOnWinLoader === true">
             <button class="btn btn-warning btn-block d-flex justify-content-center">
               <fulfilling-bouncing-circle-spinner
@@ -127,33 +127,31 @@
             >Stop On WIN</button>
           </div>
         </div>
-        <div class="col-lg-12 mt-5">
-          <br />
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title d-inline">Recent Last 50 Transaction</h4>
-              <button
-                type="button"
-                class="btn btn-dark btn-rounded btn-icon d-inline float-right"
-                data-toggle="modal"
-                data-target="#saveAsModal"
-              >
-                <i class="mdi mdi-finance"></i>
-              </button>
-              <div class="clearfix"></div>
-              <div class="table-responsive mt-3">
-                <table class="table table-hover">
-                  <thead class="card-alert alert alert-primary mb-0" align="center">
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Trade</th>
-                      <th scope="col">Payout</th>
-                      <th scope="col">Profit</th>
-                    </tr>
-                  </thead>
-                  <tbody id="htmlResult"></tbody>
-                </table>
-              </div>
+        <div class="clearfix"></div>
+        <div class="card mt-4">
+          <div class="card-body">
+            <p class="float-left">Recent Last 50 Transaction</p>
+            <button
+              type="button"
+              class="btn btn-dark btn-rounded btn-icon d-inline float-right"
+              data-toggle="modal"
+              data-target="#saveAsModal"
+            >
+              <i class="mdi mdi-finance"></i>
+            </button>
+            <div class="clearfix"></div>
+            <div class="table-responsive mt-3">
+              <table class="table table-hover">
+                <thead class="alert alert-fill-primary mb-0" align="center">
+                  <tr>
+                    <td scope="col">#</td>
+                    <td scope="col">Trade</td>
+                    <td scope="col">Payout</td>
+                    <td scope="col">Profit</td>
+                  </tr>
+                </thead>
+                <tbody id="htmlResult"></tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -168,7 +166,11 @@
       aria-labelledby="saveAsModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-lg" role="document" style="opacity:0.7 !important;">
+      <div
+        class="modal-dialog modal-lg"
+        role="document"
+        style="opacity:0.7 !important; margin-top: 11px;"
+      >
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="saveAsModalLabel">Trade Analitycs</h5>
@@ -179,7 +181,7 @@
               <div class="col-md-6">
                 <area-chart :data="chartData"></area-chart>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-6 mt-4">
                 <div class="col-md-12">
                   <div class="row mt-1">
                     <div class="col-6">
@@ -207,36 +209,48 @@
                     </div>
                   </div>
                 </div>
-                <table class="table">
+                <table class="table mt-4">
                   <tr>
-                    <td width="25%">Balance</td>
+                    <td width="50%">Balance</td>
                     <td width="2%">:</td>
-                    <td>{{ Number.parseFloat(this.balance).toFixed(2) }}</td>
+                    <td>
+                      <b>{{ Number.parseFloat(this.balance).toFixed(2) }}</b>
+                    </td>
                   </tr>
                   <tr>
-                    <td width="25%">Profit Trade</td>
+                    <td width="50%">Profit Trade</td>
                     <td width="2%">:</td>
-                    <td>{{ Number.parseFloat(this.result.profitGlobal).toFixed(2) }}</td>
+                    <td>
+                      <b>{{ Number.parseFloat(this.result.profitGlobal).toFixed(2) }}</b>
+                    </td>
                   </tr>
                   <tr>
-                    <td width="25%">Max Win Streak</td>
+                    <td width="50%">Max Win Streak</td>
                     <td width="2%">:</td>
-                    <td>{{ this.result.maxWinStreak }}</td>
+                    <td>
+                      <b>{{ this.result.maxWinStreak }}</b>
+                    </td>
                   </tr>
                   <tr>
-                    <td width="25%">Max Lose Streak</td>
+                    <td width="50%">Max Lose Streak</td>
                     <td width="2%">:</td>
-                    <td>{{ this.result.maxLoseStreak }}</td>
+                    <td>
+                      <b>{{ this.result.maxLoseStreak }}</b>
+                    </td>
                   </tr>
                   <tr>
-                    <td width="25%">Max Trade Win</td>
+                    <td width="50%">Max Trade Win</td>
                     <td width="2%">:</td>
-                    <td>{{ Number.parseFloat(this.result.maxTradeWin).toFixed(2) }}</td>
+                    <td>
+                      <b>{{ Number.parseFloat(this.result.maxTradeWin).toFixed(2) }}</b>
+                    </td>
                   </tr>
                   <tr>
-                    <td width="25%">Max Trade Lose</td>
+                    <td width="50%">Max Trade Lose</td>
                     <td width="2%">:</td>
-                    <td>{{ Number.parseFloat(this.result.maxTradeLose).toFixed(2) }}</td>
+                    <td>
+                      <b>{{ Number.parseFloat(this.result.maxTradeLose).toFixed(2) }}</b>
+                    </td>
                   </tr>
                 </table>
               </div>
@@ -308,7 +322,8 @@ export default {
         maxWinStreak: 0,
         maxLoseStreak: 0,
         maxTradeWin: 0,
-        maxTradeLose: 0
+        maxTradeLose: 0,
+        tradeResponse: []
       },
       temp: {
         maxWinStreak: 0,
@@ -350,7 +365,9 @@ export default {
         this.socket.onmessage = ({ data }) => {
           let response = JSON.parse(data);
           if (response.R) {
-            this.lastRain = response.R.site.lastRain;
+            if (response.R.site.lastRain != undefined) {
+              this.lastRain = response.R.site.lastRain;
+            }
           }
         };
       };
