@@ -410,6 +410,8 @@ export default {
     },
     async makeTradeRequest() {
       var formBodyData = new FormData();
+      let winPercent = this.options.IncreaseOnWinPercent / 100;
+      let losePercent = this.options.IncreaseOnLosePercent / 100;
       formBodyData.set("a", "PlaceAutomatedBets");
       formBodyData.set("s", $cookies.get("SessionCookies"));
       formBodyData.set("BasePayIn", this.options.basePayIn);
@@ -418,14 +420,8 @@ export default {
       formBodyData.set("MaxBets", this.settings.tradeCount);
       formBodyData.set("ResetOnWin", this.options.resetOnWin);
       formBodyData.set("ResetOnLose", this.options.resetOnLose);
-      formBodyData.set(
-        "IncreaseOnWinPercent",
-        this.options.IncreaseOnWinPercent
-      );
-      formBodyData.set(
-        "IncreaseOnLosePercent",
-        this.options.IncreaseOnLosePercent
-      );
+      formBodyData.set("IncreaseOnWinPercent", winPercent);
+      formBodyData.set("IncreaseOnLosePercent", losePercent);
       formBodyData.set("MaxPayIn", this.options.MaxPayIn);
       formBodyData.set("ResetOnLoseMaxBet", this.options.ResetOnLoseMaxBet);
       formBodyData.set("StopOnLoseMaxBet", this.options.StopOnLoseMaxBet);
@@ -451,6 +447,14 @@ export default {
             let htmlResult = "<tr>";
             htmlResult +=
               "<td colspan='4' align='center'><b>To Fast Delay 10 Seconds</b></td>";
+            htmlResult += "</tr>";
+            $("#htmlResult").prepend(htmlResult);
+          } else if (response.error == "Invalid request") {
+            let htmlResult = "<tr>";
+            htmlResult +=
+              "<td colspan='4' align='center'><b> Settings Error " +
+              response.error +
+              "</b></td>";
             htmlResult += "</tr>";
             $("#htmlResult").prepend(htmlResult);
           } else {
@@ -795,22 +799,18 @@ export default {
       //Settings Martingle
       if (this.settings.martingleMulti.sameSingle == false) {
         if (this.settings.martingleMulti.onWin.status == true) {
-          this.options.IncreaseOnWinPercent =
-            this.settings.martingleMulti.onWin.value / 100;
+          this.options.IncreaseOnWinPercent = this.settings.martingleMulti.onWin.value;
         }
         if (this.settings.martingleMulti.onLose.status == true) {
-          this.options.IncreaseOnLosePercent =
-            this.settings.martingleMulti.onLose.value / 100;
+          this.options.IncreaseOnLosePercent = this.settings.martingleMulti.onLose.value;
         }
       }
       if (this.settings.martingleMulti.sameSingle == true) {
         if (this.settings.martingleSingle.onWin.status == true) {
-          this.options.IncreaseOnWinPercent =
-            this.settings.martingleSingle.onWin.value / 100;
+          this.options.IncreaseOnWinPercent = this.settings.martingleSingle.onWin.value;
         }
         if (this.settings.martingleSingle.onLose.status == true) {
-          this.options.IncreaseOnLosePercent =
-            this.settings.martingleSingle.onLose.value / 100;
+          this.options.IncreaseOnLosePercent = this.settings.martingleSingle.onLose.value;
         }
       }
     },
@@ -992,12 +992,12 @@ export default {
     },
     resetOnWinEvent() {
       //Define resetOnWin true or False
-      if (this.settings.tradeAmount.winStreak.onWinStreak == false) {
+      if (Number.parseFloat(this.options.IncreaseOnWinPercent) <= 0) {
         this.options.resetOnWin = 1;
       }
 
       //Define resetOnLose true or False
-      if (this.settings.tradeAmount.loseStreak.onLoseStreak == true) {
+      if (Number.parseFloat(this.options.IncreaseOnLosePercent) <= 0) {
         this.options.resetOnLose = 1;
       }
     },
@@ -1057,11 +1057,10 @@ export default {
       // generate change percent high = false or low = true
       this.generatePercent(this.options.changePercent, this.options.tradeLogic);
 
+      this.martingleMulti();
       this.martingleSingle();
 
       this.resetOnWinEvent();
-
-      this.martingleMulti();
 
       this.profitTradeAmount();
 

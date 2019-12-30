@@ -100,7 +100,7 @@
         </div>
         <!-- Timeout -->
         <div class="card card-default p-3 mt-4">
-          <div class="card-header">
+          <div class="card-header mb-3">
             <p class="float-left mt-2">Timeout Requests</p>
             <div class="float-right text-right">
               <div class="form-check">
@@ -117,7 +117,6 @@
             </div>
             <div class="clearfix"></div>
           </div>
-          <hr style="margin-top: 0.4rem; margin-bottom: 0.6rem;" />
           <div class="col-sm-12" v-if="configData.timeOutRequest.timeOutRequest == true">
             <div class="row">
               <div class="col-md-12">
@@ -179,7 +178,6 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-12 col-lg-6"></div>
             </div>
           </div>
         </div>
