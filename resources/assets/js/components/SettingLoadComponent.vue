@@ -43,14 +43,14 @@ export default {
     };
   },
   mounted() {
-    let baseUrl = "http://localhost:8000/settings/collections";
+    let baseUrl = "http://https://larabot24.com/settings/collections";
     this.axios.get(baseUrl).then(response => {
       this.settingCollections = response.data;
     });
   },
   methods: {
     deleteCollection: function(event, id) {
-      let baseUrl = "http://localhost:8000/settings/collections/" + id;
+      let baseUrl = "http://https://larabot24.com/settings/collections/" + id;
       let loader = this.$loading.show({
         loader: "dots",
         color: "#5EABED",
@@ -69,7 +69,7 @@ export default {
       });
     },
     loadSettings(id) {
-      let baseUrl = "http://localhost:8000/settings/collections/" + id;
+      let baseUrl = "http://https://larabot24.com/settings/collections/" + id;
 
       let loader = this.$loading.show({
         loader: "dots",

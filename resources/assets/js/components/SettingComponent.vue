@@ -1242,7 +1242,7 @@ export default {
   methods: {
     saveAsEvent: function() {
       this.saveSettingLoader = true;
-      let baseUrl = "http://localhost:8000/settings/create";
+      let baseUrl = "http://https://larabot24.com/settings/create";
       var bodyFormData = new FormData();
       bodyFormData.set("settings_name", this.settingNameValue);
       bodyFormData.set("config_data", JSON.stringify(this.configData));

@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     actionRegister: function() {
-      let basUrl = "http://localhost:8000/api/v1/register";
+      let basUrl = "http://https://larabot24.com/api/v1/register";
       let loader = this.$loading.show({
         loader: "dots",
         color: "#5EABED",
