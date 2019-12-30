@@ -7,10 +7,10 @@
             <h4 class="mb-3 mt-5">Start Trading Now</h4>
             <p class="w-75 mx-auto mb-2">
               <label
-                class="alert alert-danger"
-              >Your BOT is not actived !! please buy license for active it :)</label>
+                class="alert alert-success"
+              >This Bot Is Free For Last Years :D happy tradding :D</label>
             </p>
-            <div class="row pricing-table">
+            <!-- <div class="row pricing-table">
               <div class="col-md-12 grid-margin stretch-card pricing-card">
                 <div class="card border-primary border pricing-card-body">
                   <div class="text-center pricing-card-head">
@@ -27,7 +27,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div>-->
           </div>
         </div>
       </div>

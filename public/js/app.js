@@ -82806,62 +82806,9 @@ var staticRenderFns = [
               ]),
               _vm._v(" "),
               _c("p", { staticClass: "w-75 mx-auto mb-2" }, [
-                _c("label", { staticClass: "alert alert-danger" }, [
-                  _vm._v(
-                    "Your BOT is not actived !! please buy license for active it :)"
-                  )
+                _c("label", { staticClass: "alert alert-success" }, [
+                  _vm._v("This Bot Is Free For Last Years :D happy tradding :D")
                 ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "row pricing-table" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass:
-                      "col-md-12 grid-margin stretch-card pricing-card"
-                  },
-                  [
-                    _c(
-                      "div",
-                      {
-                        staticClass:
-                          "card border-primary border pricing-card-body"
-                      },
-                      [
-                        _c(
-                          "div",
-                          { staticClass: "text-center pricing-card-head" },
-                          [
-                            _c("h3", [_vm._v("1 License / User")]),
-                            _vm._v(" "),
-                            _c("hr"),
-                            _vm._v(" "),
-                            _c("p", [_vm._v("Payment Methods :")]),
-                            _vm._v(" "),
-                            _c(
-                              "a",
-                              {
-                                staticClass:
-                                  "btn btn-outline-primary btn-block font-weight-normal mb-4",
-                                attrs: { href: "#" }
-                              },
-                              [_vm._v("18.000 Doge")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "h1",
-                              {
-                                staticClass:
-                                  "font-weight-normal mb-4 alert alert-success"
-                              },
-                              [_vm._v("Bank/OVO Please Contact Support")]
-                            )
-                          ]
-                        )
-                      ]
-                    )
-                  ]
-                )
               ])
             ])
           ])

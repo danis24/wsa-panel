@@ -19,20 +19,19 @@
 </head>
 
 <body>
-    <main class="py-4">
-        <div class="page-single">
-            <div class="container">
-                <div class="row">
-                    <div class="col col-login mx-auto">
-                        <div class="text-center mb-4">
-                            <img src="https://tabler.github.io/tabler/demo/brand/tabler.svg" class="h-6"
-                                alt="Logo Tabler">
-                        </div>
-                        <form class="card col-md-6 mx-auto" action="{{ route('login') }}" method="post" novalidate>
-                            @csrf
-                            <div class="card-body p-6">
-                                <div class="card-title">@lang('Login to your account')</div>
-
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="content-wrapper d-flex align-items-stretch auth auth-img-bg">
+                <div class="row flex-grow">
+                    <div class="col-lg-6 d-flex align-items-center justify-content-center">
+                        <div class="auth-form-transparent text-left">
+                            <div class="brand-logo">
+                                <img src="/images/logo-mini.svg" alt="logo" style="width: 20%;">
+                            </div>
+                            <h4>Welcome back!</h4>
+                            <h6 class="font-weight-light">Happy Trading :)</h6>
+                            <form class="pt-3" action="{{ route('login') }}" method="post" novalidate>
+                                @csrf
                                 <div class="form-group">
                                     <label class="form-label" for="email">@lang('E-Mail Address')</label>
                                     <input type="email"
@@ -60,23 +59,31 @@
                                 </div>
 
                                 <div class="form-footer">
-                                    <button type="submit" class="btn btn-primary btn-block">@lang('Sign in')</button>
+                                    <button type="submit" class="btn btn-primary btn-block">@lang('Sign
+                                        in')</button>
+                                    <div class="text-center mt-4 font-weight-light">
+                                        Don't have an account? <a href="/register" class="text-primary">Create</a>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 login-half-bg d-flex flex-row"
+                        style="background: url(/images/logo.png);background-size: cover;">
+                        <p class="text-white font-weight-medium text-center flex-grow align-self-end">larabot24 © 2019
+                            All rights reserved.</p>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
-    <script src="{{ asset('js/themes/vendor.bundle.base.js') }}"></script>
-    <script src="{{ asset('js/themes/vendor.bundle.addons.js') }}"></script>
-    <script src="{{ asset('js/themes/off-canvas.js') }}"></script>
-    <script src="{{ asset('js/themes/hoverable-collapse.js') }}"></script>
-    <script src="{{ asset('js/themes/template.js') }}"></script>
-    <script src="{{ asset('js/themes/settings.js') }}"></script>
-    <script src="{{ asset('js/themes/todolist.js') }}"></script>
-    <script src="{{ asset('js/themes/dashboard.js') }}"></script>
+        <script src="{{ asset('js/themes/vendor.bundle.base.js') }}"></script>
+        <script src="{{ asset('js/themes/vendor.bundle.addons.js') }}"></script>
+        <script src="{{ asset('js/themes/off-canvas.js') }}"></script>
+        <script src="{{ asset('js/themes/hoverable-collapse.js') }}"></script>
+        <script src="{{ asset('js/themes/template.js') }}"></script>
+        <script src="{{ asset('js/themes/settings.js') }}"></script>
+        <script src="{{ asset('js/themes/todolist.js') }}"></script>
+        <script src="{{ asset('js/themes/dashboard.js') }}"></script>
 </body>
 
 </html>
