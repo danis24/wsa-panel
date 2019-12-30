@@ -32,9 +32,15 @@ import TradeComponent from './components/TradeComponent.vue';
 import SettingComponent from './components/SettingComponent.vue';
 import AccountComponent from './components/AccountComponent.vue';
 import SettingLoadComponent from './components/SettingLoadComponent.vue';
+import DashboardComponent from './components/DashboardComponent.vue';
 
 
 const routes = [
+    {
+        name: 'dashboard',
+        path: '/home',
+        component: DashboardComponent
+    },
     {
         name: 'trade',
         path: '/trade',

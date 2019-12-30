@@ -2,10 +2,34 @@
   <div>
     <div class="row">
       <div class="col-lg-6 grid-margin">
-        <div class="mt-1 alert alert-fill-danger">
-          LastRain :
-          <br />
-          <h4>{{ this.lastRain }}</h4>
+        <div class="card mt-1 alert alert-fill-danger" style="height: 5rem;">
+          <div class="card-body" style="padding: 0.88rem 0.81rem;">
+            <div class="float-left">
+              LastRain :
+              <br />
+              <h4>{{ this.lastRain }}</h4>
+            </div>
+            <div class="float-right">
+              <div v-if="this.lastRainReload === true">
+                <button class="btn btn-primary btn-rounded btn-icon d-flex justify-content-center">
+                  <fulfilling-bouncing-circle-spinner
+                    :animation-duration="4000"
+                    :size="25"
+                    color="#fff"
+                  />
+                </button>
+              </div>
+              <div v-if="this.lastRainReload === false">
+                <button
+                  class="btn btn-warning btn-rounded btn-icon d-flex justify-content-center"
+                  type="button"
+                  @click.prevent="getLastRain()"
+                >
+                  <i class="mdi mdi-reload" style="margin-right: 0.1rem;"></i>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="card">
           <div class="card-body">
@@ -236,6 +260,7 @@ export default {
       chartData: [],
       balance: "",
       tradeList: [],
+      lastRainReload: false,
       breakTrade: false,
       balanceLoader: false,
       stopOnWinLoader: false,
@@ -304,11 +329,16 @@ export default {
       await this.delay(20000);
       this.sendWebSocket();
     },
+    getLastRain() {
+      this.lastRainReload = true;
+      this.connect();
+    },
     async connect() {
       this.socket = new WebSocket(
         "wss://www.999doge.com/signalr/connect?transport=webSockets&clientProtocol=1.5&connectionToken=V6%2FKDHAthb9O46r4f1cQonMbzkRDpi69q%2BD7if80pScGTqfP2640sQzsyi8YO4mpZybAvkFciuuEbi4yj0GXnnGLE6MmKV8PdrsaLo85QoW3vsZjbVVPlxC%2FdkfKyrLX&connectionData=%5B%7B%22name%22%3A%22mainhub%22%7D%5D&tid=5"
       );
       this.socket.onopen = () => {
+        this.lastRainReload = false;
         this.socket.send(
           JSON.stringify({
             H: "mainhub",
@@ -457,12 +487,6 @@ export default {
     delay(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     },
-    tradeListHistories(id) {
-      console.log(id);
-    },
-    tradeModal() {
-      console.log("asd");
-    },
     tradeResult() {
       let trade = this.options.basePayIn * 0.00000001;
       let payOut = this.result.payOut * 0.00000001;
@@ -483,17 +507,48 @@ export default {
         this.options.countLoseStreak = 0;
         this.tradeLogicHiLo.onWin += 1;
         this.result.tradeListCount += 1;
-
         let countTradeId = Number.parseInt(this.result.tradeListCount) - 1;
         htmlResult +=
-          '<tr class="alert alert-fill-success mb-0" align="center" style="cursor: pointer;" onClick="tradeListHistories(' +
+          '<tr class="alert alert-fill-success mb-0" align="center" style="cursor: pointer;" data-toggle="collapse" data-target=".tradeList' +
           countTradeId +
-          ')">';
+          '" aria-expanded="false" aria-controls="tradeList' +
+          countTradeId +
+          '">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
         htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
         htmlResult += "<td>" + profit.toFixed(2) + "</td>";
         htmlResult += "</tr>";
+        htmlResult +=
+          "<tr align='center' class='table-warning collapse tradeList" +
+          countTradeId +
+          "' style='color: black'>";
+        htmlResult += "<td colspan='2'><i>PayIns</i></td>";
+        htmlResult += "<td colspan='2'><i>PayOuts</i></td>";
+        htmlResult += "</tr>";
+        $.each(this.result.tradeSingleHistoriesValue, function(key, value) {
+          let payIns = Number.parseFloat(value.payIns * 0.00000001).toFixed(2);
+          let payOuts = Number.parseFloat(value.payOuts * 0.00000001).toFixed(
+            2
+          );
+          if (payOuts > 0) {
+            htmlResult +=
+              "<tr align='center' class='table-success collapse tradeList" +
+              countTradeId +
+              "' style='color: black'>";
+            htmlResult += "<td colspan='2'><i>" + payIns + "</i></td>";
+            htmlResult += "<td colspan='2'><i>" + payOuts + "</i></td>";
+            htmlResult += "</tr>";
+          } else {
+            htmlResult +=
+              "<tr align='center' class='table-danger collapse tradeList" +
+              countTradeId +
+              "' style='color: black'>";
+            htmlResult += "<td colspan='2'><i>" + payIns + "</i></td>";
+            htmlResult += "<td colspan='2'><i>" + payOuts + "</i></td>";
+            htmlResult += "</tr>";
+          }
+        });
       } else {
         this.temp.maxLoseStreak += 1;
         if (this.temp.maxLoseStreak > this.result.maxLoseStreak) {
@@ -508,13 +563,49 @@ export default {
         this.options.countLoseStreak += 1;
         this.options.countWinStreak = 0;
         this.tradeLogicHiLo.onLose += 1;
+        let countTradeId = Number.parseInt(this.result.tradeListCount) - 1;
         htmlResult +=
-          '<tr class="alert alert-fill-danger mb-0" align="center" style="cursor: pointer;">';
+          '<tr class="alert alert-fill-danger mb-0" align="center" style="cursor: pointer;" data-toggle="collapse" data-target=".tradeList' +
+          countTradeId +
+          '" aria-expanded="false" aria-controls="tradeList' +
+          countTradeId +
+          '">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
         htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
         htmlResult += "<td>" + profit.toFixed(2) + "</td>";
         htmlResult += "</tr>";
+
+        htmlResult +=
+          "<tr align='center' class='table-warning collapse tradeList" +
+          countTradeId +
+          "' style='color: black'>";
+        htmlResult += "<td colspan='2'><i>PayIns</i></td>";
+        htmlResult += "<td colspan='2'><i>PayOuts</i></td>";
+        htmlResult += "</tr>";
+        $.each(this.result.tradeSingleHistoriesValue, function(key, value) {
+          let payIns = Number.parseFloat(value.payIns * 0.00000001).toFixed(2);
+          let payOuts = Number.parseFloat(value.payOuts * 0.00000001).toFixed(
+            2
+          );
+          if (payOuts > 0) {
+            htmlResult +=
+              "<tr align='center' class='table-success collapse tradeList" +
+              countTradeId +
+              "' style='color: black'>";
+            htmlResult += "<td colspan='2'><i>" + payIns + "</i></td>";
+            htmlResult += "<td colspan='2'><i>" + payOuts + "</i></td>";
+            htmlResult += "</tr>";
+          } else {
+            htmlResult +=
+              "<tr align='center' class='table-danger collapse tradeList" +
+              countTradeId +
+              "' style='color: black'>";
+            htmlResult += "<td colspan='2'><i>" + payIns + "</i></td>";
+            htmlResult += "<td colspan='2'><i>" + payOuts + "</i></td>";
+            htmlResult += "</tr>";
+          }
+        });
       }
 
       this.result.profitSession += Number.parseFloat(profit);
@@ -978,7 +1069,7 @@ export default {
           payOuts: payOut[i]
         });
       }
-      this.result.tradeSingleHistoriesValue.push(outInsData);
+      this.result.tradeSingleHistoriesValue = outInsData;
     }
   }
 };

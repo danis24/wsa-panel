@@ -12332,7 +12332,7 @@ module.exports = function getPolyfill() {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(24);
-module.exports = __webpack_require__(207);
+module.exports = __webpack_require__(210);
 
 
 /***/ }),
@@ -12365,6 +12365,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_AccountComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_AccountComponent_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_SettingLoadComponent_vue__ = __webpack_require__(204);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_SettingLoadComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_SettingLoadComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_DashboardComponent_vue__ = __webpack_require__(207);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_DashboardComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_DashboardComponent_vue__);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -12400,7 +12402,12 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_7_vue_chartkick__["a" /* default */]);
 
 
 
+
 var routes = [{
+    name: 'dashboard',
+    path: '/home',
+    component: __WEBPACK_IMPORTED_MODULE_13__components_DashboardComponent_vue___default.a
+}, {
     name: 'trade',
     path: '/trade',
     component: __WEBPACK_IMPORTED_MODULE_9__components_TradeComponent_vue___default.a
@@ -68310,6 +68317,30 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -68321,6 +68352,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       chartData: [],
       balance: "",
       tradeList: [],
+      lastRainReload: false,
       breakTrade: false,
       balanceLoader: false,
       stopOnWinLoader: false,
@@ -68399,6 +68431,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       return sendWebSocket;
     }(),
+    getLastRain: function getLastRain() {
+      this.lastRainReload = true;
+      this.connect();
+    },
     connect: function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
         var _this = this;
@@ -68409,6 +68445,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               case 0:
                 this.socket = new WebSocket("wss://www.999doge.com/signalr/connect?transport=webSockets&clientProtocol=1.5&connectionToken=V6%2FKDHAthb9O46r4f1cQonMbzkRDpi69q%2BD7if80pScGTqfP2640sQzsyi8YO4mpZybAvkFciuuEbi4yj0GXnnGLE6MmKV8PdrsaLo85QoW3vsZjbVVPlxC%2FdkfKyrLX&connectionData=%5B%7B%22name%22%3A%22mainhub%22%7D%5D&tid=5");
                 this.socket.onopen = function () {
+                  _this.lastRainReload = false;
                   _this.socket.send(JSON.stringify({
                     H: "mainhub",
                     M: "GetStartupInfo",
@@ -68611,12 +68648,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return setTimeout(resolve, ms);
       });
     },
-    tradeListHistories: function tradeListHistories(id) {
-      console.log(id);
-    },
-    tradeModal: function tradeModal() {
-      console.log("asd");
-    },
     tradeResult: function tradeResult() {
       var trade = this.options.basePayIn * 0.00000001;
       var payOut = this.result.payOut * 0.00000001;
@@ -68637,14 +68668,32 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.options.countLoseStreak = 0;
         this.tradeLogicHiLo.onWin += 1;
         this.result.tradeListCount += 1;
-
         var countTradeId = Number.parseInt(this.result.tradeListCount) - 1;
-        htmlResult += '<tr class="alert alert-fill-success mb-0" align="center" style="cursor: pointer;" onClick="tradeListHistories(' + countTradeId + ')">';
+        htmlResult += '<tr class="alert alert-fill-success mb-0" align="center" style="cursor: pointer;" data-toggle="collapse" data-target=".tradeList' + countTradeId + '" aria-expanded="false" aria-controls="tradeList' + countTradeId + '">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
         htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
         htmlResult += "<td>" + profit.toFixed(2) + "</td>";
         htmlResult += "</tr>";
+        htmlResult += "<tr align='center' class='table-warning collapse tradeList" + countTradeId + "' style='color: black'>";
+        htmlResult += "<td colspan='2'><i>PayIns</i></td>";
+        htmlResult += "<td colspan='2'><i>PayOuts</i></td>";
+        htmlResult += "</tr>";
+        __WEBPACK_IMPORTED_MODULE_2_jquery___default.a.each(this.result.tradeSingleHistoriesValue, function (key, value) {
+          var payIns = Number.parseFloat(value.payIns * 0.00000001).toFixed(2);
+          var payOuts = Number.parseFloat(value.payOuts * 0.00000001).toFixed(2);
+          if (payOuts > 0) {
+            htmlResult += "<tr align='center' class='table-success collapse tradeList" + countTradeId + "' style='color: black'>";
+            htmlResult += "<td colspan='2'><i>" + payIns + "</i></td>";
+            htmlResult += "<td colspan='2'><i>" + payOuts + "</i></td>";
+            htmlResult += "</tr>";
+          } else {
+            htmlResult += "<tr align='center' class='table-danger collapse tradeList" + countTradeId + "' style='color: black'>";
+            htmlResult += "<td colspan='2'><i>" + payIns + "</i></td>";
+            htmlResult += "<td colspan='2'><i>" + payOuts + "</i></td>";
+            htmlResult += "</tr>";
+          }
+        });
       } else {
         this.temp.maxLoseStreak += 1;
         if (this.temp.maxLoseStreak > this.result.maxLoseStreak) {
@@ -68659,12 +68708,33 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         this.options.countLoseStreak += 1;
         this.options.countWinStreak = 0;
         this.tradeLogicHiLo.onLose += 1;
-        htmlResult += '<tr class="alert alert-fill-danger mb-0" align="center" style="cursor: pointer;">';
+        var _countTradeId = Number.parseInt(this.result.tradeListCount) - 1;
+        htmlResult += '<tr class="alert alert-fill-danger mb-0" align="center" style="cursor: pointer;" data-toggle="collapse" data-target=".tradeList' + _countTradeId + '" aria-expanded="false" aria-controls="tradeList' + _countTradeId + '">';
         htmlResult += '<th scope="row">' + this.options.highLow + "</th>";
         htmlResult += "<td>" + trade.toFixed(2) + "</td>";
         htmlResult += "<td>" + payOut.toFixed(2) + "</td>";
         htmlResult += "<td>" + profit.toFixed(2) + "</td>";
         htmlResult += "</tr>";
+
+        htmlResult += "<tr align='center' class='table-warning collapse tradeList" + _countTradeId + "' style='color: black'>";
+        htmlResult += "<td colspan='2'><i>PayIns</i></td>";
+        htmlResult += "<td colspan='2'><i>PayOuts</i></td>";
+        htmlResult += "</tr>";
+        __WEBPACK_IMPORTED_MODULE_2_jquery___default.a.each(this.result.tradeSingleHistoriesValue, function (key, value) {
+          var payIns = Number.parseFloat(value.payIns * 0.00000001).toFixed(2);
+          var payOuts = Number.parseFloat(value.payOuts * 0.00000001).toFixed(2);
+          if (payOuts > 0) {
+            htmlResult += "<tr align='center' class='table-success collapse tradeList" + _countTradeId + "' style='color: black'>";
+            htmlResult += "<td colspan='2'><i>" + payIns + "</i></td>";
+            htmlResult += "<td colspan='2'><i>" + payOuts + "</i></td>";
+            htmlResult += "</tr>";
+          } else {
+            htmlResult += "<tr align='center' class='table-danger collapse tradeList" + _countTradeId + "' style='color: black'>";
+            htmlResult += "<td colspan='2'><i>" + payIns + "</i></td>";
+            htmlResult += "<td colspan='2'><i>" + payOuts + "</i></td>";
+            htmlResult += "</tr>";
+          }
+        });
       }
 
       this.result.profitSession += Number.parseFloat(profit);
@@ -69245,7 +69315,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           payOuts: payOut[i]
         });
       }
-      this.result.tradeSingleHistoriesValue.push(outInsData);
+      this.result.tradeSingleHistoriesValue = outInsData;
     }
   }
 });
@@ -74018,12 +74088,79 @@ var render = function() {
         "div",
         { staticClass: "col-lg-6 grid-margin" },
         [
-          _c("div", { staticClass: "mt-1 alert alert-fill-danger" }, [
-            _vm._v("\n        LastRain :\n        "),
-            _c("br"),
-            _vm._v(" "),
-            _c("h4", [_vm._v(_vm._s(this.lastRain))])
-          ]),
+          _c(
+            "div",
+            {
+              staticClass: "card mt-1 alert alert-fill-danger",
+              staticStyle: { height: "5rem" }
+            },
+            [
+              _c(
+                "div",
+                {
+                  staticClass: "card-body",
+                  staticStyle: { padding: "0.88rem 0.81rem" }
+                },
+                [
+                  _c("div", { staticClass: "float-left" }, [
+                    _vm._v("\n            LastRain :\n            "),
+                    _c("br"),
+                    _vm._v(" "),
+                    _c("h4", [_vm._v(_vm._s(this.lastRain))])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "float-right" }, [
+                    this.lastRainReload === true
+                      ? _c("div", [
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "btn btn-primary btn-rounded btn-icon d-flex justify-content-center"
+                            },
+                            [
+                              _c("fulfilling-bouncing-circle-spinner", {
+                                attrs: {
+                                  "animation-duration": 4000,
+                                  size: 25,
+                                  color: "#fff"
+                                }
+                              })
+                            ],
+                            1
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    this.lastRainReload === false
+                      ? _c("div", [
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "btn btn-warning btn-rounded btn-icon d-flex justify-content-center",
+                              attrs: { type: "button" },
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  return _vm.getLastRain()
+                                }
+                              }
+                            },
+                            [
+                              _c("i", {
+                                staticClass: "mdi mdi-reload",
+                                staticStyle: { "margin-right": "0.1rem" }
+                              })
+                            ]
+                          )
+                        ])
+                      : _vm._e()
+                  ])
+                ]
+              )
+            ]
+          ),
           _vm._v(" "),
           _c("div", { staticClass: "card" }, [
             _c("div", { staticClass: "card-body" }, [
@@ -82554,6 +82691,196 @@ if (false) {
 
 /***/ }),
 /* 207 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(208)
+/* template */
+var __vue_template__ = __webpack_require__(209)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/DashboardComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-fbc12a80", Component.options)
+  } else {
+    hotAPI.reload("data-v-fbc12a80", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 208 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/***/ }),
+/* 209 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-12" }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "container text-center" }, [
+              _c("h4", { staticClass: "mb-3 mt-5" }, [
+                _vm._v("Start Trading Now")
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "w-75 mx-auto mb-2" }, [
+                _c("label", { staticClass: "alert alert-danger" }, [
+                  _vm._v(
+                    "Your BOT is not actived !! please buy license for active it :)"
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row pricing-table" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass:
+                      "col-md-12 grid-margin stretch-card pricing-card"
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "card border-primary border pricing-card-body"
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "text-center pricing-card-head" },
+                          [
+                            _c("h3", [_vm._v("1 License / User")]),
+                            _vm._v(" "),
+                            _c("hr"),
+                            _vm._v(" "),
+                            _c("p", [_vm._v("Payment Methods :")]),
+                            _vm._v(" "),
+                            _c(
+                              "a",
+                              {
+                                staticClass:
+                                  "btn btn-outline-primary btn-block font-weight-normal mb-4",
+                                attrs: { href: "#" }
+                              },
+                              [_vm._v("18.000 Doge")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "h1",
+                              {
+                                staticClass:
+                                  "font-weight-normal mb-4 alert alert-success"
+                              },
+                              [_vm._v("Bank/OVO Please Contact Support")]
+                            )
+                          ]
+                        )
+                      ]
+                    )
+                  ]
+                )
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-fbc12a80", module.exports)
+  }
+}
+
+/***/ }),
+/* 210 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
