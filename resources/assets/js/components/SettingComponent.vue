@@ -1245,10 +1245,13 @@ export default {
       });
     },
     firstChangeBeerwenValidate: function() {
-      if (
-        this.configData.changeBeetwen.first < 5 ||
-        this.configData.changeBeetwen.first > 95
-      ) {
+      let firstChangeBeetwen = Number.parseInt(
+        this.configData.changeBeetwen.first
+      );
+      let lastChangeBeetwen = Number.parseInt(
+        this.configData.changeBeetwen.last
+      );
+      if (firstChangeBeetwen < 5 || lastChangeBeetwen > 95) {
         let toast = this.$toasted.show("Change Beetwen Must Be 5 - 95 !", {
           theme: "toasted-primary",
           position: "top-right",
@@ -1257,9 +1260,7 @@ export default {
         this.configData.changeBeetwen.first = 5;
       }
 
-      if (
-        this.configData.changeBeetwen.first > this.configData.changeBeetwen.last
-      ) {
+      if (firstChangeBeetwen > lastChangeBeetwen) {
         let toast = this.$toasted.show(
           "First change must be less then the last !",
           {
@@ -1273,10 +1274,13 @@ export default {
       }
     },
     lastChangeBeerwenValidate: function() {
-      if (
-        this.configData.changeBeetwen.last < 5 ||
-        this.configData.changeBeetwen.last > 95
-      ) {
+      let firstChangeBeetwen = Number.parseInt(
+        this.configData.changeBeetwen.first
+      );
+      let lastChangeBeetwen = Number.parseInt(
+        this.configData.changeBeetwen.last
+      );
+      if (firstChangeBeetwen < 5 || lastChangeBeetwen > 95) {
         let toast = this.$toasted.show("Change Beetwen Must Be 5 - 95 !", {
           theme: "toasted-primary",
           position: "top-right",
@@ -1284,9 +1288,7 @@ export default {
         });
         this.configData.changeBeetwen.last = 95;
       }
-      if (
-        this.configData.changeBeetwen.first > this.configData.changeBeetwen.last
-      ) {
+      if (firstChangeBeetwen > lastChangeBeetwen) {
         let toast = this.$toasted.show(
           "First change must be less then the last !",
           {
