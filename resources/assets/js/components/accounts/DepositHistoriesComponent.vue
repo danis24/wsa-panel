@@ -59,23 +59,18 @@ export default {
   },
   methods: {
     loadData() {
-      let SessionId = $cookies.get("SessionCookies");
-      let uri = "https://www.999doge.com/api/web.aspx";
-      var bodyFormData = new FormData();
-      bodyFormData.set("a", "GetDeposits");
-      bodyFormData.set("s", SessionId);
-
-      var xhr = new XMLHttpRequest();
-      var url = "https://www.999doge.com/api/web.aspx";
-      xhr.open("POST", url, true);
-      xhr.onreadystatechange = function(vm) {
-        if (this.readyState === XMLHttpRequest.DONE) {
-          let response = JSON.parse(this.responseText);
-          vm.isLoading = false;
-          vm.deposits = response.Deposits;
+      const options = {
+        url: "https://www.999doge.com/api/web.aspx",
+        method: "POST",
+        data: {
+          a: "GetDeposits",
+          s: $cookies.get("SessionCookies")
         }
-      }.bind(xhr, this);
-      xhr.send(bodyFormData);
+      };
+      this.$axios(options).then(response => {
+        this.isLoading = false;
+        this.deposits = response.data.Deposits;
+      });
     },
 
     refresh() {

@@ -110,53 +110,49 @@ export default {
         backgroundColor: "#000000"
       });
 
-      // Set attribute data
-      var bodyFormData = new FormData();
-      bodyFormData.set("a", "Login");
-      bodyFormData.set("Key", "7d02bcaf7a584578b8fc7781bc849422");
-      bodyFormData.set("Username", this.login.username);
-      bodyFormData.set("Password", this.login.password);
-
-      var xhr = new XMLHttpRequest();
-      var url = "https://www.999doge.com/api/web.aspx";
-      xhr.open("POST", url, true);
-      xhr.onreadystatechange = function(vm, loader) {
-        if (this.readyState === XMLHttpRequest.DONE) {
-          let response = JSON.parse(this.responseText);
-          if (response.error != undefined) {
-            loader.hide();
-            let toast = vm.$toasted.show(response.error, {
-              theme: "toasted-primary",
-              position: "top-right",
-              duration: 5000
-            });
-          }
-          if (response.LoginInvalid == 1) {
-            loader.hide();
-            let toast = vm.$toasted.show(
-              "Username or Password is Incorrect !!",
-              {
-                theme: "toasted-primary",
-                position: "top-right",
-                duration: 5000
-              }
-            );
-          }
-          if (response.SessionCookie != undefined) {
-            $cookies.set("SessionCookies", response.SessionCookie);
-            $cookies.set("AccountId", response.AccountId);
-            vm.$localStorage.set("auth", JSON.stringify(vm.login));
-            loader.hide();
-
-            let toast = vm.$toasted.show("Login Success :)", {
-              theme: "toasted-primary",
-              position: "top-right",
-              duration: 5000
-            });
-          }
+      const options = {
+        url: "https://www.999doge.com/api/web.aspx",
+        method: "POST",
+        data: {
+          a: "Login",
+          Key: "7d02bcaf7a584578b8fc7781bc849422",
+          Username: this.login.username,
+          Password: this.login.password
         }
-      }.bind(xhr, this, loader);
-      xhr.send(bodyFormData);
+      };
+      this.$axios(options).then(response => {
+        if (response.data.error != undefined) {
+          loader.hide();
+          let toast = this.$toasted.show(response.data.error, {
+            theme: "toasted-primary",
+            position: "top-right",
+            duration: 5000
+          });
+        }
+        if (response.data.LoginInvalid == 1) {
+          loader.hide();
+          let toast = this.$toasted.show(
+            "Username or Password is Incorrect !!",
+            {
+              theme: "toasted-primary",
+              position: "top-right",
+              duration: 5000
+            }
+          );
+        }
+        if (response.data.SessionCookie != undefined) {
+          $cookies.set("SessionCookies", response.data.SessionCookie);
+          $cookies.set("AccountId", response.data.AccountId);
+          this.$localStorage.set("auth", JSON.stringify(this.login));
+          loader.hide();
+
+          let toast = this.$toasted.show("Login Success :)", {
+            theme: "toasted-primary",
+            position: "top-right",
+            duration: 5000
+          });
+        }
+      });
     }
   }
 };

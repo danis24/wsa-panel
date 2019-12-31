@@ -17,6 +17,7 @@ import VueLoading from 'vue-loading-overlay';
 import Toasted from 'vue-toasted';
 import VueLocalStorage from 'vue-localstorage';
 import Chartkick from 'vue-chartkick';
+import AxiosPlugin from 'vue-axios-cors';
 
 import 'vue-loading-overlay/dist/vue-loading.css';
 
@@ -27,6 +28,7 @@ Vue.use(VueLoading);
 Vue.use(Toasted);
 Vue.use(VueLocalStorage);
 Vue.use(Chartkick);
+Vue.use(AxiosPlugin);
 
 import TradeComponent from './components/TradeComponent.vue';
 import SettingComponent from './components/SettingComponent.vue';

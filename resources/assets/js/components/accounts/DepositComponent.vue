@@ -40,25 +40,19 @@ export default {
   methods: {
     getAddress() {
       this.isLoading = true;
-      let sessionCookies = $cookies.get("SessionCookies");
-      let uri = "https://www.999doge.com/api/web.aspx";
-
-      var bodyFormData = new FormData();
-      bodyFormData.set("a", "GetDepositAddress");
-      bodyFormData.set("s", sessionCookies);
-      bodyFormData.set("Currency", "doge");
-
-      var xhr = new XMLHttpRequest();
-      var url = "https://www.999doge.com/api/web.aspx";
-      xhr.open("POST", url, true);
-      xhr.onreadystatechange = function(vm) {
-        if (this.readyState === XMLHttpRequest.DONE) {
-          let response = JSON.parse(this.responseText);
-          vm.depositAddress = response.Address;
-          vm.isLoading = false;
+      const options = {
+        url: "https://www.999doge.com/api/web.aspx",
+        method: "POST",
+        data: {
+          a: "GetDepositAddress",
+          s: $cookies.get("SessionCookies"),
+          Currency: "doge"
         }
-      }.bind(xhr, this);
-      xhr.send(bodyFormData);
+      };
+      this.$axios(options).then(response => {
+        this.depositAddress = response.data.Address;
+        this.isLoading = false;
+      });
     }
   }
 };

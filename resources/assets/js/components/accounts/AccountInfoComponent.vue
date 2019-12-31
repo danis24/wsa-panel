@@ -70,24 +70,18 @@ export default {
   },
   methods: {
     getWithdrawHistoris: function() {
-      let baseUrl = "https://www.999doge.com/api/web.aspx";
-
-      let sessionCookies = $cookies.get("SessionCookies");
-      var bodyFormData = new FormData();
-      bodyFormData.set("a", "GetWithdrawals");
-      bodyFormData.set("s", sessionCookies);
-
-      var xhr = new XMLHttpRequest();
-      var url = "https://www.999doge.com/api/web.aspx";
-      xhr.open("POST", url, true);
-      xhr.onreadystatechange = function(vm) {
-        if (this.readyState === XMLHttpRequest.DONE) {
-          let response = JSON.parse(this.responseText);
-          vm.withdrawals = response.Withdrawals;
-          vm.isLoading = false;
+      const options = {
+        url: "https://www.999doge.com/api/web.aspx",
+        method: "POST",
+        data: {
+          a: "GetWithdrawals",
+          s: $cookies.get("SessionCookies")
         }
-      }.bind(xhr, this);
-      xhr.send(bodyFormData);
+      };
+      this.$axios(options).then(response => {
+        this.withdrawals = response.data.Withdrawals;
+        this.isLoading = false;
+      });
     },
     refresh() {
       this.isLoading = true;
