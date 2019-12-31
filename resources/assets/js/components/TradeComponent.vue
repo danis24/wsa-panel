@@ -707,6 +707,7 @@ export default {
       }
     },
     startTradding() {
+      this.getBalance();
       $("tbody#htmlResult tr").remove();
       this.tradeStatus = true;
       this.settings = JSON.parse(this.$localStorage.get("configData"));
