@@ -472,12 +472,14 @@ export default {
             "<td colspan='4' align='center'><b>Balance Insufficient</b></td>";
           htmlResult += "</tr>";
           $("#htmlResult").prepend(htmlResult);
+          this.stopTradding();
         } else if (response.data.TooFast) {
           let htmlResult = "<tr>";
           htmlResult +=
-            "<td colspan='4' align='center'><b>To Fast Delay 10 Seconds</b></td>";
+            "<td colspan='4' align='center'><b>To Fast Tradding Stopped</b></td>";
           htmlResult += "</tr>";
           $("#htmlResult").prepend(htmlResult);
+          this.stopTradding();
         } else if (response.data.error) {
           let htmlResult = "<tr>";
           htmlResult +=

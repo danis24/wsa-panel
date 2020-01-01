@@ -1,6 +1,6 @@
 <template>
   <div class="card card-default">
-    <div class="card-header">Login/Create Account</div>
+    <div class="card-header">Login/Create Account Trader</div>
     <div class="card-body">
       <form @submit.prevent="actionLogin">
         <div class="form-group">
