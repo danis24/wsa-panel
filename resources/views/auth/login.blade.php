@@ -29,7 +29,7 @@
                                 <img src="/images/logo-mini.svg" alt="logo" style="width: 20%;">
                             </div>
                             <h4>Welcome back!</h4>
-                            <h6 class="font-weight-light">Happy Trading :)</h6>
+                            <h6 class="font-weight-light">Happy Scanning :)</h6>
                             <form class="pt-3" action="{{ route('login') }}" method="post" novalidate>
                                 @csrf
                                 <div class="form-group">

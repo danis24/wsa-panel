@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     actionRegister: function() {
-      let basUrl = "https://larabot24.com/api/v1/register";
+      let basUrl = "http://localhost:8000/api/v1/register";
       let loader = this.$loading.show({
         loader: "dots",
         color: "#5EABED",
@@ -115,7 +115,7 @@ export default {
         method: "POST",
         data: {
           a: "Login",
-          Key: "7d02bcaf7a584578b8fc7781bc849422",
+          Key: this.$localStorage.get("apiKey"),
           Username: this.login.username,
           Password: this.login.password
         }

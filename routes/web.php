@@ -19,11 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/accounts', 'HomeController@index')->name('home.accounts');
-Route::get('/trade', 'HomeController@index')->name('home.trade');
+Route::get('/target', 'HomeController@index')->name('home.target');
+Route::get('/detail/{id}', 'HomeController@index')->name('home.target');
+Route::get('/target/add', 'HomeController@index')->name('home.target');
 Route::get('/settings', 'HomeController@index')->name('setting.view');
-Route::get('/settings/loads', 'HomeController@index')->name('setting.load');
-Route::get('/settings/collections', 'Settings\SettingController@browse')->name('setting.browse');
-Route::post('/settings/create', 'Settings\SettingController@create')->name('setting.create');
-Route::delete('/settings/collections/{id}', 'Settings\SettingController@delete')->name('setting.delete');
-Route::get('/settings/collections/{id}', 'Settings\SettingController@select')->name('settings.select');
-Route::get('/lastrain', 'Settings\SettingController@lastRain')->name('lastrain');
+Route::get('/user-manual', 'HomeController@index')->name('setting.view');
+Route::get('/pdf/{id}', 'HomeController@generatePDF');

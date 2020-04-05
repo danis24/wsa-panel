@@ -15,6 +15,8 @@
     <link href="{{ asset('css/themes/vendor.bundle.addons.css') }}" rel="stylesheet">
     <link href="{{ asset('css/themes/style.css') }}" rel="stylesheet">
     <link rel="icon" href="/images/logo-mini.svg">
+    <meta name="email-id" content="{{ Auth::user()->email }}">
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
 <div id="app">
@@ -60,27 +62,28 @@
           <li class="nav-item">
             <router-link to="/home" class="nav-link" exact>
               <i class="mdi mdi-view-dashboard-outline menu-icon"></i>
-              <span class="menu-title">Dashboard</span>
+              <span class="menu-title">Home</span>
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/trade" class="nav-link" exact>
+            <router-link to="/target" class="nav-link" exact>
               <i class="mdi mdi-finance menu-icon"></i>
-              <span class="menu-title">Trading Bot</span>
+              <span class="menu-title">Target</span>
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/settings" class="nav-link" exact>
-              <i class="mdi mdi-codepen menu-icon"></i>
-              <span class="menu-title">Settings</span>
+            <router-link to="/subdomain" class="nav-link" exact>
+              <i class="mdi mdi-layers menu-icon"></i>
+              <span class="menu-title">Subdomain Checker</span>
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/accounts" class="nav-link" exact>
+            <router-link to="/user-manual" class="nav-link" exact>
               <i class="mdi mdi-account-outline menu-icon"></i>
-              <span class="menu-title">Account</span>
+              <span class="menu-title">User Manual</span>
             </router-link>
           </li>
+
           <li class="nav-item">
             <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
               <i class="mdi mdi-logout menu-icon"></i>

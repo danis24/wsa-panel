@@ -18,6 +18,9 @@ import Toasted from 'vue-toasted';
 import VueLocalStorage from 'vue-localstorage';
 import Chartkick from 'vue-chartkick';
 import AxiosPlugin from 'vue-axios-cors';
+import VueLodash from 'vue-lodash'
+import lodash from 'lodash'
+import store from './store';
 
 import 'vue-loading-overlay/dist/vue-loading.css';
 
@@ -29,11 +32,14 @@ Vue.use(Toasted);
 Vue.use(VueLocalStorage);
 Vue.use(Chartkick);
 Vue.use(AxiosPlugin);
+Vue.use(VueLodash, { name: 'custom', lodash: lodash })
+Vue.localStorage.set('email', document.querySelector("meta[name='email-id']").getAttribute('content'));
 
-import TradeComponent from './components/TradeComponent.vue';
+import TargetComponent from './components/TargetComponent.vue';
+import TargetAddComponent from './components/targets/TargetAddComponent.vue';
+import TargetDetailComponent from './components/targets/TargetDetailComponent.vue';
 import SettingComponent from './components/SettingComponent.vue';
-import AccountComponent from './components/AccountComponent.vue';
-import SettingLoadComponent from './components/SettingLoadComponent.vue';
+import UserManualComponent from './components/UserManualComponent.vue';
 import DashboardComponent from './components/DashboardComponent.vue';
 
 
@@ -44,9 +50,19 @@ const routes = [
         component: DashboardComponent
     },
     {
-        name: 'trade',
-        path: '/trade',
-        component: TradeComponent
+        name: 'target',
+        path: '/target',
+        component: TargetComponent,
+    },
+    {
+        name: 'targetDetail',
+        path: '/detail/:id',
+        component: TargetDetailComponent,
+    },
+    {
+        name: 'add-target',
+        path: '/target/add',
+        component: TargetAddComponent,
     },
     {
         name: 'setting',
@@ -54,14 +70,9 @@ const routes = [
         component: SettingComponent
     },
     {
-        name: 'account',
-        path: '/accounts',
-        component: AccountComponent
-    },
-    {
-        name: 'load',
-        path: '/settings/loads',
-        component: SettingLoadComponent
+        name: 'usermanual',
+        path: '/user-manual',
+        component: UserManualComponent
     }
 ];
 
@@ -72,4 +83,4 @@ const router = new VueRouter({
     routes: routes
 });
 
-const app = new Vue(Vue.util.extend({ router })).$mount('#app');
+const app = new Vue(Vue.util.extend({ store, router })).$mount('#app');
