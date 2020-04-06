@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/subdomain', 'HomeController@index')->name('home');
 Route::get('/accounts', 'HomeController@index')->name('home.accounts');
 Route::get('/target', 'HomeController@index')->name('home.target');
 Route::get('/detail/{id}', 'HomeController@index')->name('home.target');

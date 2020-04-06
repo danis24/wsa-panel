@@ -38,7 +38,7 @@ Vue.localStorage.set('email', document.querySelector("meta[name='email-id']").ge
 import TargetComponent from './components/TargetComponent.vue';
 import TargetAddComponent from './components/targets/TargetAddComponent.vue';
 import TargetDetailComponent from './components/targets/TargetDetailComponent.vue';
-import SettingComponent from './components/SettingComponent.vue';
+import SubDomainComponent from './components/SubDomainComponent.vue';
 import UserManualComponent from './components/UserManualComponent.vue';
 import DashboardComponent from './components/DashboardComponent.vue';
 
@@ -65,9 +65,9 @@ const routes = [
         component: TargetAddComponent,
     },
     {
-        name: 'setting',
-        path: '/settings',
-        component: SettingComponent
+        name: 'subdomain',
+        path: '/subdomain',
+        component: SubDomainComponent
     },
     {
         name: 'usermanual',

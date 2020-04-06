@@ -70,7 +70,7 @@
                     </div>
                     <div class="col-lg-6 login-half-bg d-flex flex-row"
                         style="background: url(/images/logo.png);background-size: cover;">
-                        <p class="text-white font-weight-medium text-center flex-grow align-self-end">larabot24 © 2019
+                        <p class="text-white font-weight-medium text-center flex-grow align-self-end">WebSecuriyAnalyzer © 2020
                             All rights reserved.</p>
                     </div>
                 </div>

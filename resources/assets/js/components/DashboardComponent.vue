@@ -51,16 +51,6 @@
       </div>
     </div>
 
-    <div class="col-lg-12 grid-margin stretch-card">
-      <div class="card">
-        <div class="card-body">
-          <div class="d-flex justify-content-between">
-            <h6 class="card-title">Statistic</h6>
-          </div>
-          <column-chart :data="countAllVuln.chartData"></column-chart>
-        </div>
-      </div>
-    </div>
     <div class="col-lg-8 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
@@ -89,6 +79,17 @@
               </small>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <h6 class="card-title">Statistic</h6>
+          </div>
+          <column-chart :data="countAllVuln.chartData"></column-chart>
         </div>
       </div>
     </div>

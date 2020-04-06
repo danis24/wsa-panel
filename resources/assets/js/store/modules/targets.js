@@ -11,7 +11,8 @@ const state = {
 	countDetailVuln: [],
 	targetDetail: [],
 	countAllVuln: [],
-	getLocations: []
+	getLocations: [],
+	subdomain: [],
 }
 
 const getters = {
@@ -22,7 +23,8 @@ const getters = {
 	getTargetDetailState: (state) => state.targetDetail,
 	countVulnDetail: (state) => state.countDetailVuln,
 	countAllVuln: (state) => state.countAllVuln,
-	getGeo: (state) => state.getLocations
+	getGeo: (state) => state.getLocations,
+	getSubdomain: (state) => state.subdomain
 }
 
 const actions = {
@@ -102,6 +104,22 @@ const actions = {
 		commit("setResults", response.data);
 	},
 
+	async fetchSubdomain({ commit }, data) {
+		const response = await axios.post('http://localhost:8002/subdomain', data);
+		let subdomain = response.data.data.subdomains;
+		for (let i = 0; i < subdomain.length; i++) {
+			const check = await axios.post('http://localhost:8002/check', {
+				url: subdomain[i]
+			});
+			let data = {
+				subdomain: subdomain[i],
+				status: check.data.status
+			};
+			console.log(data);
+			commit("setSubdomain", data);
+		}
+	},
+
 	async getTargetDetail({ commit }, data) {
 		const url = "http://localhost:8001/targets/" + data;
 		const response = await axios.get(url);
@@ -156,6 +174,10 @@ const actions = {
 		commit("clearVulns", []);
 	},
 
+	async clearDomainAction({ commit }) {
+		commit("clearSubdomain", []);
+	},
+
 	async clearTargets({ commit }) {
 		commit("clearTargets", []);
 	},
@@ -178,6 +200,8 @@ const actions = {
 
 const mutations = {
 	setGeo: (state, geo) => (state.getLocations = geo),
+	clearSubdomain: (state, subdomain) => (state.subdomain = subdomain),
+	setSubdomain: (state, subdomain) => state.subdomain.push(subdomain),
 	setTargets: (state, targets) => (state.targets = targets),
 	setVulnsList: (state, vulnsList) => (state.vulnsList = vulnsList),
 	setResults: (state, results) => (state.results = results),

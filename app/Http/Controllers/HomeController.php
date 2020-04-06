@@ -36,6 +36,13 @@ class HomeController extends Controller
         return PDF::loadHTML($this->resultHtml($id))->stream('download.pdf');
     }
 
+    public function getTargetRequest($id)
+    {
+        $target = "http://localhost:8001/targets/".$id;
+        $response = $this->client->request("GET", $target);
+        return json_decode($response->getBody());
+    }
+
     public function getResultRequest($id)
     {
         $results = "http://localhost:8002/results/".$id;
@@ -46,10 +53,11 @@ class HomeController extends Controller
     public function resultHtml($id)
     {
         $results = $this->getResultRequest($id);
+        $target = $this->getTargetRequest($id);
         $output = "<h1>WEB SECURITY ANALYZER (WSA)</h1>";
         $output .= "<h3>Danis Yogaswara (1137050062)</h3><br>";
-        $output .= "Target : ";
-        $output .= "<br>OWASP ZAP<br><br>";
+        $output .= "Target : ".$target->data->attributes->url;
+        $output .= "<br>Scanner : OWASP ZAP<br><br>";
         $output .= "<style>
           .vuln {
             font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;

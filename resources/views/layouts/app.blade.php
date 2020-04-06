@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'LaraBot') }}</title>
+    <title>{{ config('app.name', 'WSA') }}</title>
     <script src="{{ asset('js/app.js') }}" defer></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/4.7.95/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="{{ asset('css/themes/vendor.bundle.base.css') }}" rel="stylesheet">
@@ -24,7 +24,7 @@
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo" href="/home"><img src="../../images/logo.svg" alt="logo" style="width: 100%; height: 72px;"/></a>
+        <a class="navbar-brand brand-logo" href="/home"><img src="../../images/logo-dashboard.png" alt="logo" style="width: 75%; height: 40px;"/></a>
         <a class="navbar-brand brand-logo-mini" href="/home"><img src="../../images/logo-mini.svg" alt="logo"/></a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
