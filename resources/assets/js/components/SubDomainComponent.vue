@@ -58,7 +58,19 @@
         <div class="card-body">
           <h4 class="card-title float-left">Subdomain Lists</h4>
           <div class="float-right">
-            <button class="btn btn-warning" @click.prevent="clearDomain()">Clear</button>
+            <button class="btn btn-success btn-icon-text" v-if="getCheckDomainLoading == true">
+              <fulfilling-bouncing-circle-spinner
+                :animation-duration="4000"
+                :size="17"
+                color="#fff"
+              />
+            </button>
+            <button
+              class="btn btn-success"
+              @click.prevent="checkDomain()"
+              v-if="getCheckDomainLoading == false"
+            >Check Domain</button>
+            <button class="btn btn-warning" @click.prevent="clearDomainAction()">Clear</button>
             <button class="btn btn-primary">Save</button>
           </div>
           <div class="table-responsive">
@@ -78,6 +90,7 @@
                     >{{subdomain.subdomain}}</a>
                   </td>
                   <td>
+                    <label class="badge badge-warning" v-if="subdomain.status == 0">Pending Check</label>
                     <label class="badge badge-success" v-if="subdomain.status == 'up'">Domain Aktif</label>
                     <label
                       class="badge badge-danger"
@@ -111,18 +124,16 @@ export default {
     Loading,
     FulfillingBouncingCircleSpinner
   },
-  computed: { ...mapGetters(["getSubdomain"]) },
+  computed: { ...mapGetters(["getSubdomain", "getCheckDomainLoading"]) },
   methods: {
-    ...mapActions(["fetchSubdomain", "clearDomainAction"]),
+    ...mapActions(["fetchSubdomain", "clearDomainAction", "checkDomain"]),
     async clickSubdomain() {
       this.buttonLoader = true;
+      this.clearDomainAction();
       await this.fetchSubdomain({
         url: this.url
       });
       this.buttonLoader = false;
-    },
-    clearDomain() {
-      this.clearDomainAction();
     }
   },
   mounted() {}

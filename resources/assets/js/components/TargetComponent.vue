@@ -12,11 +12,19 @@
               </router-link>
             </div>
             <div class="btn-group mr-2">
+              <button class="btn btn-primary btn-icon-text" v-if="this.buttonLoader == true">
+                <fulfilling-bouncing-circle-spinner
+                  :animation-duration="4000"
+                  :size="17"
+                  color="#fff"
+                />Connecting ..
+              </button>
               <button
                 type="button"
                 class="btn btn-success"
                 title="Sync Scanner"
                 @click.prevent="reloadPage()"
+                v-if="this.buttonLoader == false"
               >
                 <i class="mdi mdi-remote"></i>
               </button>
@@ -180,18 +188,21 @@
 <script>
 import Paginate from "vuejs-paginate";
 import Loading from "vue-loading-overlay";
+import { FulfillingBouncingCircleSpinner } from "epic-spinners";
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Targets",
   data() {
     return {
       isLoading: true,
-      fullPage: false
+      fullPage: false,
+      buttonLoader: false
     };
   },
   components: {
     Paginate,
-    Loading
+    Loading,
+    FulfillingBouncingCircleSpinner
   },
   methods: {
     ...mapActions([
@@ -212,11 +223,13 @@ export default {
       return new Promise(resolve => setTimeout(resolve, ms));
     },
     async reloadPage() {
-      await this.clearTargets();
-      await this.syncScanner();
+      this.buttonLoader = true;
+      // await this.clearTargets();
       await this.loadPage();
+      this.buttonLoader = false;
     },
     async loadPage() {
+      await this.syncScanner();
       await this.fetchTargets();
       await this.delay(1000);
       this.isLoading = false;
@@ -235,8 +248,11 @@ export default {
   computed: {
     ...mapGetters(["allTargets"])
   },
-  mounted() {
+  created() {
     this.loadPage();
+    window.setInterval(() => {
+      this.loadPage();
+    }, 10000);
   }
 };
 </script>

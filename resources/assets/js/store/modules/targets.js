@@ -13,6 +13,7 @@ const state = {
 	countAllVuln: [],
 	getLocations: [],
 	subdomain: [],
+	checkDomainLoading: false
 }
 
 const getters = {
@@ -24,7 +25,8 @@ const getters = {
 	countVulnDetail: (state) => state.countDetailVuln,
 	countAllVuln: (state) => state.countAllVuln,
 	getGeo: (state) => state.getLocations,
-	getSubdomain: (state) => state.subdomain
+	getSubdomain: (state) => state.subdomain,
+	getCheckDomainLoading: (state) => state.checkDomainLoading
 }
 
 const actions = {
@@ -108,17 +110,32 @@ const actions = {
 		const response = await axios.post('http://localhost:8002/subdomain', data);
 		let subdomain = response.data.data.subdomains;
 		for (let i = 0; i < subdomain.length; i++) {
-			const check = await axios.post('http://localhost:8002/check', {
-				url: subdomain[i]
-			});
 			let data = {
+				id: i,
 				subdomain: subdomain[i],
-				status: check.data.status
+				status: 0
 			};
-			console.log(data);
 			commit("setSubdomain", data);
 		}
 	},
+
+	async checkDomain({ commit }) {
+		commit("setCheckDomainLoading", true);
+		let subdomain = state.subdomain;
+		for (let i = 0; i < subdomain.length; i++) {
+			const check = await axios.post('http://localhost:8002/check', {
+				url: subdomain[i].subdomain
+			});
+			let data = {
+				id: i,
+				subdomain: subdomain[i].subdomain,
+				status: check.data.status
+			};
+			commit("updateDomain", data);
+		}
+		commit("setCheckDomainLoading", false);
+	},
+
 
 	async getTargetDetail({ commit }, data) {
 		const url = "http://localhost:8001/targets/" + data;
@@ -160,14 +177,12 @@ const actions = {
 				scanner_data: scanner_data
 			});
 		}
-		console.log(data);
 		commit('setTargets', data);
 	},
 
 	async syncScanner() {
 		const url = "http://localhost:8002/sync-scanner";
 		const response = await axios.get(url);
-		console.log(response.data);
 	},
 
 	async clearVulns({ commit }) {
@@ -199,6 +214,7 @@ const actions = {
 }
 
 const mutations = {
+	setCheckDomainLoading: (state, status) => (state.checkDomainLoading = status),
 	setGeo: (state, geo) => (state.getLocations = geo),
 	clearSubdomain: (state, subdomain) => (state.subdomain = subdomain),
 	setSubdomain: (state, subdomain) => state.subdomain.push(subdomain),
@@ -230,6 +246,12 @@ const mutations = {
 			low: low
 		}
 		state.countDetailVuln = counts;
+	},
+	updateDomain: (state, updDomain) => {
+		const index = state.subdomain.findIndex(domain => domain.id === updDomain.id);
+		if (index !== -1) {
+			state.subdomain.splice(index, 1, updDomain);
+		}
 	}
 }
 

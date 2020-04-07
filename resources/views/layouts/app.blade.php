@@ -78,10 +78,10 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/user-manual" class="nav-link" exact>
+            <a href="https://www.youtube.com/watch?v=S59vXbs8x24&t=2s" class="nav-link" target="_blank">
               <i class="mdi mdi-account-outline menu-icon"></i>
               <span class="menu-title">User Manual</span>
-            </router-link>
+            </a>
           </li>
 
           <li class="nav-item">

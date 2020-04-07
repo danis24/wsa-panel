@@ -71051,7 +71051,8 @@ var state = {
 	targetDetail: [],
 	countAllVuln: [],
 	getLocations: [],
-	subdomain: []
+	subdomain: [],
+	checkDomainLoading: false
 };
 
 var getters = {
@@ -71081,6 +71082,9 @@ var getters = {
 	},
 	getSubdomain: function getSubdomain(state) {
 		return state.subdomain;
+	},
+	getCheckDomainLoading: function getCheckDomainLoading(state) {
+		return state.checkDomainLoading;
 	}
 };
 
@@ -71290,7 +71294,7 @@ var actions = {
 		var _ref10 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee5(_ref9, data) {
 			var commit = _ref9.commit;
 
-			var response, subdomain, i, check, _data;
+			var response, subdomain, i, _data;
 
 			return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee5$(_context5) {
 				while (1) {
@@ -71302,35 +71306,18 @@ var actions = {
 						case 2:
 							response = _context5.sent;
 							subdomain = response.data.data.subdomains;
-							i = 0;
 
-						case 5:
-							if (!(i < subdomain.length)) {
-								_context5.next = 15;
-								break;
+							for (i = 0; i < subdomain.length; i++) {
+								_data = {
+									id: i,
+									subdomain: subdomain[i],
+									status: 0
+								};
+
+								commit("setSubdomain", _data);
 							}
 
-							_context5.next = 8;
-							return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post('http://localhost:8002/check', {
-								url: subdomain[i]
-							});
-
-						case 8:
-							check = _context5.sent;
-							_data = {
-								subdomain: subdomain[i],
-								status: check.data.status
-							};
-
-							console.log(_data);
-							commit("setSubdomain", _data);
-
-						case 12:
-							i++;
-							_context5.next = 5;
-							break;
-
-						case 15:
+						case 5:
 						case 'end':
 							return _context5.stop();
 					}
@@ -71344,24 +71331,48 @@ var actions = {
 
 		return fetchSubdomain;
 	}(),
-	getTargetDetail: function () {
-		var _ref12 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee6(_ref11, data) {
+	checkDomain: function () {
+		var _ref12 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee6(_ref11) {
 			var commit = _ref11.commit;
-			var url, response;
+			var subdomain, i, check, data;
 			return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee6$(_context6) {
 				while (1) {
 					switch (_context6.prev = _context6.next) {
 						case 0:
-							url = "http://localhost:8001/targets/" + data;
-							_context6.next = 3;
-							return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(url);
+							commit("setCheckDomainLoading", true);
+							subdomain = state.subdomain;
+							i = 0;
 
 						case 3:
-							response = _context6.sent;
+							if (!(i < subdomain.length)) {
+								_context6.next = 12;
+								break;
+							}
 
-							commit("setTargetDetail", response.data);
+							_context6.next = 6;
+							return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post('http://localhost:8002/check', {
+								url: subdomain[i].subdomain
+							});
 
-						case 5:
+						case 6:
+							check = _context6.sent;
+							data = {
+								id: i,
+								subdomain: subdomain[i].subdomain,
+								status: check.data.status
+							};
+
+							commit("updateDomain", data);
+
+						case 9:
+							i++;
+							_context6.next = 3;
+							break;
+
+						case 12:
+							commit("setCheckDomainLoading", false);
+
+						case 13:
 						case 'end':
 							return _context6.stop();
 					}
@@ -71369,13 +71380,13 @@ var actions = {
 			}, _callee6, this);
 		}));
 
-		function getTargetDetail(_x8, _x9) {
+		function checkDomain(_x8) {
 			return _ref12.apply(this, arguments);
 		}
 
-		return getTargetDetail;
+		return checkDomain;
 	}(),
-	getVulnList: function () {
+	getTargetDetail: function () {
 		var _ref14 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee7(_ref13, data) {
 			var commit = _ref13.commit;
 			var url, response;
@@ -71383,17 +71394,16 @@ var actions = {
 				while (1) {
 					switch (_context7.prev = _context7.next) {
 						case 0:
-							url = "http://localhost:8002/results/" + data;
+							url = "http://localhost:8001/targets/" + data;
 							_context7.next = 3;
 							return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(url);
 
 						case 3:
 							response = _context7.sent;
 
-							commit("setVulnsList", response.data);
-							commit("countDetailCount", response.data);
+							commit("setTargetDetail", response.data);
 
-						case 6:
+						case 5:
 						case 'end':
 							return _context7.stop();
 					}
@@ -71401,26 +71411,58 @@ var actions = {
 			}, _callee7, this);
 		}));
 
-		function getVulnList(_x10, _x11) {
+		function getTargetDetail(_x9, _x10) {
 			return _ref14.apply(this, arguments);
 		}
 
-		return getVulnList;
+		return getTargetDetail;
 	}(),
-	fetchTargetPaginate: function () {
-		var _ref16 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee8(_ref15, id) {
+	getVulnList: function () {
+		var _ref16 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee8(_ref15, data) {
 			var commit = _ref15.commit;
-			var url, response, targets, count, data, i, scanner_data, scan_url, scanner;
+			var url, response;
 			return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee8$(_context8) {
 				while (1) {
 					switch (_context8.prev = _context8.next) {
 						case 0:
-							url = "http://localhost:8001/targets?filter[email]=" + Vue.localStorage.get('email') + "&page=" + id;
+							url = "http://localhost:8002/results/" + data;
 							_context8.next = 3;
 							return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(url);
 
 						case 3:
 							response = _context8.sent;
+
+							commit("setVulnsList", response.data);
+							commit("countDetailCount", response.data);
+
+						case 6:
+						case 'end':
+							return _context8.stop();
+					}
+				}
+			}, _callee8, this);
+		}));
+
+		function getVulnList(_x11, _x12) {
+			return _ref16.apply(this, arguments);
+		}
+
+		return getVulnList;
+	}(),
+	fetchTargetPaginate: function () {
+		var _ref18 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee9(_ref17, id) {
+			var commit = _ref17.commit;
+			var url, response, targets, count, data, i, scanner_data, scan_url, scanner;
+			return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee9$(_context9) {
+				while (1) {
+					switch (_context9.prev = _context9.next) {
+						case 0:
+							url = "http://localhost:8001/targets?filter[email]=" + Vue.localStorage.get('email') + "&page=" + id;
+							_context9.next = 3;
+							return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(url);
+
+						case 3:
+							response = _context9.sent;
 							targets = response.data;
 							count = targets.data.length;
 							data = {
@@ -71435,23 +71477,23 @@ var actions = {
 
 						case 8:
 							if (!(i < count)) {
-								_context8.next = 20;
+								_context9.next = 20;
 								break;
 							}
 
 							scanner_data = {};
 
 							if (!(targets.data[i].attributes.launched == 1)) {
-								_context8.next = 16;
+								_context9.next = 16;
 								break;
 							}
 
 							scan_url = "http://localhost:8002/scanners/" + targets.data[i].attributes.scanner_id;
-							_context8.next = 14;
+							_context9.next = 14;
 							return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(scan_url);
 
 						case 14:
-							scanner = _context8.sent;
+							scanner = _context9.sent;
 
 							scanner_data = scanner.data.data.attributes;
 
@@ -71465,44 +71507,13 @@ var actions = {
 
 						case 17:
 							i++;
-							_context8.next = 8;
+							_context9.next = 8;
 							break;
 
 						case 20:
-							console.log(data);
 							commit('setTargets', data);
 
-						case 22:
-						case 'end':
-							return _context8.stop();
-					}
-				}
-			}, _callee8, this);
-		}));
-
-		function fetchTargetPaginate(_x12, _x13) {
-			return _ref16.apply(this, arguments);
-		}
-
-		return fetchTargetPaginate;
-	}(),
-	syncScanner: function () {
-		var _ref17 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee9() {
-			var url, response;
-			return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee9$(_context9) {
-				while (1) {
-					switch (_context9.prev = _context9.next) {
-						case 0:
-							url = "http://localhost:8002/sync-scanner";
-							_context9.next = 3;
-							return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(url);
-
-						case 3:
-							response = _context9.sent;
-
-							console.log(response.data);
-
-						case 5:
+						case 21:
 						case 'end':
 							return _context9.stop();
 					}
@@ -71510,22 +71521,27 @@ var actions = {
 			}, _callee9, this);
 		}));
 
-		function syncScanner() {
-			return _ref17.apply(this, arguments);
+		function fetchTargetPaginate(_x13, _x14) {
+			return _ref18.apply(this, arguments);
 		}
 
-		return syncScanner;
+		return fetchTargetPaginate;
 	}(),
-	clearVulns: function () {
-		var _ref19 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee10(_ref18) {
-			var commit = _ref18.commit;
+	syncScanner: function () {
+		var _ref19 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee10() {
+			var url, response;
 			return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee10$(_context10) {
 				while (1) {
 					switch (_context10.prev = _context10.next) {
 						case 0:
-							commit("clearVulns", []);
+							url = "http://localhost:8002/sync-scanner";
+							_context10.next = 3;
+							return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(url);
 
-						case 1:
+						case 3:
+							response = _context10.sent;
+
+						case 4:
 						case 'end':
 							return _context10.stop();
 					}
@@ -71533,20 +71549,20 @@ var actions = {
 			}, _callee10, this);
 		}));
 
-		function clearVulns(_x14) {
+		function syncScanner() {
 			return _ref19.apply(this, arguments);
 		}
 
-		return clearVulns;
+		return syncScanner;
 	}(),
-	clearDomainAction: function () {
+	clearVulns: function () {
 		var _ref21 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee11(_ref20) {
 			var commit = _ref20.commit;
 			return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee11$(_context11) {
 				while (1) {
 					switch (_context11.prev = _context11.next) {
 						case 0:
-							commit("clearSubdomain", []);
+							commit("clearVulns", []);
 
 						case 1:
 						case 'end':
@@ -71556,20 +71572,20 @@ var actions = {
 			}, _callee11, this);
 		}));
 
-		function clearDomainAction(_x15) {
+		function clearVulns(_x15) {
 			return _ref21.apply(this, arguments);
 		}
 
-		return clearDomainAction;
+		return clearVulns;
 	}(),
-	clearTargets: function () {
+	clearDomainAction: function () {
 		var _ref23 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee12(_ref22) {
 			var commit = _ref22.commit;
 			return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee12$(_context12) {
 				while (1) {
 					switch (_context12.prev = _context12.next) {
 						case 0:
-							commit("clearTargets", []);
+							commit("clearSubdomain", []);
 
 						case 1:
 						case 'end':
@@ -71579,42 +71595,22 @@ var actions = {
 			}, _callee12, this);
 		}));
 
-		function clearTargets(_x16) {
+		function clearDomainAction(_x16) {
 			return _ref23.apply(this, arguments);
 		}
 
-		return clearTargets;
+		return clearDomainAction;
 	}(),
-	launchScanner: function () {
-		var _ref25 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee13(_ref24, data) {
+	clearTargets: function () {
+		var _ref25 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee13(_ref24) {
 			var commit = _ref24.commit;
-			var url, payload, response, urlPatch, patchPayload, responsePatch;
 			return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee13$(_context13) {
 				while (1) {
 					switch (_context13.prev = _context13.next) {
 						case 0:
-							url = "http://localhost:8002/launch";
-							payload = {
-								scan_url: data.scan_url
-							};
-							_context13.next = 4;
-							return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post(url, payload);
+							commit("clearTargets", []);
 
-						case 4:
-							response = _context13.sent;
-							urlPatch = "http://localhost:8001/launch/" + data.id;
-							patchPayload = {
-								scanner_id: response.data.scanid
-							};
-							_context13.next = 9;
-							return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.patch(urlPatch, patchPayload);
-
-						case 9:
-							responsePatch = _context13.sent;
-
-							commit("setLaunch", responsePatch.data);
-
-						case 11:
+						case 1:
 						case 'end':
 							return _context13.stop();
 					}
@@ -71622,8 +71618,51 @@ var actions = {
 			}, _callee13, this);
 		}));
 
-		function launchScanner(_x17, _x18) {
+		function clearTargets(_x17) {
 			return _ref25.apply(this, arguments);
+		}
+
+		return clearTargets;
+	}(),
+	launchScanner: function () {
+		var _ref27 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee14(_ref26, data) {
+			var commit = _ref26.commit;
+			var url, payload, response, urlPatch, patchPayload, responsePatch;
+			return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee14$(_context14) {
+				while (1) {
+					switch (_context14.prev = _context14.next) {
+						case 0:
+							url = "http://localhost:8002/launch";
+							payload = {
+								scan_url: data.scan_url
+							};
+							_context14.next = 4;
+							return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post(url, payload);
+
+						case 4:
+							response = _context14.sent;
+							urlPatch = "http://localhost:8001/launch/" + data.id;
+							patchPayload = {
+								scanner_id: response.data.scanid
+							};
+							_context14.next = 9;
+							return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.patch(urlPatch, patchPayload);
+
+						case 9:
+							responsePatch = _context14.sent;
+
+							commit("setLaunch", responsePatch.data);
+
+						case 11:
+						case 'end':
+							return _context14.stop();
+					}
+				}
+			}, _callee14, this);
+		}));
+
+		function launchScanner(_x18, _x19) {
+			return _ref27.apply(this, arguments);
 		}
 
 		return launchScanner;
@@ -71631,6 +71670,9 @@ var actions = {
 };
 
 var mutations = {
+	setCheckDomainLoading: function setCheckDomainLoading(state, status) {
+		return state.checkDomainLoading = status;
+	},
 	setGeo: function setGeo(state, geo) {
 		return state.getLocations = geo;
 	},
@@ -71682,6 +71724,14 @@ var mutations = {
 			low: low
 		};
 		state.countDetailVuln = counts;
+	},
+	updateDomain: function updateDomain(state, updDomain) {
+		var index = state.subdomain.findIndex(function (domain) {
+			return domain.id === updDomain.id;
+		});
+		if (index !== -1) {
+			state.subdomain.splice(index, 1, updDomain);
+		}
 	}
 };
 
@@ -73101,7 +73151,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuejs_paginate___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vuejs_paginate__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_loading_overlay__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_loading_overlay___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_loading_overlay__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vuex__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_epic_spinners__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vuex__ = __webpack_require__(5);
 
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -73287,6 +73338,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -73296,15 +73356,17 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   data: function data() {
     return {
       isLoading: true,
-      fullPage: false
+      fullPage: false,
+      buttonLoader: false
     };
   },
 
   components: {
     Paginate: __WEBPACK_IMPORTED_MODULE_1_vuejs_paginate___default.a,
-    Loading: __WEBPACK_IMPORTED_MODULE_2_vue_loading_overlay___default.a
+    Loading: __WEBPACK_IMPORTED_MODULE_2_vue_loading_overlay___default.a,
+    FulfillingBouncingCircleSpinner: __WEBPACK_IMPORTED_MODULE_3_epic_spinners__["a" /* FulfillingBouncingCircleSpinner */]
   },
-  methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_3_vuex__["b" /* mapActions */])(["fetchTargets", "fetchTargetPaginate", "launchScanner", "syncScanner", "clearTargets"]), {
+  methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_4_vuex__["b" /* mapActions */])(["fetchTargets", "fetchTargetPaginate", "launchScanner", "syncScanner", "clearTargets"]), {
     paginate: function paginate(pageNum) {
       this.fetchTargetPaginate(pageNum);
     },
@@ -73323,18 +73385,15 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return this.clearTargets();
-
-              case 2:
-                _context.next = 4;
-                return this.syncScanner();
-
-              case 4:
-                _context.next = 6;
+                this.buttonLoader = true;
+                // await this.clearTargets();
+                _context.next = 3;
                 return this.loadPage();
 
-              case 6:
+              case 3:
+                this.buttonLoader = false;
+
+              case 4:
               case "end":
                 return _context.stop();
             }
@@ -73355,16 +73414,20 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return this.fetchTargets();
+                return this.syncScanner();
 
               case 2:
                 _context2.next = 4;
-                return this.delay(1000);
+                return this.fetchTargets();
 
               case 4:
+                _context2.next = 6;
+                return this.delay(1000);
+
+              case 6:
                 this.isLoading = false;
 
-              case 5:
+              case 7:
               case "end":
                 return _context2.stop();
             }
@@ -73416,9 +73479,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       return startScan;
     }()
   }),
-  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_3_vuex__["c" /* mapGetters */])(["allTargets"])),
-  mounted: function mounted() {
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_4_vuex__["c" /* mapGetters */])(["allTargets"])),
+  created: function created() {
+    var _this = this;
+
     this.loadPage();
+    window.setInterval(function () {
+      _this.loadPage();
+    }, 10000);
   }
 });
 
@@ -73459,20 +73527,40 @@ var render = function() {
             ),
             _vm._v(" "),
             _c("div", { staticClass: "btn-group mr-2" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-success",
-                  attrs: { type: "button", title: "Sync Scanner" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.reloadPage()
-                    }
-                  }
-                },
-                [_c("i", { staticClass: "mdi mdi-remote" })]
-              )
+              this.buttonLoader == true
+                ? _c(
+                    "button",
+                    { staticClass: "btn btn-primary btn-icon-text" },
+                    [
+                      _c("fulfilling-bouncing-circle-spinner", {
+                        attrs: {
+                          "animation-duration": 4000,
+                          size: 17,
+                          color: "#fff"
+                        }
+                      }),
+                      _vm._v("Connecting ..\n            ")
+                    ],
+                    1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              this.buttonLoader == false
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success",
+                      attrs: { type: "button", title: "Sync Scanner" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.reloadPage()
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "mdi mdi-remote" })]
+                  )
+                : _vm._e()
             ]),
             _vm._v(" "),
             _vm._m(0),
@@ -76235,6 +76323,19 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -76254,8 +76355,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     Loading: __WEBPACK_IMPORTED_MODULE_1_vue_loading_overlay___default.a,
     FulfillingBouncingCircleSpinner: __WEBPACK_IMPORTED_MODULE_3_epic_spinners__["a" /* FulfillingBouncingCircleSpinner */]
   },
-  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_2_vuex__["c" /* mapGetters */])(["getSubdomain"])),
-  methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapActions */])(["fetchSubdomain", "clearDomainAction"]), {
+  computed: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_2_vuex__["c" /* mapGetters */])(["getSubdomain", "getCheckDomainLoading"])),
+  methods: _extends({}, Object(__WEBPACK_IMPORTED_MODULE_2_vuex__["b" /* mapActions */])(["fetchSubdomain", "clearDomainAction", "checkDomain"]), {
     clickSubdomain: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
         return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
@@ -76263,15 +76364,16 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             switch (_context.prev = _context.next) {
               case 0:
                 this.buttonLoader = true;
-                _context.next = 3;
+                this.clearDomainAction();
+                _context.next = 4;
                 return this.fetchSubdomain({
                   url: this.url
                 });
 
-              case 3:
+              case 4:
                 this.buttonLoader = false;
 
-              case 4:
+              case 5:
               case "end":
                 return _context.stop();
             }
@@ -76284,10 +76386,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       }
 
       return clickSubdomain;
-    }(),
-    clearDomain: function clearDomain() {
-      this.clearDomainAction();
-    }
+    }()
   }),
   mounted: function mounted() {}
 });
@@ -76432,6 +76531,39 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "float-right" }, [
+              _vm.getCheckDomainLoading == true
+                ? _c(
+                    "button",
+                    { staticClass: "btn btn-success btn-icon-text" },
+                    [
+                      _c("fulfilling-bouncing-circle-spinner", {
+                        attrs: {
+                          "animation-duration": 4000,
+                          size: 17,
+                          color: "#fff"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.getCheckDomainLoading == false
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success",
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.checkDomain()
+                        }
+                      }
+                    },
+                    [_vm._v("Check Domain")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
               _c(
                 "button",
                 {
@@ -76439,7 +76571,7 @@ var render = function() {
                   on: {
                     click: function($event) {
                       $event.preventDefault()
-                      return _vm.clearDomain()
+                      return _vm.clearDomainAction()
                     }
                   }
                 },
@@ -76471,6 +76603,14 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("td", [
+                        subdomain.status == 0
+                          ? _c(
+                              "label",
+                              { staticClass: "badge badge-warning" },
+                              [_vm._v("Pending Check")]
+                            )
+                          : _vm._e(),
+                        _vm._v(" "),
                         subdomain.status == "up"
                           ? _c(
                               "label",
